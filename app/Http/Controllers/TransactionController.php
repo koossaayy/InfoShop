@@ -326,7 +326,7 @@ class TransactionController extends Controller
         return Inertia::render('Payment/Payment', [
             'payments' => $transactions,
             'transactionType' => $type,
-            'pageLabel' => 'Payments',
+            'pageLabel' => __('Payments'),
             'contacts' => $contacts,
             'selected_contact' => $contact_id,
         ]);

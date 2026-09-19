@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, FormGroup, FormControlLabel, Switch,  Grid } from '@mui/material';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 
 
 export default function UserRoleDialog({ open, handleClose, user_role }) {
+    const { t } = useTranslation();
   const [formState, setFormState] = useState({
     user_role: '',
     permissions: [],
@@ -74,10 +76,10 @@ export default function UserRoleDialog({ open, handleClose, user_role }) {
 
     router.post(endpoint, formState, {
       onSuccess: (resp) => {
-        const responseMessage = resp.props.flash?.message || 'User role and permissions updated!';
+        const responseMessage = resp.props.flash?.message || t('User role and permissions updated!');
 
         Swal.fire({
-          title: 'Success!',
+          title: t('Success!'),
           text: responseMessage,
           icon: 'success',
           position: 'bottom-start',
@@ -91,10 +93,10 @@ export default function UserRoleDialog({ open, handleClose, user_role }) {
       onError: (errors) => {
         const errorMessages = Object.values(errors).flat().join(' | ');
         Swal.fire({
-          title: 'Error!',
-          text: errorMessages || 'An unexpected error occurred.',
+          title: t('Error!'),
+          text: errorMessages || t('An unexpected error occurred.'),
           icon: 'error',
-          confirmButtonText: 'OK',
+          confirmButtonText: t('OK'),
           timerProgressBar: true,
         });
       },
@@ -117,7 +119,7 @@ export default function UserRoleDialog({ open, handleClose, user_role }) {
       }}
       fullScreen={isMobile}
     >
-      <DialogTitle>User Role and Permissions</DialogTitle>
+      <DialogTitle>{t('User Role and Permissions')}</DialogTitle>
       <DialogContent>
         {/* User Role - TextField */}
         <TextField
@@ -126,7 +128,7 @@ export default function UserRoleDialog({ open, handleClose, user_role }) {
           margin="dense"
           id="user_role"
           name="user_role"
-          label="User Role"
+          label={t('User Role')}
           type="text"
           fullWidth
           variant="outlined"
@@ -136,7 +138,7 @@ export default function UserRoleDialog({ open, handleClose, user_role }) {
         />
 
         <FormGroup sx={{ mt: '1rem' }}>
-          <h4>Permissions</h4>
+          <h4>{t('Permissions')}</h4>
           <Grid container spacing={2}>
             {permissions.map((permission, index) => (
               <Grid
@@ -161,8 +163,8 @@ export default function UserRoleDialog({ open, handleClose, user_role }) {
         </FormGroup>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button type="submit">SAVE</Button>
+        <Button onClick={handleClose}>{t('Cancel')}</Button>
+        <Button type="submit">{t('SAVE')}</Button>
       </DialogActions>
     </Dialog>
   );

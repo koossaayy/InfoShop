@@ -1,8 +1,10 @@
 import React from 'react';
 import { Box, Button,  Grid, Paper, TextField, Typography } from '@mui/material';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const LoyaltyPointsSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFormData, settings }) => {
+    const { t } = useTranslation();
 
     useEffect(() => {
         try {
@@ -97,7 +99,7 @@ const LoyaltyPointsSetting = ({ handleSubmit, settingFormData, handleChange, set
                                     color="success"
                                     fullWidth
                                 >
-                                    UPDATE
+                                    {t('UPDATE')}
                                 </Button>
                             </Grid>
                         </Paper>

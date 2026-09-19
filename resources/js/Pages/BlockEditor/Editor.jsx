@@ -5,9 +5,11 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { nanoid } from "nanoid";
 
+import { useTranslation } from 'react-i18next';
 import LeftSideBar from "./LeftSideBar";
 
 const Editor = () => {
+    const { t } = useTranslation();
     const [blocks, setBlocks] = useState([]);
     const [selectedBlock, setSelectedBlock] = useState(null);
 
@@ -17,10 +19,10 @@ const Editor = () => {
             name: type,
             attributes:
                 type === "core/paragraph"
-                    ? { content: "New paragraph block." }
+                    ? { content: t('New paragraph block.') }
                     : type === "core/image"
-                        ? { url: "https://via.placeholder.com/150", alt: "Placeholder image" }
-                        : { text: "New Button", url: "#" },
+                        ? { url: "https://via.placeholder.com/150", alt: t('Placeholder image') }
+                        : { text: t('New Button'), url: "#" },
         };
 
         if (selectedBlock && selectedBlock.name === "core/container") {
@@ -264,7 +266,7 @@ const Editor = () => {
             >
                 <Box p={2}>
                     <Typography variant="h6" gutterBottom>
-                        Block Options
+                        {t('Block Options')}
                     </Typography>
                     <Divider />
                     {selectedBlock && (
@@ -272,7 +274,7 @@ const Editor = () => {
                             {selectedBlock.name === "core/paragraph" && (
                                 <TextField
                                     fullWidth
-                                    label="Content"
+                                    label={t('Content')}
                                     value={selectedBlock.attributes.content}
                                     onChange={(e) => {
                                         updateBlock(selectedBlock.id, { content: e.target.value });
@@ -284,7 +286,7 @@ const Editor = () => {
                                 <>
                                     <TextField
                                         fullWidth
-                                        label="Image URL"
+                                        label={t('Image URL')}
                                         value={selectedBlock.attributes.url}
                                         onChange={(e) => {
                                             updateBlock(selectedBlock.id, { url: e.target.value });
@@ -293,7 +295,7 @@ const Editor = () => {
                                     />
                                     <TextField
                                         fullWidth
-                                        label="Alt Text"
+                                        label={t('Alt Text')}
                                         value={selectedBlock.attributes.alt}
                                         onChange={(e) => {
                                             updateBlock(selectedBlock.id, { alt: e.target.value });
@@ -303,11 +305,11 @@ const Editor = () => {
                                 </>
                             )}
 
-                            <Typography variant="subtitle1">Custom CSS</Typography>
+                            <Typography variant="subtitle1">{t('Custom CSS')}</Typography>
                             <TextField
                                 multiline
                                 minRows={5}
-                                placeholder="Enter custom CSS here..."
+                                placeholder={t('Enter custom CSS here...')}
                                 variant="outlined"
                                 fullWidth
                                 style={{ marginTop: "8px" }}

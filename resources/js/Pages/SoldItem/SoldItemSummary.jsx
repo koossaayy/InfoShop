@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Table,
   TableBody,
@@ -24,6 +25,7 @@ import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
 
 export default function SoldItemSummary({ sold_items }) {
+    const { t } = useTranslation();
   const [start_date, setStartDate] = useState(dayjs().format("YYYY-MM-DD"))
   const [end_date, setEndDate] = useState(dayjs().format('YYYY-MM-DD'))
   const [sold_items_data, setSoldItemsData] = useState(sold_items)
@@ -54,15 +56,15 @@ export default function SoldItemSummary({ sold_items }) {
 
   return (
     <AuthenticatedLayout>
-      <Head title="Sold Items" />
+      <Head title={t('Sold Items')} />
       <Card className="mx-auto max-w-lg">
         <CardHeader>
           <Grid container spacing={1}>
             <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
-                label="Start Date"
+                label={t('Start Date')}
                 name="start_date"
-                placeholder="From"
+                placeholder={t('From')}
                 type="date"
                 size="large"
                 fullWidth
@@ -80,10 +82,10 @@ export default function SoldItemSummary({ sold_items }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
-                label="End Date"
+                label={t('End Date')}
                 name="end_date"
                 size="large"
-                placeholder="To"
+                placeholder={t('To')}
                 type="date"
                 fullWidth
                 value={end_date}
@@ -105,8 +107,8 @@ export default function SoldItemSummary({ sold_items }) {
           <Table>
             <TableHeader className="text-gray-500">
               <TableRow>
-                <TableHead >Product</TableHead>
-                <TableHead className="text-right">Quantity</TableHead>
+                <TableHead >{t('Product')}</TableHead>
+                <TableHead className="text-right">{t('Quantity')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -120,7 +122,7 @@ export default function SoldItemSummary({ sold_items }) {
 
             <TableFooter>
               <TableRow>
-                <TableCell>Total quantity</TableCell>
+                <TableCell>{t('Total quantity')}</TableCell>
                 <TableCell className="text-right font-bold">{numeral(sold_items_data.reduce((total, item) => total + Number(item.total_quantity), 0)).format("(0,0.00)")}</TableCell>
               </TableRow>
             </TableFooter>

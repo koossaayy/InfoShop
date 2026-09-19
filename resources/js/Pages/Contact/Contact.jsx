@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
@@ -21,11 +22,12 @@ import Swal from 'sweetalert2';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MobileContactsList from './Partial/MobileContactsList';
+import i18next from 'i18next';
 
 const columns = (handleRowClick, handleDelete) => [
-    { field: 'id', headerName: 'ID', width: 80 },
+    { field: 'id', get headerName() { return i18next.t('ID'); }, width: 80 },
     {
-        field: 'name', headerName: 'Name', width: 200,
+        field: 'name', get headerName() { return i18next.t('Name'); }, width: 200,
         renderCell: (params) => (
             <Link underline="hover" href='#' className='hover:underline' onClick={(event) => { event.preventDefault(); handleRowClick(params.row, 'contact_edit'); }}>
                 <p className='font-bold'>{params.value}</p>
@@ -33,7 +35,7 @@ const columns = (handleRowClick, handleDelete) => [
         ),
     },
     {
-        field: 'balance', headerName: 'Balance', width: 160,
+        field: 'balance', get headerName() { return i18next.t('Balance'); }, width: 160,
         valueGetter: (value) => parseFloat(value),
         renderCell: (params) => (
             <Button
@@ -50,14 +52,14 @@ const columns = (handleRowClick, handleDelete) => [
             </Button>
         ),
     }, // Added balance
-    { field: 'phone', headerName: 'Phone', width: 120 },
+    { field: 'phone', get headerName() { return i18next.t('Phone'); }, width: 120 },
     { field: 'whatsapp', headerName: 'Whatsapp', width: 120 },
-    { field: 'email', headerName: 'Email', width: 100 },
-    { field: 'address', headerName: 'Address', width: 200 }, // Changed from collection_type to address
-    { field: 'created_at', headerName: 'Created At', width: 100 },
+    { field: 'email', get headerName() { return i18next.t('Email'); }, width: 100 },
+    { field: 'address', get headerName() { return i18next.t('Address'); }, width: 200 }, // Changed from collection_type to address
+    { field: 'created_at', get headerName() { return i18next.t('Created At'); }, width: 100 },
     {
         field: "action",
-        headerName: "Actions",
+        get headerName() { return i18next.t('Actions'); },
         width: 220,
         renderCell: (params) => {
             const basePath = params.row.type === 'vendor' ? '/purchases' : '/sales';
@@ -65,7 +67,7 @@ const columns = (handleRowClick, handleDelete) => [
             return (
                 <>
                     <Link href={"/reports/" + params.row.id + '/' + params.row.type}>
-                        <Tooltip title="REPORT">
+                        <Tooltip title={i18next.t('REPORT')}>
                             <IconButton color="primary">
                                 <PrintIcon />
                             </IconButton>
@@ -74,7 +76,7 @@ const columns = (handleRowClick, handleDelete) => [
 
                     {params.row.type === "customer" && (
                         <Link href={"/pending-sales-receipt/" + params.row.id}>
-                            <Tooltip title="PENDING RECEIPT">
+                            <Tooltip title={i18next.t('PENDING RECEIPT')}>
                                 <IconButton color="primary">
                                     <PendingActionsIcon />
                                 </IconButton>
@@ -85,7 +87,7 @@ const columns = (handleRowClick, handleDelete) => [
 
                     {/* Sales or Purchase Link */}
                     <Link href={`${basePath}?contact_id=${params.row.id}&end_date=&query=&start_date=&status=pending&store=0`}>
-                        <Tooltip title="CREDIT SALE">
+                        <Tooltip title={i18next.t('CREDIT SALE')}>
                             <IconButton color="alert">
                                 <HourglassTopIcon />
                             </IconButton>
@@ -94,14 +96,14 @@ const columns = (handleRowClick, handleDelete) => [
 
                     {/* Sales or Purchase Link */}
                     <Link href={`/payments${basePath}?contact_id=${params.row.id}&store=0`}>
-                        <Tooltip title="PAYMENTS">
+                        <Tooltip title={i18next.t('PAYMENTS')}>
                             <IconButton color="success">
                                 <PaymentsIcon />
                             </IconButton>
                         </Tooltip>
                     </Link>
 
-                    <Tooltip title="DELETE">
+                    <Tooltip title={i18next.t('DELETE')}>
                         <IconButton
                             color="error"
                             onClick={() => handleDelete(params.row.id, params.row.name)}
@@ -116,6 +118,7 @@ const columns = (handleRowClick, handleDelete) => [
 ];
 
 export default function Contact({ contacts, type, stores }) {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [selectedContact, setSelectedContact] = useState(null);
     const [paymentModalOpen, setPaymentModalOpen] = useState(false)
@@ -151,14 +154,14 @@ export default function Contact({ contacts, type, stores }) {
 
     const handleDelete = async (contactId, contactName) => {
         const result = await Swal.fire({
-            title: 'Delete Contact?',
-            text: `Are you sure you want to delete "${contactName}"?`,
+            title: t('Delete Contact?'),
+            text: t('Are you sure you want to delete "{{0}}"?', { 0: contactName }),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#dc2626',
             cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
+            confirmButtonText: t('Yes, delete it!'),
+            cancelButtonText: t('Cancel')
         });
 
         if (result.isConfirmed) {
@@ -167,22 +170,22 @@ export default function Contact({ contacts, type, stores }) {
 
                 if (response.data.status === 'success') {
                     Swal.fire(
-                        'Deleted!',
-                        'Contact has been deleted successfully.',
+                        t('Deleted!'),
+                        t('Contact has been deleted successfully.'),
                         'success'
                     );
                     refreshContacts(window.location.pathname);
                 } else {
                     Swal.fire(
-                        'Error!',
-                        response.data.message || 'Failed to delete contact.',
+                        t('Error!'),
+                        response.data.message || t('Failed to delete contact.'),
                         'error'
                     );
                 }
             } catch (error) {
-                const errorMessage = error.response?.data?.message || 'An error occurred while deleting the contact.';
+                const errorMessage = error.response?.data?.message || t('An error occurred while deleting the contact.');
                 Swal.fire(
-                    'Error!',
+                    t('Error!'),
                     errorMessage,
                     'error'
                 );
@@ -235,7 +238,7 @@ export default function Contact({ contacts, type, stores }) {
                 <Grid size={{ xs: 12, sm: 2, md: 3 }}>
                     <div className="bg-red-200 p-4 rounded text-red-950 text-sm">
                         <div className="flex items-center justify-between">
-                            <div>Balance:</div> <div className="font-bold">{numeral(totalBalance).format('0,00.00')}</div>
+                            <div>{t('Balance:')}</div> <div className="font-bold">{numeral(totalBalance).format('0,00.00')}</div>
                         </div>
                     </div>
                 </Grid>
@@ -244,7 +247,7 @@ export default function Contact({ contacts, type, stores }) {
                     <Grid size={{ xs: 12, sm: 8 }}>
                         <TextField
                             name="search_query"
-                            label="Search"
+                            label={t('Search')}
                             variant="outlined"
                             size="small"
                             value={searchTerms?.search_query}
@@ -271,7 +274,7 @@ export default function Contact({ contacts, type, stores }) {
                             size="small"
                             color="success"
                         >
-                            Add {type[0].toUpperCase() + type.slice(1)}
+                            {t('Add {{0}}', { 0: type[0].toUpperCase() + type.slice(1) })}
                         </Button>
                     </Grid>
 

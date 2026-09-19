@@ -9,8 +9,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { Button } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function ReloadFormDialog({ open, setOpen, reloadData, refreshReloads }) {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         account_number: "",
     });
@@ -32,7 +34,7 @@ export default function ReloadFormDialog({ open, setOpen, reloadData, refreshRel
             .post(`/reloads/${reloadData.id}/update`, formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: true,
@@ -43,8 +45,8 @@ export default function ReloadFormDialog({ open, setOpen, reloadData, refreshRel
             .catch((error) => {
                 console.error("Submission failed:", error.response);
                 Swal.fire({
-                    title: "Error!",
-                    text: error.response?.data?.message || "An error occurred while saving.",
+                    title: t('Error!'),
+                    text: error.response?.data?.message || t('An error occurred while saving.'),
                     icon: "error",
                     showConfirmButton: true,
                 });
@@ -70,7 +72,7 @@ export default function ReloadFormDialog({ open, setOpen, reloadData, refreshRel
                 }
             }}
         >
-            <DialogTitle>Edit Account Number</DialogTitle>
+            <DialogTitle>{t('Edit Account Number')}</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2} sx={{ mt: 2 }}>
                     <Grid size={12}>
@@ -78,7 +80,7 @@ export default function ReloadFormDialog({ open, setOpen, reloadData, refreshRel
                             fullWidth
                             id="account_number"
                             name="account_number"
-                            label="Account Number"
+                            label={t('Account Number')}
                             type="text"
                             variant="outlined"
                             required
@@ -89,8 +91,8 @@ export default function ReloadFormDialog({ open, setOpen, reloadData, refreshRel
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button type="submit">SAVE</Button>
+                <Button onClick={() => setOpen(false)}>{t('Cancel')}</Button>
+                <Button type="submit">{t('SAVE')}</Button>
             </DialogActions>
         </Dialog>
     );

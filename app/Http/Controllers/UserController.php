@@ -23,7 +23,7 @@ class UserController extends Controller
             'users'=>$users,
             'stores'=>$stores,
             'roles'=>$roles,
-            'pageLabel'=>'Users',
+            'pageLabel'=>__('Users'),
         ]);
     }
 
@@ -37,7 +37,7 @@ class UserController extends Controller
         return Inertia::render('User/UserRole',[
             'roles'=>$roles,
             'permissions'=>$permissions,
-            'pageLabel'=>'User Roles',
+            'pageLabel'=>__('User Roles'),
         ]);
     }
 
@@ -65,7 +65,7 @@ class UserController extends Controller
 
         // Redirect back to the user roles page with success message
         return redirect()->route('user.role')
-            ->with('success', 'Role and permissions assigned successfully!');
+            ->with('success', __('Role and permissions assigned successfully!'));
     }
 
     public function updateRole(Request $request, $roleId)
@@ -90,7 +90,7 @@ class UserController extends Controller
 
         // Redirect back to the user roles page with success message
         return redirect()->route('user.role')
-            ->with('success', 'Role and permissions updated successfully!');
+            ->with('success', __('Role and permissions updated successfully!'));
     }
 
     public function store(Request $request)

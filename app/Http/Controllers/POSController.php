@@ -200,7 +200,7 @@ class POSController extends Controller
             ->map(function($item) {
                 return [
                     'id' => $item->charge_id ?? $item->id ?? rand(100000, 999999),
-                    'name' => $item->description ?? 'Charge',
+                    'name' => $item->description ?? __('Charge'),
                     'charge_type' => $item->charge_type ?? 'custom',
                     'rate_value' => $item->rate_value ?? 0,
                     'rate_type' => $item->rate_type ?? 'fixed',
@@ -298,7 +298,7 @@ class POSController extends Controller
             ->map(function($item) {
                 return [
                     'id' => $item->charge_id ?? $item->id ?? rand(100000, 999999),
-                    'name' => $item->description ?? 'Charge',
+                    'name' => $item->description ?? __('Charge'),
                     'charge_type' => $item->charge_type ?? 'custom',
                     'rate_value' => $item->rate_value ?? 0,
                     'rate_type' => $item->rate_type ?? 'fixed',
@@ -598,8 +598,8 @@ class POSController extends Controller
                                 'unit_price' => -$reversalAmount,  // Negative amount for reversal
                                 'unit_cost' => 0,
                                 'sale_date' => $sale->sale_date,
-                                'description' => $originalCharge->description . ' (Reversal)',
-                                'notes' => 'Proportional reversal: ' . round($returnProportionPercentage, 2) . '% of original',
+                                'description' => __(':description (Reversal)', ['description' => $originalCharge->description]),
+                                'notes' => __('Proportional reversal: :round% of original', ['round' => round($returnProportionPercentage, 2)]),
                             ]);
                         }
                     }

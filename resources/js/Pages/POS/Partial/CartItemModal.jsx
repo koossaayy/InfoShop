@@ -11,12 +11,15 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import { usePage } from "@inertiajs/react";
 
+import { useTranslation } from 'react-i18next';
 import { useSales } from "@/Context/SalesContext";
 import { SharedContext } from "@/Context/SharedContext";
 import Commission from "../ProductTypes/Commission";
 import { useCurrencyStore } from "@/stores/currencyStore";
+import { Trans } from 'react-i18next';
 
 export default function CartItemModal() {
+    const { t } = useTranslation();
     const { return_sale, cart_first_focus, misc_settings } = usePage().props ?? {};
     const [showCost, setShowCost] = useState(false);
     const currencySymbol = useCurrencyStore((state) => state.settings.currency_symbol);
@@ -174,7 +177,7 @@ export default function CartItemModal() {
                     </div>
                 </DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -209,7 +212,7 @@ export default function CartItemModal() {
                                     fullWidth
                                     type="number"
                                     name="quantity"
-                                    label="Quantity"
+                                    label={t('Quantity')}
                                     variant="outlined"
                                     value={formState.quantity}
                                     // onChange={handleInputChange}
@@ -244,7 +247,7 @@ export default function CartItemModal() {
                                     fullWidth
                                     type="text"
                                     name="account_number"
-                                    label="Account Number"
+                                    label={t('Account Number')}
                                     variant="outlined"
                                     value={formState.account_number}
                                     onChange={handleInputChange}
@@ -271,7 +274,7 @@ export default function CartItemModal() {
                                 fullWidth
                                 type="number"
                                 name="price"
-                                label="Price"
+                                label={t('Price')}
                                 variant="outlined"
                                 required
                                 value={formState.price}
@@ -309,7 +312,7 @@ export default function CartItemModal() {
                                     fullWidth
                                     type="number"
                                     name="additional_commission"
-                                    label="Customer Commission"
+                                    label={t('Customer Commission')}
                                     variant="outlined"
                                     required
                                     value={formState.additional_commission}
@@ -343,7 +346,7 @@ export default function CartItemModal() {
                                     fullWidth
                                     type="number"
                                     name="extra_commission"
-                                    label="Extra Commission"
+                                    label={t('Extra Commission')}
                                     variant="outlined"
                                     required
                                     value={formState.extra_commission}
@@ -376,7 +379,7 @@ export default function CartItemModal() {
                                     fullWidth
                                     type="number"
                                     name="fixed_commission"
-                                    label="Fixed Commission"
+                                    label={t('Fixed Commission')}
                                     variant="outlined"
                                     required
                                     value={formState.meta_data.fixed_commission}
@@ -410,7 +413,7 @@ export default function CartItemModal() {
                                         fullWidth
                                         type="number"
                                         name="reload"
-                                        label="Reload amount"
+                                        label={t('Reload amount')}
                                         variant="outlined"
                                         required
                                         value={formState.price - formState.additional_commission}
@@ -442,7 +445,7 @@ export default function CartItemModal() {
                                 fullWidth
                                 type="number"
                                 name="commission"
-                                label="Total Commission"
+                                label={t('Total Commission')}
                                 variant="outlined"
                                 required
                                 value={formState.commission}
@@ -479,7 +482,7 @@ export default function CartItemModal() {
                                             fullWidth
                                             type="number"
                                             name="flat_discount"
-                                            label="Flat Discount"
+                                            label={t('Flat Discount')}
                                             variant="outlined"
                                             required
                                             value={formState.flat_discount ?? 0}
@@ -514,7 +517,7 @@ export default function CartItemModal() {
                                                 fullWidth
                                                 type="number"
                                                 name="discount"
-                                                label="Unit Discount"
+                                                label={t('Unit Discount')}
                                                 variant="outlined"
                                                 required
                                                 value={formState.discount}
@@ -547,7 +550,7 @@ export default function CartItemModal() {
                                                 fullWidth
                                                 type="number"
                                                 name="discount_percentage"
-                                                label="Unit Discount (%)"
+                                                label={t('Unit Discount (%)')}
                                                 variant="outlined"
                                                 required
                                                 value={formState.discount_percentage || 0}
@@ -588,7 +591,7 @@ export default function CartItemModal() {
                                 }}
                                 disabled={showCost ? false : true}
                                 name="cost"
-                                label="Cost"
+                                label={t('Cost')}
                                 variant="outlined"
                                 required
                                 onChange={handleInputChange}
@@ -616,7 +619,7 @@ export default function CartItemModal() {
                                         endAdornment: (
                                             <InputAdornment position="end">
                                                 <IconButton
-                                                    aria-label="toggle cost visibility"
+                                                    aria-label={t('toggle cost visibility')}
                                                     onClick={
                                                         handleClickShowCost
                                                     }
@@ -638,7 +641,7 @@ export default function CartItemModal() {
 
                     {(formState.price - formState.discount) < formState.cost && (
                         <Alert severity="error" sx={{ mt: 2 }}>
-                            Selling at a <b>lower price</b>. Please be cautious.
+                            <Trans i18nKey="Selling at a <0>lower price</0>. Please be cautious." components={[<b />]} />
                         </Alert>
                     )}
 
@@ -672,7 +675,7 @@ export default function CartItemModal() {
                                         handleClose();
                                     }}
                                 >
-                                    RETURN
+                                    {t('RETURN')}
                                 </Button>
                             </Grid>
                         )}
@@ -687,7 +690,7 @@ export default function CartItemModal() {
                                 type="submit"
                                 color={formState.quantity < 0 ? "error" : "primary"}
                             >
-                                {formState.quantity < 0 ? "RETURN" : "UPDATE"}
+                                {formState.quantity < 0 ? t('RETURN') : t('UPDATE')}
                             </Button>
                         </Grid>
                     </Grid>

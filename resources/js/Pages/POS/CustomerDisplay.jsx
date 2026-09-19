@@ -15,6 +15,7 @@ import Paper from "@mui/material/Paper";
 
 import { Head } from "@inertiajs/react";
 
+import { useTranslation } from 'react-i18next';
 import { SalesProvider, useSales as useCart } from "@/Context/SalesContext";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -29,6 +30,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const CartComponent = () => {
+    const { t } = useTranslation();
     // Destructure cartState and addToCart from the context
     const { cartState, cartTotal } = useCart();
 
@@ -46,19 +48,19 @@ const CartComponent = () => {
                         }}
                     >
                         <Typography variant="h4" color="initial">
-                            {item.name} | Qty.{item.quantity}
+                            {t('{{0}} | Qty.{{1}}', { 0: item.name, 1: item.quantity })}
                         </Typography>
                         <Typography variant="h4" color="initial">
-                         <b>RS.{((item.price-item.discount) * item.quantity).toFixed(2)}</b>
+                         <b>{t('RS.{{0}}', { 0: ((item.price-item.discount) * item.quantity).toFixed(2) })}</b>
                         </Typography>
                     </Item>
                 ))}
                 <Item variant="outlined" sx={{justifyContent:'space-between',  display: "flex", padding: 2,}}>
                     <Typography variant="h4" color="initial">
-                        <strong>Total</strong>
+                        <strong>{t('Total')}</strong>
                     </Typography>
                     <Typography variant="h4" color="initial">
-                    <strong>Rs.{(cartTotal).toFixed(2)}</strong>
+                    <strong>{t('Rs.{{0}}', { 0: (cartTotal).toFixed(2) })}</strong>
                     </Typography>
                 </Item>
             </Stack>
@@ -68,11 +70,14 @@ const CartComponent = () => {
     );
 };
 
-const CustomerDisplay = () => (
+const CustomerDisplay = () => {
+    const { t } = useTranslation();
+    return (
     <SalesProvider>
-        <Head title="Customer Display" />
+        <Head title={t('Customer Display')} />
         <CartComponent />
     </SalesProvider>
 );
+};
 
 export default CustomerDisplay;

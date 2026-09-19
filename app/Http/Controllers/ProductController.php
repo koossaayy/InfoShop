@@ -149,7 +149,7 @@ class ProductController extends Controller
         return Inertia::render('Product/Product', [
             'products' => $products,
             'stores' => $stores,
-            'pageLabel' => 'Products',
+            'pageLabel' => __('Products'),
             'remember' => true,
             'contacts' => $contacts,
         ]);
@@ -174,7 +174,7 @@ class ProductController extends Controller
         return Inertia::render('Product/ProductForm', [
             'collection' => $collection, // Example if you have categories
             'product_code' => $nextItemCode,
-            'pageLabel' => 'Product Details',
+            'pageLabel' => __('Product Details'),
             'contacts' => $contacts,
             'product_alert'=> $miscSettings['product_alert'] ?? 3,
             'misc_setting'=> $miscSettings,
@@ -213,7 +213,7 @@ class ProductController extends Controller
         return Inertia::render('Product/ProductForm', [
             'collection' => $collection, // Example if you have categories
             'product' => $product,
-            'pageLabel' => 'Product Details',
+            'pageLabel' => __('Product Details'),
             'misc_setting'=> $miscSettings,
         ]);
     }
@@ -308,7 +308,7 @@ class ProductController extends Controller
             $product->collections()->sync($request->collection_ids);
         }
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully!');
+        return redirect()->route('products.index')->with('success', __('Product created successfully!'));
     }
 
     public function update(Request $request, $id)
@@ -413,13 +413,13 @@ class ProductController extends Controller
             DB::commit();
 
             // Return a response, or redirect to a specific page
-            return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+            return redirect()->route('products.index')->with('success', __('Product updated successfully!'));
         } catch (\Exception $e) {
             // Rollback the transaction if something failed
             DB::rollBack();
 
             // Return an error response
-            return redirect()->back()->withErrors(['error' => 'Failed to update product: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => __('Failed to update product: :message', ['message' => $e->getMessage()])]);
         }
     }
 
@@ -558,19 +558,19 @@ class ProductController extends Controller
         $product = Product::find($product_id);
 
         $status = 'new'; // Default to 'new' batch
-        $message = 'New batch created'; // Default message
+        $message = __('New batch created'); // Default message
         $batchResponse = null;
 
         if ($batch && $product->product_type == 'simple') {
             if ($batch->cost == $cost) {
                 // Same cost and batch, set to existing
                 $status = 'existing';
-                $message = 'Batch found';
+                $message = __('Batch found');
                 $batchResponse = $batch; // Return existing batch details
             } else {
                 // Different cost but same batch number, treat as new
                 $status = 'invalid';
-                $message = 'Batch with different cost, please create a new batch';
+                $message = __('Batch with different cost, please create a new batch');
                 $batchResponse = null; // No batch, create a new one
             }
         }

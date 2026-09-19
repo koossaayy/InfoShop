@@ -80,7 +80,7 @@ class ChequeController extends Controller
         $stores = Store::all();
         $cheques = $this->getCheques($filters);
         return Inertia::render('Cheque/Cheque', [
-            'pageLabel' => 'Cheques',
+            'pageLabel' => __('Cheques'),
             'stores' => $stores,
             'cheques' => $cheques,
         ]);

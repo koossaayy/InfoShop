@@ -29,7 +29,7 @@ class InstallerService
         $currentPhpVersion = PHP_VERSION;
         $requiredPhpVersion = $requirements['php_version'];
         $results['php'] = [
-            'name' => 'PHP Version',
+            'name' => __('PHP Version'),
             'required' => '>= ' . $requiredPhpVersion,
             'current' => $currentPhpVersion,
             'status' => version_compare($currentPhpVersion, $requiredPhpVersion, '>='),
@@ -55,9 +55,9 @@ class InstallerService
             }
         }
         $results['mysql'] = [
-            'name'     => 'MySQL Version',
+            'name'     => __('MySQL Version'),
             'required' => '>= ' . $requiredMysqlVersion,
-            'current'  => $mysqlVersion ?? 'Not connected yet — verified during DB setup',
+            'current'  => $mysqlVersion ?? __('Not connected yet — verified during DB setup'),
             'status'   => $mysqlVersion
                 ? version_compare(preg_replace('/[^0-9.].*/', '', $mysqlVersion), $requiredMysqlVersion, '>=')
                 : null,
@@ -100,7 +100,7 @@ class InstallerService
             if (!version_compare($cleanVersion, $requiredVersion, '>=')) {
                 return [
                     'success' => false,
-                    'message' => "MySQL {$requiredVersion}+ required. Your version: {$mysqlVersion}",
+                    'message' => __('MySQL :requiredVersion+ required. Your version: :mysqlVersion', ['requiredVersion' => $requiredVersion, 'mysqlVersion' => $mysqlVersion]),
                 ];
             }
 
@@ -115,18 +115,18 @@ class InstallerService
             if (!$innodb) {
                 return [
                     'success' => false,
-                    'message' => 'InnoDB storage engine is not available. InnoDB is required.',
+                    'message' => __('InnoDB storage engine is not available. InnoDB is required.'),
                 ];
             }
 
             return [
                 'success' => true,
-                'message' => "Connected! MySQL {$mysqlVersion} with InnoDB.",
+                'message' => __('Connected! MySQL :mysqlVersion with InnoDB.', ['mysqlVersion' => $mysqlVersion]),
             ];
         } catch (Exception $e) {
             return [
                 'success' => false,
-                'message' => 'Connection failed: ' . $e->getMessage(),
+                'message' => __('Connection failed: :message', ['message' => $e->getMessage()]),
             ];
         }
     }
@@ -316,7 +316,7 @@ class InstallerService
 
             return [
                 'success' => true,
-                'message' => 'Installation completed successfully!',
+                'message' => __('Installation completed successfully!'),
                 'admin_email' => $admin->email,
             ];
         } catch (Exception $e) {

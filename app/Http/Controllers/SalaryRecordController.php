@@ -67,7 +67,7 @@ class SalaryRecordController extends Controller
             'salaries' => $salaries,
             'employees' => $employees,
             'stores' => $stores,
-            'pageLabel' => 'Salaries',
+            'pageLabel' => __('Salaries'),
         ]);
     }
 

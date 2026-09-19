@@ -8,12 +8,14 @@ import { IconButton, TextField,  Grid } from "@mui/material";
 import dayjs from "dayjs";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
+import { useTranslation } from 'react-i18next';
 export default function QuotationDialog({
     useCart,
     open,
     setOpen,
     selectedContact
 }) {
+    const { t } = useTranslation();
     const { cartState, cartTotal, emptyCart, totalProfit } = useCart();
     const [loading, setLoading] = useState(false);
     const [discount, setDiscount] = useState(0);
@@ -35,7 +37,7 @@ export default function QuotationDialog({
             .post('/quotations', formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -47,7 +49,7 @@ export default function QuotationDialog({
             .catch((error) => {
                 const errorMessages = JSON.stringify(error.response, Object.getOwnPropertyNames(error));
                 Swal.fire({
-                    title: "Failed!",
+                    title: t('Failed!'),
                     text: errorMessages,
                     icon: "error",
                     showConfirmButton: true,
@@ -77,9 +79,9 @@ export default function QuotationDialog({
                     }
                 }}
             >
-                <DialogTitle id="alert-dialog-title">NEW QUOTATION</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t('NEW QUOTATION')}</DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -97,7 +99,7 @@ export default function QuotationDialog({
                                 fullWidth
                                 type="number"
                                 id="discount"
-                                label="Discount"
+                                label={t('Discount')}
                                 value={discount === "" ? 0 : discount}
                                 onFocus={(event) => event.target.select()}
                                 onChange={(event) => setDiscount(event.target.value === "" ? 0 : event.target.value)}
@@ -108,7 +110,7 @@ export default function QuotationDialog({
                                 fullWidth
                                 type="number"
                                 name="total"
-                                label="Total"
+                                label={t('Total')}
                                 value={cartTotal - discount}
                                 slotProps={{
                                     readOnly: true,
@@ -122,7 +124,7 @@ export default function QuotationDialog({
                                 required
                                 id="quotation_date"
                                 name="quotation_date"
-                                label="Quotation Date"
+                                label={t('Quotation Date')}
                                 type="date"
                                 defaultValue={dayjs().format("YYYY-MM-DD")}
                             />
@@ -132,7 +134,7 @@ export default function QuotationDialog({
                                 fullWidth
                                 required
                                 name="expiry_date"
-                                label="Expiry Date"
+                                label={t('Expiry Date')}
                                 type="date"
                                 defaultValue={dayjs().add(30, 'day').format("YYYY-MM-DD")}
                             />
@@ -142,7 +144,7 @@ export default function QuotationDialog({
                                 fullWidth
                                 required
                                 name="customer_notes"
-                                label="Customer Notes"
+                                label={t('Customer Notes')}
                                 type="text"
                                 multiline
                                 rows={2}
@@ -153,7 +155,7 @@ export default function QuotationDialog({
                                 fullWidth
                                 required
                                 name="terms_conditions"
-                                label="Terms and Conditions"
+                                label={t('Terms and Conditions')}
                                 type="text"
                                 multiline
                                 rows={2}
@@ -169,7 +171,7 @@ export default function QuotationDialog({
                         type="submit"
                         disabled={loading}
                     >
-                        {loading ? 'Loading...' : 'SAVE'}
+                        {loading ? t('Loading...') : t('SAVE')}
                     </Button>
                 </DialogActions>
             </Dialog>

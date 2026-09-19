@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useState, useEffect, useRef } from "react";
 import { Head, router } from "@inertiajs/react";
@@ -61,6 +62,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function Product({ product, collection, product_code, contacts, product_alert, misc_setting }) {
+    const { t } = useTranslation();
 
     const [discountType, setDiscountType] = useState("percentage");
     const [loading, setLoading] = useState(false);
@@ -85,7 +87,7 @@ export default function Product({ product, collection, product_code, contacts, p
         sku: "",
         barcode: product_code || "",
         featured_image: productplaceholder,
-        unit: "PC",
+        unit: t('PC'),
         quantity: "",
         alert_quantity: product_alert || 0,
         is_stock_managed: 1,
@@ -126,7 +128,7 @@ export default function Product({ product, collection, product_code, contacts, p
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file && file.size > MAX_FILE_SIZE) {
-            alert('File size exceeds the 2MB limit.');
+            alert(t('File size exceeds the 2MB limit.'));
             return;
         }
         if (file) {
@@ -161,7 +163,7 @@ export default function Product({ product, collection, product_code, contacts, p
                 sku: product.sku || "",
                 barcode: product.barcode || "",
                 featured_image: product.image_url ? product.image_url : productplaceholder,
-                unit: product.unit || "PC",
+                unit: product.unit || t('PC'),
                 quantity: product.quantity || "",
                 alert_quantity: product.alert_quantity || 0,
                 is_stock_managed: product.is_stock_managed || false,
@@ -252,8 +254,8 @@ export default function Product({ product, collection, product_code, contacts, p
             forceFormData: true,
             onSuccess: (resp) => {
                 Swal.fire({
-                    title: "Success!",
-                    text: "Successfully saved",
+                    title: t('Success!'),
+                    text: t('Successfully saved'),
                     icon: "success",
                     position: "bottom-end",
                     showConfirmButton: false,
@@ -266,10 +268,10 @@ export default function Product({ product, collection, product_code, contacts, p
             onError: (errors) => {
                 const errorMessages = Object.values(errors).flat().join(" | ");
                 Swal.fire({
-                    title: "Error!",
-                    text: errorMessages || "An unexpected error occurred.",
+                    title: t('Error!'),
+                    text: errorMessages || t('An unexpected error occurred.'),
                     icon: "error",
-                    confirmButtonText: "OK",
+                    confirmButtonText: t('OK'),
                 });
                 setLoading(false);
             },
@@ -287,7 +289,7 @@ export default function Product({ product, collection, product_code, contacts, p
                     }
                 }}
             >
-                <Head title="Products" />
+                <Head title={t('Products')} />
                 <form
                     id="product-form"
                     encType="multipart/form-data"
@@ -306,14 +308,14 @@ export default function Product({ product, collection, product_code, contacts, p
                                 {/* General Information Section */}
                                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
                                     <div className="px-6 py-4 border-b border-gray-100">
-                                        <h3 className="text-lg font-bold text-gray-900">General Information</h3>
+                                        <h3 className="text-lg font-bold text-gray-900">{t('General Information')}</h3>
                                     </div>
                                     <div className="px-6 py-5">
                                         <Grid container spacing={2}>
                                             <Grid size={{ xs: 12, sm: 4 }}>
                                                 <TextField
                                                     size="small"
-                                                    label="Barcode"
+                                                    label={t('Barcode')}
                                                     id="barcode"
                                                     name="barcode"
                                                     fullWidth
@@ -330,7 +332,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                             <Grid size={{ xs: 12, sm: 8 }}>
                                                 <TextField
                                                     size="small"
-                                                    label="Product Name"
+                                                    label={t('Product Name')}
                                                     name="name"
                                                     fullWidth
                                                     required
@@ -342,21 +344,21 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 <TextField
                                                     size="small"
                                                     value={productFormData.unit}
-                                                    label="Product Unit"
+                                                    label={t('Product Unit')}
                                                     onChange={handleChange}
                                                     name="unit"
                                                     select
                                                     fullWidth
                                                 >
-                                                    <MenuItem value={"PC"}>PC</MenuItem>
-                                                    <MenuItem value={"KG"}>KG</MenuItem>
-                                                    <MenuItem value={"Meter"}>Meter</MenuItem>
+                                                    <MenuItem value={"PC"}>{t('PC')}</MenuItem>
+                                                    <MenuItem value={"KG"}>{t('KG')}</MenuItem>
+                                                    <MenuItem value={"Meter"}>{t('Meter')}</MenuItem>
                                                 </TextField>
                                             </Grid>
                                             <Grid size={{ xs: 12, sm: 4 }}>
                                                 <TextField
                                                     size="small"
-                                                    label="Product Type"
+                                                    label={t('Product Type')}
                                                     name="product_type"
                                                     select
                                                     fullWidth
@@ -364,16 +366,16 @@ export default function Product({ product, collection, product_code, contacts, p
                                                     value={productFormData.product_type}
                                                     required
                                                 >
-                                                    <MenuItem value={"simple"}>SIMPLE</MenuItem>
-                                                    <MenuItem value={"reload"}>RELOAD</MenuItem>
-                                                    <MenuItem value={"commission"}>COMMISSION</MenuItem>
-                                                    <MenuItem value={"custom"}>CUSTOM</MenuItem>
+                                                    <MenuItem value={"simple"}>{t('SIMPLE')}</MenuItem>
+                                                    <MenuItem value={"reload"}>{t('RELOAD')}</MenuItem>
+                                                    <MenuItem value={"commission"}>{t('COMMISSION')}</MenuItem>
+                                                    <MenuItem value={"custom"}>{t('CUSTOM')}</MenuItem>
                                                 </TextField>
                                             </Grid>
                                             <Grid size={{ xs: 12, sm: 4 }}>
                                                 <TextField
                                                     size="small"
-                                                    label="Alert Quantity"
+                                                    label={t('Alert Quantity')}
                                                     id="alert-quantity"
                                                     name="alert_quantity"
                                                     type="number"
@@ -405,14 +407,14 @@ export default function Product({ product, collection, product_code, contacts, p
                                 {!product && (
                                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
                                         <div className="px-6 py-4 border-b border-gray-100">
-                                            <h3 className="text-lg font-bold text-gray-900">Stock</h3>
+                                            <h3 className="text-lg font-bold text-gray-900">{t('Stock')}</h3>
                                         </div>
                                         <div className="px-6 py-5">
                                             <Grid container spacing={2}>
                                                 <Grid size={{ xs: 12, sm: 4 }}>
                                                     <TextField
                                                         size="small"
-                                                        label="Cost"
+                                                        label={t('Cost')}
                                                         name="cost"
                                                         type="number"
                                                         fullWidth
@@ -425,7 +427,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 <Grid size={{ xs: 12, sm: 4 }}>
                                                     <TextField
                                                         size="small"
-                                                        label="Price"
+                                                        label={t('Price')}
                                                         name="price"
                                                         type="number"
                                                         fullWidth
@@ -437,7 +439,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 <Grid size={{ xs: 12, sm: 4 }}>
                                                     <TextField
                                                         size="small"
-                                                        label="Quantity"
+                                                        label={t('Quantity')}
                                                         name="quantity"
                                                         type="number"
                                                         fullWidth
@@ -450,7 +452,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 <Grid size={{ xs: 12, sm: 4 }}>
                                                     <TextField
                                                         size="small"
-                                                        label="Discount %"
+                                                        label={t('Discount %')}
                                                         name="discount_percentage"
                                                         type="number"
                                                         fullWidth
@@ -461,7 +463,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 <Grid size={{ xs: 12, sm: 4 }}>
                                                     <TextField
                                                         size="small"
-                                                        label="Flat Discount"
+                                                        label={t('Flat Discount')}
                                                         name="discount"
                                                         type="number"
                                                         fullWidth
@@ -472,7 +474,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 <Grid size={{ xs: 12, sm: 4 }}>
                                                     <TextField
                                                         size="small"
-                                                        label="Batch #"
+                                                        label={t('Batch #')}
                                                         name="batch_number"
                                                         fullWidth
                                                         value={productFormData.batch_number}
@@ -486,7 +488,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                     >
                                                         <DatePicker
                                                             name="expiry_date"
-                                                            label="Expiry Date"
+                                                            label={t('Expiry Date')}
                                                             className="w-full"
                                                             format="YYYY-MM-DD"
                                                             slotProps={{
@@ -506,7 +508,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                 {product && (
                                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
                                         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                                            <h3 className="text-lg font-bold text-gray-900">Batches</h3>
+                                            <h3 className="text-lg font-bold text-gray-900">{t('Batches')}</h3>
                                             <Box onClick={() => document.querySelector('[data-batch-modal-trigger]')?.click()}>
                                                 <Button
                                                     variant="contained"
@@ -514,7 +516,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                     size="small"
                                                     startIcon={<AddIcon />}
                                                 >
-                                                    Add Batch
+                                                    {t('Add Batch')}
                                                 </Button>
                                             </Box>
                                         </div>
@@ -527,12 +529,12 @@ export default function Product({ product, collection, product_code, contacts, p
                                 {/* Product Description */}
                                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
                                     <div className="px-6 py-4 border-b border-gray-100">
-                                        <h3 className="text-lg font-bold text-gray-900">Description</h3>
+                                        <h3 className="text-lg font-bold text-gray-900">{t('Description')}</h3>
                                     </div>
                                     <div className="px-6 py-5">
                                         <TextField
                                             size="small"
-                                            label="Product Description"
+                                            label={t('Product Description')}
                                             id="product-description"
                                             name="description"
                                             fullWidth
@@ -556,7 +558,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 value={manageStock}
                                                 exclusive
                                                 onChange={handleStockChange}
-                                                aria-label="Manage stock"
+                                                aria-label={t('Manage stock')}
                                                 id="btn-manage-stock"
                                                 variant="contained"
                                                 fullWidth
@@ -576,7 +578,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                     }}
                                                     variant="contained"
                                                 >
-                                                    Manage Stock
+                                                    {t('Manage Stock')}
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
                                         </div>
@@ -601,7 +603,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                     fullWidth
                                                     sx={{ textTransform: 'none', fontWeight: 500 }}
                                                 >
-                                                    Upload
+                                                    {t('Upload')}
                                                     <VisuallyHiddenInput
                                                         type="file"
                                                         accept="image/*"
@@ -642,13 +644,13 @@ export default function Product({ product, collection, product_code, contacts, p
 
                                         {/* More Information */}
                                         <div className="px-6 py-4 border-b border-gray-100">
-                                            <h3 className="text-lg font-bold text-gray-900">More Information</h3>
+                                            <h3 className="text-lg font-bold text-gray-900">{t('More Information')}</h3>
                                         </div>
                                         <div className="px-6 py-5 space-y-4">
                                             {!product && (
                                                 <Select2
                                                     className="w-full"
-                                                    placeholder="Select a supplier..."
+                                                    placeholder={t('Select a supplier...')}
                                                     name="contact_id"
                                                     styles={{
                                                         control: (baseStyles, state) => ({
@@ -676,7 +678,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 renderInput={(params) => (
                                                     <TextField
                                                         {...params}
-                                                        label="Brand"
+                                                        label={t('Brand')}
                                                         size="small"
                                                     />
                                                 )}
@@ -688,8 +690,8 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 onCollectionChange={setSelectedCategories}
                                                 onCollectionCreated={handleCollectionCreated}
                                                 collectionType="category"
-                                                label="Categories"
-                                                placeholder="Select categories..."
+                                                label={t('Categories')}
+                                                placeholder={t('Select categories...')}
                                             />
 
                                             {/* Tags Multi-Select */}
@@ -699,8 +701,8 @@ export default function Product({ product, collection, product_code, contacts, p
                                                 onCollectionChange={setSelectedTags}
                                                 onCollectionCreated={handleCollectionCreated}
                                                 collectionType="tag"
-                                                label="Tags"
-                                                placeholder="Select tags..."
+                                                label={t('Tags')}
+                                                placeholder={t('Select tags...')}
                                             />
                                         </div>
                                     </div>
@@ -727,7 +729,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                         sx={{ mr: "1rem" }}
                                         onClick={() => window.history.back()}
                                     >
-                                        BACK
+                                        {t('BACK')}
                                     </Button>
                                 </Grid>
                                 <Grid size={{ xs: 6, sm: 2 }}>
@@ -740,7 +742,7 @@ export default function Product({ product, collection, product_code, contacts, p
                                         endIcon={<SaveIcon />}
                                         disabled={loading}
                                     >
-                                        SAVE
+                                        {t('SAVE')}
                                     </Button>
                                 </Grid>
                             </Grid>

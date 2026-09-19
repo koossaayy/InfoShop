@@ -86,7 +86,7 @@ class QuotationController extends Controller
         return Inertia::render('Quotation/Quotation', [
             'quotations' => $quotations,
             'stores' => $stores,
-            'pageLabel' => 'Quotations',
+            'pageLabel' => __('Quotations'),
         ]);
     }
 

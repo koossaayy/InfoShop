@@ -23,7 +23,7 @@ class InventoryController extends Controller
         return Inertia::render('Inventory/Inventory', [
             'inventory_items' => $inventory_items,
             'stores' => $stores,
-            'pageLabel' => 'Inventory',
+            'pageLabel' => __('Inventory'),
         ]);
     }
 
@@ -183,7 +183,7 @@ class InventoryController extends Controller
         return Inertia::render('Inventory/InventoryPurchase', [
             'stores' => $stores,
             'inventory_items' => $inventoryItems,
-            'pageLabel' => 'Inventory Purchase',
+            'pageLabel' => __('Inventory Purchase'),
         ]);
     }
 
@@ -195,7 +195,7 @@ class InventoryController extends Controller
             $inventoryTransaction = InventoryTransaction::create([
                 'store_id' => $request->store_id,
                 'transaction_type' => 'purchase',
-                'reason' => 'Purchase',
+                'reason' => __('Purchase'),
                 'total' => $request->total,
                 'transaction_date' => $request->transaction_date,
             ]);
@@ -243,7 +243,7 @@ class InventoryController extends Controller
         return Inertia::render('Inventory/InventoryLog', [
             'stores' => $stores,
             'inventory_log' => $inventory_log,
-            'pageLabel' => 'Inventory Logs',
+            'pageLabel' => __('Inventory Logs'),
         ]);
     }
 }

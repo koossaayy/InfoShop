@@ -26,7 +26,7 @@ class ChargeController extends Controller
                 'custom',
             ],
             'rateTypes' => ['percentage', 'fixed'],
-            'pageLabel' => 'Charges & Taxes',
+            'pageLabel' => __('Charges & Taxes'),
         ]);
     }
 
@@ -45,7 +45,7 @@ class ChargeController extends Controller
         $charge = Charge::create($validated);
 
         return redirect()->route('charges.index')
-            ->with('message', 'Charge created successfully!');
+            ->with('message', __('Charge created successfully!'));
     }
 
     public function update(Request $request, Charge $charge)
@@ -62,7 +62,7 @@ class ChargeController extends Controller
 
         $charge->update($validated);
 
-        return back()->with('message', 'Charge updated successfully!');
+        return back()->with('message', __('Charge updated successfully!'));
     }
 
     public function destroy(Charge $charge)
@@ -80,7 +80,7 @@ class ChargeController extends Controller
         $charge->delete();
 
         return redirect()->route('charges.index')
-            ->with('message', 'Charge deleted successfully!');
+            ->with('message', __('Charge deleted successfully!'));
     }
 
     public function getActive()

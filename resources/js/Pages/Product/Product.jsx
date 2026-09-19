@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import { DataGrid } from "@mui/x-data-grid";
@@ -35,11 +36,12 @@ import Swal from "sweetalert2";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ProductsList from "./Partials/ProductsList";
+import i18next from 'i18next';
 
 const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loadingBatchId) => [
     {
         field: "image_url",
-        headerName: "Image",
+        get headerName() { return i18next.t('Image'); },
         width: 100,
         filterable: false,
         sortable: false,
@@ -55,7 +57,7 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
                         paddingBottom: "5px",
                         paddingLeft: "0",
                     }} // Adjust the size as needed
-                    alt="Product Image" // Alt text for accessibility
+                    alt={i18next.t('Product Image')} // Alt text for accessibility
                     loading="lazy" // Lazy load the image
                 />
             ) : (
@@ -70,13 +72,13 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
                     }}
                     className="text-center"
                 >
-                    No Image
+                    {i18next.t('No Image')}
                 </span> // Render fallback if no image URL
             ),
     },
     {
         field: "name",
-        headerName: "Product Name",
+        get headerName() { return i18next.t('Product Name'); },
         width: 200,
         renderCell: (params) => (
             <Link
@@ -90,13 +92,13 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
     },
     {
         field: "contact_name",
-        headerName: "Supplier",
+        get headerName() { return i18next.t('Supplier'); },
         width: 100,
     },
-    { field: "barcode", headerName: "Barcode", width: 170 },
+    { field: "barcode", get headerName() { return i18next.t('Barcode'); }, width: 170 },
     {
         field: "batch_number",
-        headerName: "Batch",
+        get headerName() { return i18next.t('Batch'); },
         width: 120,
         renderCell: (params) => (
             <Button
@@ -115,14 +117,14 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
     },
     {
         field: "cost",
-        headerName: "Cost",
+        get headerName() { return i18next.t('Cost'); },
         width: 100,
         align: "right",
         headerAlign: "right",
     },
     {
         field: "price",
-        headerName: "Price",
+        get headerName() { return i18next.t('Price'); },
         width: 100,
         align: "right",
         headerAlign: "right",
@@ -132,7 +134,7 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
     },
     {
         field: "valuation",
-        headerName: "Valuation",
+        get headerName() { return i18next.t('Valuation'); },
         width: 100,
         align: "right",
         headerAlign: "right",
@@ -144,7 +146,7 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
     },
     {
         field: "quantity",
-        headerName: "Qty",
+        get headerName() { return i18next.t('Qty'); },
         width: 90,
         align: "right",
         headerAlign: "right",
@@ -168,18 +170,18 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
     },
     {
         field: "updated_at",
-        headerName: "Last Updated",
+        get headerName() { return i18next.t('Last Updated'); },
         width: 200,
         renderCell: (params) => {
             if (!params.value) return "N/A";
             const date = new Date(params.value);
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            return date.toLocaleDateString(globalThis.document?.documentElement?.lang || undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         },
     },
 
     {
         field: "action",
-        headerName: "Action",
+        get headerName() { return i18next.t('Action'); },
         align: "center",
         headerAlign: "center",
         width: 200,
@@ -227,7 +229,7 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
     },
     {
         field: "is_featured",
-        headerName: "Featured",
+        get headerName() { return i18next.t('Featured'); },
         headerAlign: "center",
         renderCell: (params) => {
             const isLoading = loadingBatchId === params.row.batch_id;
@@ -251,6 +253,7 @@ const productColumns = (handleProductEdit, onToggleFeatured, onToggleActive, loa
 ];
 
 export default function Product({ products, stores, contacts }) {
+    const { t } = useTranslation();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const auth = usePage().props.auth.user;
@@ -319,7 +322,7 @@ export default function Product({ products, stores, contacts }) {
         } catch (error) {
             Swal.fire({
                 icon: 'error',
-                title: error.response?.data?.message || 'Failed to toggle featured status',
+                title: error.response?.data?.message || t('Failed to toggle featured status'),
                 position: 'bottom',
                 toast: true,
                 timer: 1500,
@@ -357,7 +360,7 @@ export default function Product({ products, stores, contacts }) {
         } catch (error) {
             Swal.fire({
                 icon: 'error',
-                title: error.response?.data?.message || 'Failed to toggle active status',
+                title: error.response?.data?.message || t('Failed to toggle active status'),
                 position: 'bottom',
                 toast: true,
                 timer: 1500,
@@ -419,7 +422,7 @@ export default function Product({ products, stores, contacts }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Products" />
+            <Head title={t('Products')} />
             <Grid
                 container
                 spacing={1}
@@ -459,15 +462,15 @@ export default function Product({ products, stores, contacts }) {
                             ]}
                             filters={filters}
                             handleFilterChange={handleFilterChange}
-                            title="Advanced Filters"
-                            buttonTitle="Advanced Filters"
+                            title={t('Advanced Filters')}
+                            buttonTitle={t('Advanced Filters')}
                         />
                     </Grid>
 
                     <Grid size={{ xs: 6, sm: 2, md: 2 }}>
                         <TextField
                             value={filters.status}
-                            label="Status"
+                            label={t('Status')}
                             size="small"
                             onChange={handleFilterChange}
                             required
@@ -476,11 +479,11 @@ export default function Product({ products, stores, contacts }) {
                             select
                             margin="dense"
                         >
-                            <MenuItem value={1}>Active</MenuItem>
-                            <MenuItem value={0}>Inactive</MenuItem>
-                            <MenuItem value={"alert"}>Alert</MenuItem>
+                            <MenuItem value={1}>{t('Active')}</MenuItem>
+                            <MenuItem value={0}>{t('Inactive')}</MenuItem>
+                            <MenuItem value={"alert"}>{t('Alert')}</MenuItem>
                             <MenuItem value={"out_of_stock"}>
-                                Out of Stock
+                                {t('Out of Stock')}
                             </MenuItem>
                         </TextField>
                     </Grid>
@@ -488,10 +491,10 @@ export default function Product({ products, stores, contacts }) {
                     <Grid size={{ xs: 6, sm: 2, md: 1 }}>
                         <TextField
                             value={filters.alert_quantity}
-                            label="Alert Qty"
+                            label={t('Alert Qty')}
                             size="small"
                             onChange={handleFilterChange}
-                            placeholder="Alert Qty"
+                            placeholder={t('Alert Qty')}
                             name="alert_quantity"
                             type="number"
                             slotProps={{
@@ -505,7 +508,7 @@ export default function Product({ products, stores, contacts }) {
                     <Grid size={{ xs: 12, sm: 2, md: 2 }}>
                         <TextField
                             value={filters.sortBy}
-                            label="Sort By"
+                            label={t('Sort By')}
                             size="small"
                             onChange={handleFilterChange}
                             fullWidth
@@ -513,13 +516,13 @@ export default function Product({ products, stores, contacts }) {
                             name="sortBy"
                             margin="dense"
                         >
-                            <MenuItem value="default">Default</MenuItem>
-                            <MenuItem value="name_asc">Name (A to Z)</MenuItem>
-                            <MenuItem value="name_desc">Name (Z to A)</MenuItem>
-                            <MenuItem value="quantity_low">Quantity (Low to High)</MenuItem>
-                            <MenuItem value="quantity_high">Quantity (High to Low)</MenuItem>
-                            <MenuItem value="sleeping_most">Sleeping First</MenuItem>
-                            <MenuItem value="active_most">Active First</MenuItem>
+                            <MenuItem value="default">{t('Default')}</MenuItem>
+                            <MenuItem value="name_asc">{t('Name (A to Z)')}</MenuItem>
+                            <MenuItem value="name_desc">{t('Name (Z to A)')}</MenuItem>
+                            <MenuItem value="quantity_low">{t('Quantity (Low to High)')}</MenuItem>
+                            <MenuItem value="quantity_high">{t('Quantity (High to Low)')}</MenuItem>
+                            <MenuItem value="sleeping_most">{t('Sleeping First')}</MenuItem>
+                            <MenuItem value="active_most">{t('Active First')}</MenuItem>
                         </TextField>
                     </Grid>
 
@@ -527,12 +530,12 @@ export default function Product({ products, stores, contacts }) {
                         <TextField
                             fullWidth
                             name="search_query"
-                            label="Search"
+                            label={t('Search')}
                             size="small"
                             variant="outlined"
                             value={filters.search_query}
                             onChange={handleFilterChange}
-                            placeholder="Barcode or Name"
+                            placeholder={t('Barcode or Name')}
                             onFocus={(event) => {
                                 event.target.select();
                             }}
@@ -560,7 +563,7 @@ export default function Product({ products, stores, contacts }) {
                                 fullWidth
                                 sx={{ minWidth: { xs: '100px', sm: '100px' } }}
                             >
-                                Add Product
+                                {t('Add Product')}
                             </Button>
                         </Link>
                     </Grid>

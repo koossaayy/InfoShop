@@ -16,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import { useTranslation } from 'react-i18next';
 import { useCurrencyStore } from "../stores/currencyStore";
 
 const initialPaymentFormState = {
@@ -36,21 +37,22 @@ export default function AddPaymentDialog({
     stores = null,
     refreshTable
 }) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [paymentForm, setPaymentFormState] = useState(initialPaymentFormState);
     const currencySymbol = useCurrencyStore((state) => state.settings.currency_symbol);
 
     const getButtonText = () => {
         if (loading) {
-            return 'Loading...';
+            return t('Loading...');
         }
         if (paymentForm.payment_method === 'Cash' || paymentForm.payment_method === 'Cheque') {
-            return paymentForm.amount < 0 ? 'REFUND' : 'PAY';
+            return paymentForm.amount < 0 ? t('REFUND') : t('PAY');
         }
         if (paymentForm.payment_method === 'Account Balance') {
-            return paymentForm.amount < 0 ? 'CREDIT' : 'UPDATE BALANCE';
+            return paymentForm.amount < 0 ? t('CREDIT') : t('UPDATE BALANCE');
         }
-        return 'ADD PAYMENT'; // Default text
+        return t('ADD PAYMENT'); // Default text
     };
 
     const handleClose = () => {
@@ -91,7 +93,7 @@ export default function AddPaymentDialog({
             .post(url, formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -103,7 +105,7 @@ export default function AddPaymentDialog({
             })
             .catch((error) => {
                 Swal.fire({
-                    title: "Failed!",
+                    title: t('Failed!'),
                     text: error.response.data.error,
                     icon: "error",
                     showConfirmButton: true,
@@ -129,9 +131,9 @@ export default function AddPaymentDialog({
                     }
                 }}
             >
-                <DialogTitle id="alert-dialog-title">ADD PAYMENTS</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t('ADD PAYMENTS')}</DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -149,7 +151,7 @@ export default function AddPaymentDialog({
                                 fullWidth
                                 type="number"
                                 name="amount"
-                                label="Amount"
+                                label={t('Amount')}
                                 variant="outlined"
                                 autoFocus
                                 sx={{ input: { fontWeight: 'bold' } }}
@@ -178,26 +180,26 @@ export default function AddPaymentDialog({
                                     name="payment_method"
                                     value={paymentForm.payment_method}
                                     onChange={handleFieldChange}
-                                    label="Payment Method"
+                                    label={t('Payment Method')}
                                     select
                                     fullWidth
                                 >
-                                    <MenuItem value={'Cash'}>Cash</MenuItem>
-                                    <MenuItem value={'Cheque'}>Cheque</MenuItem>
-                                    <MenuItem value={'Card'}>Card</MenuItem>
-                                    <MenuItem value={'Bank'}>Bank</MenuItem>
+                                    <MenuItem value={'Cash'}>{t('Cash')}</MenuItem>
+                                    <MenuItem value={'Cheque'}>{t('Cheque')}</MenuItem>
+                                    <MenuItem value={'Card'}>{t('Card')}</MenuItem>
+                                    <MenuItem value={'Bank'}>{t('Bank')}</MenuItem>
                                     {selectedTransaction === null && (
-                                        <MenuItem value={'Account Balance'}>Account Balance</MenuItem>
+                                        <MenuItem value={'Account Balance'}>{t('Account Balance')}</MenuItem>
                                     )}
                                     {selectedTransaction !== null && (
-                                        <MenuItem value={'Account'}>Account</MenuItem>
+                                        <MenuItem value={'Account'}>{t('Account')}</MenuItem>
                                     )}
                                 </TextField>
                         </Grid>
 
                         <Grid size={{ xs: 12, sm: 4 }}>
                             <TextField
-                                label="Date"
+                                label={t('Date')}
                                 name="transaction_date"
                                 fullWidth
                                 type="date"
@@ -216,7 +218,7 @@ export default function AddPaymentDialog({
                             <Grid size={{ xs: 12, sm: 12 }}>
                                     <TextField
                                         value={paymentForm.store_id}
-                                        label="Store"
+                                        label={t('Store')}
                                         onChange={handleFieldChange}
                                         required
                                         name="store_id"
@@ -270,7 +272,7 @@ export default function AddPaymentDialog({
                             value={'credit'}
                             disabled={paymentForm.amount == 0 || (amountLimit !== undefined && paymentForm.amount > amountLimit) || loading}
                         >
-                            {loading ? 'Loading...' : (paymentForm.payment_method === 'Cash' || paymentForm.payment_method === 'Cheque' ? 'REFUND' : 'CREDIT')}
+                            {loading ? t('Loading...') : (paymentForm.payment_method === 'Cash' || paymentForm.payment_method === 'Cheque' ? t('REFUND') : t('CREDIT'))}
                         </Button>
                     )}
                 </DialogActions>

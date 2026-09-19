@@ -5,19 +5,19 @@
 
 @section('content')
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">Server Requirements</h2>
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ __('Server Requirements') }}</h2>
     
     <!-- PHP Version -->
     <div class="mb-8">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">PHP Version</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('PHP Version') }}</h3>
         <div class="bg-gray-50 rounded-lg p-4">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="font-medium text-gray-900">{{ $requirements['php']['name'] }}</p>
-                    <p class="text-sm text-gray-600">Required: {{ $requirements['php']['required'] }}</p>
+                    <p class="text-sm text-gray-600">{{ __('Required: :param_1', ['param_1' => $requirements['php']['required']]) }}</p>
                 </div>
                 <div class="flex items-center">
-                    <span class="mr-3 text-gray-600">Current: {{ $requirements['php']['current'] }}</span>
+                    <span class="mr-3 text-gray-600">{{ __('Current: :param_1', ['param_1' => $requirements['php']['current']]) }}</span>
                     @if($requirements['php']['status'])
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -36,7 +36,7 @@
     @php $mysql = $requirements['mysql'] ?? null; @endphp
     @if($mysql)
     <div class="mb-8">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">MySQL Version</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('MySQL Version') }}</h3>
         <div class="bg-gray-50 rounded-lg p-4">
             <div class="flex items-center justify-between">
                 <div>
@@ -66,7 +66,7 @@
 
     <!-- PHP Extensions -->
     <div class="mb-8">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">PHP Extensions</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('PHP Extensions') }}</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             @foreach($requirements['extensions'] as $extension => $data)
                 <div class="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
@@ -87,7 +87,7 @@
 
     <!-- Folder Permissions -->
     <div class="mb-8">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Folder Permissions</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Folder Permissions') }}</h3>
         <div class="space-y-3">
             @foreach($requirements['permissions'] as $folder => $data)
                 <div class="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
@@ -126,9 +126,9 @@
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-red-800">Requirements Not Met</h3>
+                    <h3 class="text-sm font-medium text-red-800">{{ __('Requirements Not Met') }}</h3>
                     <p class="mt-1 text-sm text-red-700">
-                        Please ensure all requirements are met before proceeding with the installation.
+                        {{ __('Please ensure all requirements are met before proceeding with the installation.') }}
                     </p>
                 </div>
             </div>
@@ -140,7 +140,7 @@
             <svg class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
             </svg>
-            Back
+            {{ __('Back') }}
         </a>
         
         @if($allRequirementsMet)

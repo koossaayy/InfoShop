@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import { Typography, Toolbar, Box, AppBar, Tab, Tabs } from "@mui/material";
 
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 export default function POSBottomBar({ setProducts, drawerWidth, categories, setTemplates, onViewModeChange, tabValue, onTabChange }) {
+    const { t } = useTranslation();
 
     const handleTabChange = async (event, newValue) => {
         onTabChange(newValue);
@@ -36,8 +38,8 @@ export default function POSBottomBar({ setProducts, drawerWidth, categories, set
                 textColor="inherit"
                 slotProps={{ indicator: { style: { backgroundColor: 'white' } } }}
             >
-                <Tab label="Featured" value={0} />
-                <Tab label="Group Items" value={'template'} />
+                <Tab label={t('Featured')} value={0} />
+                <Tab label={t('Group Items')} value={'template'} />
                 {categories.map((category) => (
                     <Tab key={category.id} label={category.name} value={category.id} />
                 ))}

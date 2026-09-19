@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -20,23 +21,24 @@ import numeral from "numeral";
 
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import CustomPagination from "@/Components/CustomPagination";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id', get headerName() { return i18next.t('ID'); }, width: 90 },
     {
-        field: 'transaction_date', headerName: 'Date', width: 150,
+        field: 'transaction_date', get headerName() { return i18next.t('Date'); }, width: 150,
         renderCell: (params) => dayjs(params.value).format('DD MMM YYYY')
     },
     {
-        field: 'name', headerName: 'Name', width: 150,
+        field: 'name', get headerName() { return i18next.t('Name'); }, width: 150,
         renderCell: (params) => <span className="hover:underline cursor-pointer font-bold" onClick={() => handleRowClick(params.row, 'edit_inventory_item')}>{params.value}</span>
     },
     {
-        field: "reason", headerName:'Description', width: 300
+        field: "reason", get headerName() { return i18next.t('Description'); }, width: 300
     },
     {
         field: 'quantity',
-        headerName: 'Quantity',
+        get headerName() { return i18next.t('Quantity'); },
         width: 150,
         renderCell: (params) => (
             <span className="hover:underline cursor-pointer font-bold" onClick={() => handleRowClick(params.row, 'inventory_transaction')}>
@@ -63,6 +65,7 @@ const columns = (handleRowClick) => [
 ];
 
 const InventoryLog = ({ inventory_log, stores }) => {
+    const { t } = useTranslation();
     const [dataInventoryLog, setDataInventoryLog] = useState(inventory_log);
     const [selectedInventoryItem, setSelectedInventoryItem] = useState({});
     const [searchTerms, setSearchTerms] = useState({});
@@ -94,28 +97,28 @@ const InventoryLog = ({ inventory_log, stores }) => {
 
     const deleteInventoryItem = (inventory_item_id) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: t('Are you sure?'),
+            text: t('You won\'t be able to revert this!'),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: t('Yes, delete it!')
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.post(`/inventory-items/${inventory_item_id}`, {
                     _method: 'DELETE'
                 }).then((response) => {
                     Swal.fire(
-                        'Deleted!',
-                        'Inventory item has been deleted.',
+                        t('Deleted!'),
+                        t('Inventory item has been deleted.'),
                         'success'
                     );
                     refreshInventoryItems(window.location.href);
                 }).catch((error) => {
                     Swal.fire(
-                        'Error!',
-                        'Something went wrong.',
+                        t('Error!'),
+                        t('Something went wrong.'),
                         'error'
                     );
                 });
@@ -125,7 +128,7 @@ const InventoryLog = ({ inventory_log, stores }) => {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Inventory" />
+            <Head title={t('Inventory')} />
             <Grid
                 container
                 spacing={2}
@@ -135,9 +138,9 @@ const InventoryLog = ({ inventory_log, stores }) => {
 
                 <Grid size={{ xs: 12, sm: 3 }}>
                     <TextField
-                        label="Search..."
+                        label={t('Search...')}
                         name="search_query"
-                        placeholder="Start typing..."
+                        placeholder={t('Start typing...')}
                         fullWidth
                     />
                 </Grid>

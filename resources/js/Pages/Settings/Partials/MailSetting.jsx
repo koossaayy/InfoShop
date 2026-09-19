@@ -1,8 +1,10 @@
 import React from 'react';
 import { Box, Button,  Grid, Paper, TextField, Typography } from '@mui/material';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const MailSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFormData, settings }) => {
+    const { t } = useTranslation();
 
     useEffect(() => {
         try {
@@ -156,7 +158,7 @@ const MailSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFo
                                     });
                             }}
                         >
-                            Test Mail
+                            {t('Test Mail')}
                         </Button>
 
                         <Button
@@ -166,7 +168,7 @@ const MailSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFo
                             color="success"
                             fullWidth
                         >
-                            UPDATE
+                            {t('UPDATE')}
                         </Button>
                     </Grid>
                         </Paper>

@@ -10,10 +10,12 @@ import { usePage } from "@inertiajs/react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+import { useTranslation } from 'react-i18next';
 import { useSales } from "@/Context/SalesContext";
 import { name } from "dayjs/locale/en-gb";
 
 export default function SaleTemplateDialog({open, setOpen}) {
+    const { t } = useTranslation();
 
     const { cartState, emptyCart } = useSales();
     const [formState, setFormState] = useState([]);
@@ -42,7 +44,7 @@ export default function SaleTemplateDialog({open, setOpen}) {
         })
             .then((response) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: response.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -75,10 +77,10 @@ export default function SaleTemplateDialog({open, setOpen}) {
                 aria-describedby="dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    SAVE YOUR GROUP TEMPLATE
+                    {t('SAVE YOUR GROUP TEMPLATE')}
                 </DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -95,7 +97,7 @@ export default function SaleTemplateDialog({open, setOpen}) {
                             <TextField
                                 fullWidth
                                 name="name"
-                                label="Name"
+                                label={t('Name')}
                                 variant="outlined"
                                 value={formState.name}
                                 onChange={handleInputChange}
@@ -117,7 +119,7 @@ export default function SaleTemplateDialog({open, setOpen}) {
                             <TextField
                                 fullWidth
                                 name="note"
-                                label="Note"
+                                label={t('Note')}
                                 variant="outlined"
                                 value={formState.note}
                                 onChange={handleInputChange}
@@ -146,7 +148,7 @@ export default function SaleTemplateDialog({open, setOpen}) {
                                 type="submit"
                                 color={'primary'}
                             >
-                                SAVE
+                                {t('SAVE')}
                             </Button>
                         </Grid>
                     </Grid>

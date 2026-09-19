@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { Button } from "@/Components/ui/button";
 import { Label } from "@/Components/ui/label";
 import {
@@ -17,6 +18,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 const CustomPagination = ({ refreshTable, setSearchTerms, searchTerms, data }) => {
+    const { t } = useTranslation();
     const rowsPerPageOptions = [50, 100, 200, 500, 1000];
     const rowsPerPage = searchTerms?.per_page || 50;
 
@@ -24,7 +26,7 @@ const CustomPagination = ({ refreshTable, setSearchTerms, searchTerms, data }) =
         <>
             <div className="flex items-center justify-end gap-2">
                 <div className="flex items-center gap-2">
-                    <Label className="whitespace-nowrap">Per page:</Label>
+                    <Label className="whitespace-nowrap">{t('Per page:')}</Label>
                     <Select
                         name="per_page"
                         value={rowsPerPage.toString()}
@@ -49,13 +51,13 @@ const CustomPagination = ({ refreshTable, setSearchTerms, searchTerms, data }) =
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground whitespace-nowrap">
-                        {data.from || 0}-{data.to || 0} of {data.total || 0}
+                        {t('{{0}}-{{1}} of {{2}}', { 0: data.from || 0, 1: data.to || 0, 2: data.total || 0 })}
                     </span>
                     <Pagination>
                         <PaginationContent>
                             <PaginationItem>
                                 <Button
-                                    aria-label="Go to previous page"
+                                    aria-label={t('Go to previous page')}
                                     size="icon"
                                     variant="ghost"
                                     className="cursor-pointer"
@@ -67,7 +69,7 @@ const CustomPagination = ({ refreshTable, setSearchTerms, searchTerms, data }) =
                             </PaginationItem>
                             <PaginationItem>
                                 <Button
-                                    aria-label="Go to next page"
+                                    aria-label={t('Go to next page')}
                                     size="icon"
                                     className="cursor-pointer"
                                     variant="ghost"

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, usePage } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -16,6 +17,7 @@ import DailyCashDialog from "./Partial/DailyCashDialog";
 import ViewDetailsDialog from "@/Components/ViewDetailsDialog";
 
 export default function DailyReport({ logs, stores, users }) {
+    const { t } = useTranslation();
     const auth = usePage().props.auth.user
     const [dataLogs, setDataLogs] = useState(logs);
     const [modalOpen, setModalOpen] = useState(false);
@@ -64,7 +66,7 @@ export default function DailyReport({ logs, stores, users }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Daily Report" />
+            <Head title={t('Daily Report')} />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Grid
                     container
@@ -74,7 +76,7 @@ export default function DailyReport({ logs, stores, users }) {
                 >
                     <Grid size={{ xs: 12, sm: 4, md: 2 }}>
                         <DatePicker
-                            label="Date"
+                            label={t('Date')}
                             value={dayjs(formState.transaction_date)}
                             onChange={(date) => {
                                 const newDate = date.format("YYYY-MM-DD");
@@ -100,14 +102,14 @@ export default function DailyReport({ logs, stores, users }) {
                             fullWidth
                             select
                             value={formState.store_id}
-                            label="Store"
+                            label={t('Store')}
                             size="small"
                             onChange={handleFieldChange}
                             required
                             name="store_id"
                         >
                             {auth.user_role === 'admin' || auth.user_role === 'super-admin' ? (
-                                <MenuItem value="All">All</MenuItem>
+                                <MenuItem value="All">{t('All')}</MenuItem>
                             ) : null}
                             {stores?.map((store) => (
                                 <MenuItem
@@ -125,11 +127,11 @@ export default function DailyReport({ logs, stores, users }) {
                             fullWidth
                             name="user_id"
                             size="small"
-                            label="User/Cashier"
+                            label={t('User/Cashier')}
                             onChange={handleFieldChange}
                             select
                         >
-                            <MenuItem value="All">All</MenuItem>
+                            <MenuItem value="All">{t('All')}</MenuItem>
                             {users.map((user) => (
                                 <MenuItem key={user.id} value={user.id}>
                                     {user.name}
@@ -148,7 +150,7 @@ export default function DailyReport({ logs, stores, users }) {
                             fullWidth
                             color="success"
                         >
-                            MANUAL
+                            {t('MANUAL')}
                         </Button>
                     </Grid>
 
@@ -162,10 +164,10 @@ export default function DailyReport({ logs, stores, users }) {
                         {/* Table Header */}
                         <div className="grid grid-cols-12 bg-black text-white text-sm font-semibold sticky top-0">
                             <div className="col-span-1 px-4 py-3 text-center">#</div>
-                            <div className="col-span-2 px-4 py-3 text-left">DATE</div>
-                            <div className="col-span-5 px-4 py-3 text-left">DESCRIPTION</div>
-                            <div className="col-span-2 px-4 py-3 text-right">CASH IN</div>
-                            <div className="col-span-2 px-4 py-3 text-right">CASH OUT</div>
+                            <div className="col-span-2 px-4 py-3 text-left">{t('DATE')}</div>
+                            <div className="col-span-5 px-4 py-3 text-left">{t('DESCRIPTION')}</div>
+                            <div className="col-span-2 px-4 py-3 text-right">{t('CASH IN')}</div>
+                            <div className="col-span-2 px-4 py-3 text-right">{t('CASH OUT')}</div>
                         </div>
 
                         {/* Table Body */}
@@ -203,7 +205,7 @@ export default function DailyReport({ logs, stores, users }) {
 
                         {/* Total Row */}
                         <div className="grid grid-cols-12 bg-gray-100 border-t-2 border-gray-300 font-semibold text-sm">
-                            <div className="col-span-8 px-4 py-3 text-right">Total:</div>
+                            <div className="col-span-8 px-4 py-3 text-right">{t('Total:')}</div>
                             <div className="col-span-2 px-4 py-3 text-right font-mono">
                                 {numeral(totalCashIn).format('0,0.00')}
                             </div>
@@ -214,7 +216,7 @@ export default function DailyReport({ logs, stores, users }) {
 
                         {/* Balance Row */}
                         <div className="grid grid-cols-12 bg-white border-t border-gray-300 font-bold text-base">
-                            <div className="col-span-10 px-4 py-4 text-right">Balance:</div>
+                            <div className="col-span-10 px-4 py-4 text-right">{t('Balance:')}</div>
                             <div className="col-span-2 px-4 py-4 text-right font-mono text-lg">
                                 {numeral(dataLogs.reduce((total, row) => total + parseFloat(row.amount), 0)).format('0,0.00')}
                             </div>
@@ -266,16 +268,16 @@ export default function DailyReport({ logs, stores, users }) {
                         <div className="mt-4 space-y-2">
                             {/* Total Card */}
                             <div className="bg-slate-50 rounded-xl p-3 border border-gray-200">
-                                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Summary</p>
+                                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">{t('Summary')}</p>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <p className="text-xs text-gray-500 font-medium mb-0.5">Total In</p>
+                                        <p className="text-xs text-gray-500 font-medium mb-0.5">{t('Total In')}</p>
                                         <p className="text-base font-bold text-green-600 font-mono">
                                             +{numeral(totalCashIn).format('0,0.00')}
                                         </p>
                                     </div>
                                     <div>
-                                        <p className="text-xs text-gray-500 font-medium mb-0.5">Total Out</p>
+                                        <p className="text-xs text-gray-500 font-medium mb-0.5">{t('Total Out')}</p>
                                         <p className="text-base font-bold text-red-600 font-mono">
                                             -{numeral(totalCashOut).format('0,0.00')}
                                         </p>
@@ -285,7 +287,7 @@ export default function DailyReport({ logs, stores, users }) {
 
                             {/* Balance Card - Highlighted */}
                             <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
-                                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Final Balance</p>
+                                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{t('Final Balance')}</p>
                                 <p className="text-2xl font-bold text-white font-mono">
                                     {numeral(dataLogs.reduce((total, row) => total + parseFloat(row.amount), 0)).format('0,0.00')}
                                 </p>

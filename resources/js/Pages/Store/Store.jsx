@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -19,6 +20,7 @@ import FormDialog from "./Partial/FormDialog";
 import { Container } from "postcss";
 
 export default function Store({ stores, current_store_id, message }) {
+    const { t } = useTranslation();
     const auth = usePage().props.auth.user;
     const [open, setOpen] = useState(false);
     const [selectedStore, setSelectedStore] = useState(null);
@@ -39,10 +41,10 @@ export default function Store({ stores, current_store_id, message }) {
     };
 
     const columns = (handleEdit) => [
-        { field: "id", headerName: "ID", width: 50 },
+        { field: "id", headerName: t('ID'), width: 50 },
         {
             field: "name",
-            headerName: "Store Name",
+            headerName: t('Store Name'),
             width: 250,
             renderCell: (params) => (
                 <Button
@@ -54,12 +56,12 @@ export default function Store({ stores, current_store_id, message }) {
                 </Button>
             ),
         },
-        { field: "address", headerName: "Address", width: 300 },
-        { field: "contact_number", headerName: "Contact Number", width: 180 },
-        { field: "created_at", headerName: "Created At", width: 120 },
+        { field: "address", headerName: t('Address'), width: 300 },
+        { field: "contact_number", headerName: t('Contact Number'), width: 180 },
+        { field: "created_at", headerName: t('Created At'), width: 120 },
         {
             field: "current_store",
-            headerName: "Current store",
+            headerName: t('Current store'),
             width: 130,
             renderCell: (params) => (
                 <Button
@@ -80,7 +82,7 @@ export default function Store({ stores, current_store_id, message }) {
                     }
                     sx={{ fontWeight: "bold" }}
                 >
-                    {params.row.id === current_store_id ? "Selected" : "Select"}{" "}
+                    {params.row.id === current_store_id ? t('Selected') : t('Select')}{" "}
                     {/* Change text based on condition */}
                 </Button>
             ),
@@ -102,16 +104,16 @@ export default function Store({ stores, current_store_id, message }) {
     useEffect(() => {
         if (current_store_id == null) {
             Swal.fire({
-                title: "Please select a store",
+                title: t('Please select a store'),
                 icon: "info", // You can change this to 'success', 'error', etc.
-                confirmButtonText: "Okay",
+                confirmButtonText: t('Okay'),
             });
         }
     }, []);
 
     return (
         <AuthenticatedLayout>
-            <Head title="Store" />
+            <Head title={t('Store')} />
             <Grid
                 container
                 spacing={2}
@@ -123,7 +125,7 @@ export default function Store({ stores, current_store_id, message }) {
                         startIcon={<AddIcon />}
                         onClick={handleClickOpen}
                     >
-                        Add Store
+                        {t('Add Store')}
                     </Button>
                 </Grid>
             </Grid>
@@ -156,13 +158,12 @@ export default function Store({ stores, current_store_id, message }) {
                                 {store.address}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
-                                Contact: {store.contact_number}
+                                {t('Contact: {{0}}', { 0: store.contact_number })}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
-                                Created At:{" "}
-                                {new Date(
+                                {t('Created At: {{0}}', { 0: new Date(
                                     store.created_at
-                                ).toLocaleDateString()}
+                                ).toLocaleDateString() })}
                             </Typography>
                         </CardContent>
 
@@ -187,8 +188,8 @@ export default function Store({ stores, current_store_id, message }) {
                                 fullWidth
                             >
                                 {store.id === current_store_id
-                                    ? "Selected"
-                                    : "Select"}
+                                    ? t('Selected')
+                                    : t('Select')}
                             </Button>
                         </CardActions>
                     </Card>

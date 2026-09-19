@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import { DataGrid } from "@mui/x-data-grid";
@@ -28,6 +29,7 @@ export default function ChargesIndex({
     rateTypes,
     pageLabel,
 }) {
+    const { t } = useTranslation();
     const [dataCharges, setDataCharges] = useState(charges);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [selectedChargeId, setSelectedChargeId] = useState(null);
@@ -40,7 +42,7 @@ export default function ChargesIndex({
     const chargeColumns = [
         {
             field: "name",
-            headerName: "Name",
+            headerName: t('Name'),
             width: 200,
             renderCell: (params) => (
                 <button
@@ -53,7 +55,7 @@ export default function ChargesIndex({
         },
         {
             field: "charge_type",
-            headerName: "Type",
+            headerName: t('Type'),
             width: 150,
             renderCell: (params) => (
                 <Chip
@@ -65,17 +67,17 @@ export default function ChargesIndex({
         },
         {
             field: "rate_value",
-            headerName: "Rate Value",
+            headerName: t('Rate Value'),
             width: 120,
             renderCell: (params) => `${params.value}`,
         },
         {
             field: "rate_type",
-            headerName: "Rate Type",
+            headerName: t('Rate Type'),
             width: 120,
             renderCell: (params) => (
                 <Chip
-                    label={params.value === "percentage" ? "%" : "Fixed"}
+                    label={params.value === "percentage" ? t('%') : t('Fixed')}
                     size="small"
                     variant={params.value === "percentage" ? "filled" : "outlined"}
                 />
@@ -83,11 +85,11 @@ export default function ChargesIndex({
         },
         {
             field: "is_active",
-            headerName: "Status",
+            headerName: t('Status'),
             width: 100,
             renderCell: (params) => (
                 <Chip
-                    label={params.value ? "Active" : "Inactive"}
+                    label={params.value ? t('Active') : t('Inactive')}
                     color={params.value ? "success" : "error"}
                     size="small"
                 />
@@ -99,7 +101,7 @@ export default function ChargesIndex({
             width: 100,
             renderCell: (params) => (
                 <Chip
-                    label={params.value ? "Default" : "Manual"}
+                    label={params.value ? t('Default') : t('Manual')}
                     color={params.value ? "primary" : "default"}
                     size="small"
                     variant={params.value ? "filled" : "outlined"}
@@ -108,13 +110,13 @@ export default function ChargesIndex({
         },
         {
             field: "description",
-            headerName: "Description",
+            headerName: t('Description'),
             width: 250,
             renderCell: (params) => params.value || "-",
         },
         {
             field: "actions",
-            headerName: "Actions",
+            headerName: t('Actions'),
             width: 120,
             sortable: false,
             renderCell: (params) => (
@@ -122,14 +124,14 @@ export default function ChargesIndex({
                     <IconButton
                         size="small"
                         onClick={() => handleEditClick(params.row)}
-                        title="Edit"
+                        title={t('Edit')}
                     >
                         <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton
                         size="small"
                         onClick={() => handleDeleteClick(params.row.id)}
-                        title="Delete"
+                        title={t('Delete')}
                         color="error"
                     >
                         <DeleteIcon fontSize="small" />
@@ -158,8 +160,8 @@ export default function ChargesIndex({
         router.delete(`/charges/${selectedChargeId}`, {
             onSuccess: () => {
                 Swal.fire({
-                    title: "Deleted!",
-                    text: "Charge has been deleted successfully.",
+                    title: t('Deleted!'),
+                    text: t('Charge has been deleted successfully.'),
                     icon: "success",
                     showConfirmButton: false,
                     timer: 2000,
@@ -169,9 +171,9 @@ export default function ChargesIndex({
             },
             onError: (errors) => {
                 const errorMessage =
-                    errors.message || "Failed to delete charge.";
+                    errors.message || t('Failed to delete charge.');
                 Swal.fire({
-                    title: "Cannot Delete!",
+                    title: t('Cannot Delete!'),
                     text: errorMessage,
                     icon: "warning",
                 });
@@ -201,7 +203,7 @@ export default function ChargesIndex({
 
     return (
         <AuthenticatedLayout>
-            <Head title="Charges & Taxes" />
+            <Head title={t('Charges & Taxes')} />
 
             <Grid
                 container
@@ -216,7 +218,7 @@ export default function ChargesIndex({
                         startIcon={<AddIcon />}
                         onClick={handleCreateClick}
                     >
-                        Add Charge
+                        {t('Add Charge')}
                     </Button>
                 </Grid>
             </Grid>
@@ -272,23 +274,22 @@ export default function ChargesIndex({
 
             {/* Delete Confirmation Dialog */}
             <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
-                <DialogTitle>Delete Charge?</DialogTitle>
+                <DialogTitle>{t('Delete Charge?')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Are you sure you want to delete this charge? This action cannot
-                        be undone.
+                        {t('Are you sure you want to delete this charge? This action cannot be undone.')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDeleteCancel} color="primary">
-                        Cancel
+                        {t('Cancel')}
                     </Button>
                     <Button
                         onClick={handleDeleteConfirm}
                         color="error"
                         variant="contained"
                     >
-                        Delete
+                        {t('Delete')}
                     </Button>
                 </DialogActions>
             </Dialog>

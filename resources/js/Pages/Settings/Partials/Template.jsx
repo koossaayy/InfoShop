@@ -3,15 +3,17 @@ import { Box, Button,  Grid, Paper, TextField, MenuItem } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 import TinyMCEEditor from '@/Components/TinyMCEEditor';
 
 const Template = () => {
+    const { t } = useTranslation();
     const [templateContent, setTemplateContent] = useState('');
     const [selectedTemplate, setSelectedTemplate] = useState("");
 
     const handleSubmit = () => {
         if (!selectedTemplate) {
-            Swal.fire("Warning", "Template name is not selected", "warning");
+            Swal.fire(t('Warning'), t('Template name is not selected'), "warning");
             return;
         }
 
@@ -19,8 +21,8 @@ const Template = () => {
             .then(response => {
                 Swal.fire({
                     position: 'bottom-end',
-                    title: "Success",
-                    text: "Template updated successfully!",
+                    title: t('Success'),
+                    text: t('Template updated successfully!'),
                     icon: "success",
                     showConfirmButton: false,
                     timer: 2500,
@@ -29,7 +31,7 @@ const Template = () => {
                 });
             })
             .catch(error => {
-                Swal.fire("Error", error.message, "error");
+                Swal.fire(t('Error'), error.message, "error");
             });
     }
 
@@ -67,13 +69,13 @@ const Template = () => {
                                     id="template"
                                     name="template"
                                     select
-                                    label="Template"
+                                    label={t('Template')}
                                     value={selectedTemplate}
                                     onChange={(event) => handleTemplateChange(event.target.value)}
                                     fullWidth
                                 >
-                                    <MenuItem value="invoice-template">Invoice Template</MenuItem>
-                                    <MenuItem value="quotation-template">Quotation Template</MenuItem>
+                                    <MenuItem value="invoice-template">{t('Invoice Template')}</MenuItem>
+                                    <MenuItem value="quotation-template">{t('Quotation Template')}</MenuItem>
                                     {/* <MenuItem value="receipt-template">Receipt Template</MenuItem>
                                     <MenuItem value="barcode-template">Barcode Template</MenuItem> */}
                                 </TextField>
@@ -93,7 +95,7 @@ const Template = () => {
                         onClick={handleSubmit}
                         fullWidth
                     >
-                        UPDATE
+                        {t('UPDATE')}
                     </Button>
                 </Grid>
                     <TinyMCEEditor content={templateContent} setContent={setTemplateContent} selectedTemplate={selectedTemplate}/>

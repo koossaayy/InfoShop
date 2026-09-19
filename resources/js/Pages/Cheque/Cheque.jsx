@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -17,20 +18,21 @@ import numeral from "numeral";
 import { DataGrid } from "@mui/x-data-grid";
 import CustomPagination from "@/Components/CustomPagination";
 import ChequeFormDialog from "./ChequeFormDialog";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
     {
-        field: "id", headerName: "ID", width: 80,
+        field: "id", get headerName() { return i18next.t('ID'); }, width: 80,
         renderCell: (params) => {
             return params.value.toString().padStart(4, "0"); // Formats ID as 4-digit padded number
         },
     },
     {
-        field: "cheque_date", headerName: "Cheque Date", width: 120,
+        field: "cheque_date", get headerName() { return i18next.t('Cheque Date'); }, width: 120,
         renderCell: (params) => dayjs(params.value).format("YYYY-MM-DD"), // Formats the date
     },
     {
-        field: "cheque_number", headerName: "Cheque Number", width: 200,
+        field: "cheque_number", get headerName() { return i18next.t('Cheque Number'); }, width: 200,
         renderCell: (params) => (
             <Link underline="hover" href="#" className="hover:underline" onClick={(event) => {
                 event.preventDefault();
@@ -44,14 +46,14 @@ const columns = (handleRowClick) => [
         field: "name", headerName: "Payee/Drawer", width: 150 // Updated to reflect the "name" column (payee or drawer)
     },
     {
-        field: "amount", headerName: "Amount", width: 150, align: "right", headerAlign: "right",
+        field: "amount", get headerName() { return i18next.t('Amount'); }, width: 150, align: "right", headerAlign: "right",
         renderCell: (params) => numeral(params.value).format('0,0.00'), // Formats amount with commas and 2 decimal places
     },
     {
-        field: "bank", headerName: "Bank", width: 200 // Added a column for the bank name
+        field: "bank", get headerName() { return i18next.t('Bank'); }, width: 200 // Added a column for the bank name
     },
     {
-        field: "status", headerName: "Status", width: 150, align: "right", headerAlign: "right",
+        field: "status", get headerName() { return i18next.t('Status'); }, width: 150, align: "right", headerAlign: "right",
         renderCell: (params) => (
             <span className={`status-${params.value.toLowerCase()}`}>
                 {params.value.toUpperCase()}
@@ -59,7 +61,7 @@ const columns = (handleRowClick) => [
         ),
     },
     {
-        field: "days", headerName: "Days", width: 150,
+        field: "days", get headerName() { return i18next.t('Days'); }, width: 150,
         renderCell: (params) => {
             const chequeDate = dayjs(params.row.cheque_date).startOf('day');
             const today = dayjs().startOf('day');
@@ -74,8 +76,8 @@ const columns = (handleRowClick) => [
                 >
                     {isPending
                         ? remainingDays >= 0
-                            ? `${remainingDays} days remaining`
-                            : `${remainingDays} days passed`
+                            ? i18next.t('{{0}} days remaining', { 0: remainingDays })
+                            : i18next.t('{{0}} days passed', { 0: remainingDays })
                         : "---"}
                 </span>
             );
@@ -84,13 +86,13 @@ const columns = (handleRowClick) => [
         },
     },
     {
-        field: "direction", headerName: "Direction", width: 120,
+        field: "direction", get headerName() { return i18next.t('Direction'); }, width: 120,
         renderCell: (params) => (
-            params.value === "issued" ? "Issued" : "Received" // Converts direction to readable text
+            params.value === "issued" ? i18next.t('Issued') : i18next.t('Received') // Converts direction to readable text
         ),
     },
     {
-        field: "remark", headerName: "Remark", width: 200,
+        field: "remark", get headerName() { return i18next.t('Remark'); }, width: 200,
         renderCell: (params) => (
             <span title={params.value}>{params.value}</span> // Displays remark with a tooltip
         ),
@@ -99,6 +101,7 @@ const columns = (handleRowClick) => [
 
 
 export default function Cheque({ cheques, stores }) {
+    const { t } = useTranslation();
     const [dataCheques, setDataCheques] = useState(cheques);
     const [totalAmount, setTotalAmount] = useState(0);
     const [chequeModalOpen, setChequeModalOpen] = useState(false);
@@ -148,7 +151,7 @@ export default function Cheque({ cheques, stores }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Cheques" />
+            <Head title={t('Cheques')} />
             <Grid
                 container
                 spacing={2}
@@ -158,10 +161,10 @@ export default function Cheque({ cheques, stores }) {
                 {/* Store */}
                 <Grid size={{ xs: 12, sm: 2 }}>
                     <TextField
-                        label="Store"
+                        label={t('Store')}
                         name="store"
                         size="small"
-                        placeholder="Search by store"
+                        placeholder={t('Search by store')}
                         value={searchTerms.store}
                         onChange={handleSearchChange}
                         fullWidth
@@ -172,7 +175,7 @@ export default function Cheque({ cheques, stores }) {
                         }}
                         select
                     >
-                        <MenuItem value={0}>All</MenuItem>
+                        <MenuItem value={0}>{t('All')}</MenuItem>
                         {stores?.map((store) => (
                             <MenuItem
                                 key={store.id}
@@ -187,7 +190,7 @@ export default function Cheque({ cheques, stores }) {
                 {/* Direction (Issued/Received) */}
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Direction"
+                        label={t('Direction')}
                         name="direction"
                         size="small"
                         value={searchTerms.direction}
@@ -200,19 +203,19 @@ export default function Cheque({ cheques, stores }) {
                         }}
                         select
                     >
-                        <MenuItem value={'all'}>All</MenuItem>
-                        <MenuItem value={'issued'}>Issued</MenuItem>
-                        <MenuItem value={'received'}>Received</MenuItem>
+                        <MenuItem value={'all'}>{t('All')}</MenuItem>
+                        <MenuItem value={'issued'}>{t('Issued')}</MenuItem>
+                        <MenuItem value={'received'}>{t('Received')}</MenuItem>
                     </TextField>
                 </Grid>
 
                 {/* Status */}
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Status"
+                        label={t('Status')}
                         name="status"
                         size="small"
-                        placeholder="Search by status"
+                        placeholder={t('Search by status')}
                         value={searchTerms.status}
                         onChange={handleSearchChange}
                         fullWidth
@@ -223,21 +226,21 @@ export default function Cheque({ cheques, stores }) {
                         }}
                         select
                     >
-                        <MenuItem value={"all"}>All</MenuItem>
-                        <MenuItem value={"pending"}>Pending</MenuItem>
-                        <MenuItem value={"completed"}>Completed</MenuItem>
-                        <MenuItem value={"alert"}>Alert</MenuItem>
-                        <MenuItem value={"bounced"}>Bounced</MenuItem>
+                        <MenuItem value={"all"}>{t('All')}</MenuItem>
+                        <MenuItem value={"pending"}>{t('Pending')}</MenuItem>
+                        <MenuItem value={"completed"}>{t('Completed')}</MenuItem>
+                        <MenuItem value={"alert"}>{t('Alert')}</MenuItem>
+                        <MenuItem value={"bounced"}>{t('Bounced')}</MenuItem>
                     </TextField>
                 </Grid>
 
                 {/* Search Query */}
                 <Grid size={{ xs: 12, sm: 3 }}>
                     <TextField
-                        label="Search Query"
+                        label={t('Search Query')}
                         size="small"
                         name="search_query"
-                        placeholder="Search by cheque number, payee, or bank"
+                        placeholder={t('Search by cheque number, payee, or bank')}
                         value={searchTerms.search_query}
                         onChange={handleSearchChange}
                         fullWidth
@@ -252,7 +255,7 @@ export default function Cheque({ cheques, stores }) {
                 {/* Start Date */}
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
                         type="date"
                         size="small"
@@ -270,7 +273,7 @@ export default function Cheque({ cheques, stores }) {
                 {/* End Date */}
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
                         type="date"
                         size="small"
@@ -296,7 +299,7 @@ export default function Cheque({ cheques, stores }) {
                             setChequeModalOpen(true);
                         }} // Function to handle the "Add Cheque" button
                     >
-                        Add Cheque
+                        {t('Add Cheque')}
                     </Button>
                 </Grid>
             </Grid>

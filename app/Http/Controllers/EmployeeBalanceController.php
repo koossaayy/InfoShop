@@ -89,7 +89,7 @@ class EmployeeBalanceController extends Controller
             if (!$record->adjusts_balance) {
                 $report[] = [
                     'log_date' => $record->log_date,
-                    'description' => "Balance Update: Salary", // Better description
+                    'description' => __("Balance Update: Salary"), // Better description
                     'salary' => $record->settled, // Add settled amount to salary
                     'settled' => 0, // Settled is set to 0 for this record
                 ];
@@ -115,7 +115,7 @@ class EmployeeBalanceController extends Controller
             'employees' => $employees,
             'employee' => $employee,
             'stores' => $stores,
-            'pageLabel' => 'Salary Log',
+            'pageLabel' => __('Salary Log'),
             'report' => $report, // Include the results as a report
         ]);
     }

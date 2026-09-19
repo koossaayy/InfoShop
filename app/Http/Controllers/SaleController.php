@@ -90,7 +90,7 @@ class SaleController extends Controller
         return Inertia::render('Sale/Sale', [
             'sales' => $sales,
             'contacts' => $contacts,
-            'pageLabel' => 'Sales',
+            'pageLabel' => __('Sales'),
         ]);
     }
 
@@ -200,7 +200,7 @@ class SaleController extends Controller
         });
         return Inertia::render('SoldItem/SoldItemSummary', [
             'sold_items' => $soldItems,
-            'pageLabel' => 'Sold Items',
+            'pageLabel' => __('Sold Items'),
         ]);
     }
 
@@ -212,7 +212,7 @@ class SaleController extends Controller
         return Inertia::render('SoldItem/SoldItem', [
             'sold_items' => $soldItems,
             'contacts' => $contacts,
-            'pageLabel' => 'Sold Items',
+            'pageLabel' => __('Sold Items'),
         ]);
     }
 
@@ -319,7 +319,7 @@ class SaleController extends Controller
             'discount' => $sales->sum('discount'), // Sum of discounts
             'amount_received' => $sales->sum('amount_received'), // Sum of amounts received
             'address' => $sales->first()->address, // Use the first sale's address
-            'name' => $sales->first()->name . ' | Balance: ' . $sales->first()->balance, // Use the first sale's customer name
+            'name' => __(':name | Balance: :balance', ['name' => $sales->first()->name, 'balance' => $sales->first()->balance]), // Use the first sale's customer name
             'created_by' => $sales->first()->created_by, // Use the first sale's creator
             'invoice_number' => 'Merged-' . uniqid(), // Generate a unique invoice number for the merged sale
             'sale_prefix' => '', // Use the first sale's prefix

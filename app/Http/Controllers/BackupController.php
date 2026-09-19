@@ -22,7 +22,7 @@ class BackupController extends Controller
         $relativePath = "backups/{$fileName}";
 
         if (! Storage::disk('local')->exists($relativePath)) {
-            abort(404, 'Backup file not found.');
+            abort(404, __('Backup file not found.'));
         }
 
         return response()->download($this->absoluteStoragePath($relativePath), $fileName);
@@ -85,7 +85,7 @@ class BackupController extends Controller
         $disk = Storage::disk('local');
 
         if (! $disk->exists($path)) {
-            abort(404, 'Backup file not found.');
+            abort(404, __('Backup file not found.'));
         }
 
         $disk->delete($path);
@@ -99,7 +99,7 @@ class BackupController extends Controller
         $provided = (string) ($request->header('X-Infoshop-Token') ?? $request->query('token'));
 
         if (empty($expected) || empty($provided) || ! hash_equals($expected, $provided)) {
-            abort(403, 'Invalid automation token.');
+            abort(403, __('Invalid automation token.'));
         }
     }
 
@@ -139,7 +139,7 @@ class BackupController extends Controller
 
         $zip = new ZipArchive();
         if ($zip->open($tmpZipPath, ZipArchive::CREATE) !== true) {
-            abort(500, 'Unable to create backup archive.');
+            abort(500, __('Unable to create backup archive.'));
         }
 
         $zip->addFromString($sqlFileName, $sql);
@@ -204,7 +204,7 @@ class BackupController extends Controller
     {
         $fileName = basename($file);
         if (! preg_match('/^[A-Za-z0-9._-]+$/', $fileName)) {
-            abort(422, 'Invalid backup name.');
+            abort(422, __('Invalid backup name.'));
         }
 
         return $fileName;
@@ -216,7 +216,7 @@ class BackupController extends Controller
             return $bytes . ' B';
         }
 
-        $units = ['KB', 'MB', 'GB', 'TB'];
+        $units = [__('KB'), __('MB'), 'GB', 'TB'];
         $bytes = $bytes / 1024;
         foreach ($units as $unit) {
             if ($bytes < 1024) {

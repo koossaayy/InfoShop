@@ -713,7 +713,7 @@ class SyncController extends Controller
                             'sync_id' => $syncId,
                             'sale_id' => $existingSale->id,
                             'invoice_number' => $existingSale->invoice_number,
-                            'message' => 'Sale already exists (duplicate sync)'
+                            'message' => __('Sale already exists (duplicate sync)')
                         ];
                         continue; // Skip to next sale
                     }
@@ -743,7 +743,7 @@ class SyncController extends Controller
                         'sync_id' => $syncId,
                         'sale_id' => $saleId,
                         'invoice_number' => $invoiceNumber,
-                        'message' => $responseData['message'] ?? 'Sale created successfully'
+                        'message' => $responseData['message'] ?? __('Sale created successfully')
                     ];
                 } else {
                     // POSController returns {'error': '...'} on failure (not 'message')
@@ -775,7 +775,7 @@ class SyncController extends Controller
 
                 $errors[] = [
                     'sync_id' => $saleData['sync_id'] ?? null,
-                    'error' => $e->getMessage() ?: 'Unknown error: ' . get_class($e)
+                    'error' => $e->getMessage() ?: __('Unknown error: :get_class', ['get_class' => get_class($e)])
                 ];
             }
         }

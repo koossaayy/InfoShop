@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import { useTranslation } from 'react-i18next';
 
 const initialEmployeeFormState = {
     name: '',
@@ -36,6 +37,7 @@ export default function EmployeeDialog({
     refreshEmployees,
     employee
 }) {
+    const { t } = useTranslation();
 
     const [employeeForm, setEmployeeFormState] = useState(initialEmployeeFormState);
     const [loading, setLoading] = useState(false);
@@ -66,7 +68,7 @@ export default function EmployeeDialog({
             .post(endpoint, formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -81,10 +83,10 @@ export default function EmployeeDialog({
             .catch((error) => {
                 const errorMessages = JSON.stringify(error.response, Object.getOwnPropertyNames(error));
                 Swal.fire({
-                    title: "Error!",
-                    text: errorMessages || "An unexpected error occurred.",
+                    title: t('Error!'),
+                    text: errorMessages || t('An unexpected error occurred.'),
                     icon: "error",
-                    confirmButtonText: "OK",
+                    confirmButtonText: t('OK'),
                 });
                 setLoading(false);
             });
@@ -112,9 +114,9 @@ export default function EmployeeDialog({
                     }
                 }}
             >
-                <DialogTitle>{employee?'UPDATE EMPLOYEE':'ADD EMPLOYEE'}</DialogTitle>
+                <DialogTitle>{employee?t('UPDATE EMPLOYEE'):t('ADD EMPLOYEE')}</DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -132,7 +134,7 @@ export default function EmployeeDialog({
                                 fullWidth
                                 type="text"
                                 name="name"
-                                label="Name"
+                                label={t('Name')}
                                 variant="outlined"
                                 autoFocus
                                 value={employeeForm.name}
@@ -143,7 +145,7 @@ export default function EmployeeDialog({
 
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
-                                label="Contact Number"
+                                label={t('Contact Number')}
                                 name="contact_number"
                                 fullWidth
                                 type="number"
@@ -155,7 +157,7 @@ export default function EmployeeDialog({
 
                         <Grid size={{ xs: 12, sm: 12 }}>
                             <TextField
-                                label="Address"
+                                label={t('Address')}
                                 name="address"
                                 fullWidth
                                 type="text"
@@ -167,7 +169,7 @@ export default function EmployeeDialog({
 
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
-                                label="Joined At"
+                                label={t('Joined At')}
                                 name="joined_at"
                                 fullWidth
                                 type="date"
@@ -179,7 +181,7 @@ export default function EmployeeDialog({
 
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
-                                label="Salary"
+                                label={t('Salary')}
                                 name="salary"
                                 fullWidth
                                 type="number"
@@ -192,7 +194,7 @@ export default function EmployeeDialog({
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
                                 value={employeeForm.salary_frequency}
-                                label="Salary Frequency"
+                                label={t('Salary Frequency')}
                                 onChange={handleFieldChange}
                                 required
                                 name="salary_frequency"
@@ -200,27 +202,27 @@ export default function EmployeeDialog({
                                 select
                             >
                                 <MenuItem value={"Monthly"}>
-                                    Monthly
+                                    {t('Monthly')}
                                 </MenuItem>
                                 <MenuItem value={"Weekly"}>
-                                    Weekly
+                                    {t('Weekly')}
                                 </MenuItem>
                                 <MenuItem value={"Daily"}>
-                                    Daily
+                                    {t('Daily')}
                                 </MenuItem>
                                 <MenuItem value={"Hourly"}>
-                                    Hourly
+                                    {t('Hourly')}
                                 </MenuItem>
                             </TextField>
                         </Grid>
 
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
-                                label="Role"
+                                label={t('Role')}
                                 name="role"
                                 fullWidth
                                 type="text"
-                                placeholder="Staff..."
+                                placeholder={t('Staff...')}
                                 value={employeeForm.role}
                                 onChange={handleFieldChange}
                                 required
@@ -233,7 +235,7 @@ export default function EmployeeDialog({
 
                             <TextField
                                 value={employeeForm.gender}
-                                label="Gender"
+                                label={t('Gender')}
                                 onChange={handleFieldChange}
                                 required
                                 name="gender"
@@ -241,10 +243,10 @@ export default function EmployeeDialog({
                                 select
                             >
                                 <MenuItem value={"Male"}>
-                                    Male
+                                    {t('Male')}
                                 </MenuItem>
                                 <MenuItem value={"Female"}>
-                                    Female
+                                    {t('Female')}
                                 </MenuItem>
                             </TextField>
                         </Grid>
@@ -252,7 +254,7 @@ export default function EmployeeDialog({
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
                                 value={employeeForm.store_id}
-                                label="Store"
+                                label={t('Store')}
                                 onChange={handleFieldChange}
                                 required
                                 name="store_id"
@@ -272,7 +274,7 @@ export default function EmployeeDialog({
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <TextField
                                 value={employeeForm.status}
-                                label="Status"
+                                label={t('Status')}
                                 onChange={handleFieldChange}
                                 required
                                 name="status"
@@ -280,10 +282,10 @@ export default function EmployeeDialog({
                                 select
                             >
                                 <MenuItem value={"Active"}>
-                                    Active
+                                    {t('Active')}
                                 </MenuItem>
                                 <MenuItem value={"Inactive"}>
-                                    Inactive
+                                    {t('Inactive')}
                                 </MenuItem>
                             </TextField>
                         </Grid>
@@ -299,7 +301,7 @@ export default function EmployeeDialog({
                         type="submit"
                         disabled={employeeForm.name == '' && loading}
                     >
-                        {employee?'UPDATE EMPLOYEE':'ADD EMPLOYEE'}
+                        {employee?t('UPDATE EMPLOYEE'):t('ADD EMPLOYEE')}
                     </Button>
                 </DialogActions>
             </Dialog>

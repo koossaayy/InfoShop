@@ -26,7 +26,7 @@ class Employee extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Employee has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Employee has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

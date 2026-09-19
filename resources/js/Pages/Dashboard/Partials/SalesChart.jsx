@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
+import { useTranslation } from 'react-i18next';
 import {
   Card,
   CardContent,
@@ -23,24 +24,26 @@ import {
   SelectValue,
 } from "@/Components/ui/select"
 import { usePage } from "@inertiajs/react"
+import i18next from 'i18next';
 
 export const description = "An interactive area chart"
 
 const chartConfig = {
   visitors: {
-    label: "Sales",
+    get label() { return i18next.t('Sales'); },
   },
   sale: {
-    label: "Sales",
+    get label() { return i18next.t('Sales'); },
     color: "var(--chart-2)",
   },
   cash: {
-    label: "Cash",
+    get label() { return i18next.t('Cash'); },
     color: "var(--chart-4)",
   },
 }
 
 export function SalesChart() {
+    const { t } = useTranslation();
   const chartData = usePage().props.data.saleChart
 
   const [timeRange, setTimeRange] = React.useState("90d")
@@ -63,27 +66,27 @@ export function SalesChart() {
     <Card className="pt-0 w-full h-full">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
-          <CardTitle>SALES</CardTitle>
+          <CardTitle>{t('SALES')}</CardTitle>
           <CardDescription>
-            Showing total sales for the last 3 months
+            {t('Showing total sales for the last 3 months')}
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger
             className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
-            aria-label="Select a value"
+            aria-label={t('Select a value')}
           >
-            <SelectValue placeholder="Last 3 months" />
+            <SelectValue placeholder={t('Last 3 months')} />
           </SelectTrigger>
           <SelectContent className="rounded-xl bg-white">
             <SelectItem value="90d" className="rounded-lg">
-              Last 3 months
+              {t('Last 3 months')}
             </SelectItem>
             <SelectItem value="30d" className="rounded-lg">
-              Last 30 days
+              {t('Last 30 days')}
             </SelectItem>
             <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
+              {t('Last 7 days')}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -129,7 +132,7 @@ export function SalesChart() {
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
+                return date.toLocaleDateString(globalThis.document?.documentElement?.lang || undefined, {
                   month: "short",
                   day: "numeric",
                 })
@@ -147,7 +150,7 @@ export function SalesChart() {
                 <ChartTooltipContent
                 className="bg-white"
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
+                    return new Date(value).toLocaleDateString(globalThis.document?.documentElement?.lang || undefined, {
                       month: "short",
                       day: "numeric",
                     })

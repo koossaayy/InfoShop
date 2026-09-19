@@ -3,10 +3,12 @@ import { useState, useEffect, useContext } from "react";
 import { Table, TableBody, Button, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, TableFooter, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete'; // Import the Delete icon
 import Badge from '@mui/material/Badge';
+import { useTranslation } from 'react-i18next';
 import { usePurchase } from "@/Context/PurchaseContext";
 import { useCurrencyFormatter } from '@/lib/currencyFormatter';
 
 export default function PurchaseCartItems() {
+    const { t } = useTranslation();
     const {
         cartState,
         cartTotal,
@@ -26,13 +28,13 @@ export default function PurchaseCartItems() {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Batch</TableCell>
-                        <TableCell>Price</TableCell>
-                        <TableCell>Quantity</TableCell>
-                        <TableCell>Cost</TableCell>
-                        <TableCell>Total</TableCell>
-                        <TableCell>Action</TableCell>
+                        <TableCell>{t('Name')}</TableCell>
+                        <TableCell>{t('Batch')}</TableCell>
+                        <TableCell>{t('Price')}</TableCell>
+                        <TableCell>{t('Quantity')}</TableCell>
+                        <TableCell>{t('Cost')}</TableCell>
+                        <TableCell>{t('Total')}</TableCell>
+                        <TableCell>{t('Action')}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -55,7 +57,7 @@ export default function PurchaseCartItems() {
                             <TableCell sx={{ padding: '7px 10px' }}>{(parseFloat(item.cost) * parseFloat(item.quantity)).toFixed(2)}</TableCell>
                             <TableCell sx={{ padding: '7px 10px' }}>
                                 <IconButton
-                                    aria-label="delete"
+                                    aria-label={t('delete')}
                                     onClick={() => removeFromCart(index)}
                                     color="error"
                                 >
@@ -66,7 +68,7 @@ export default function PurchaseCartItems() {
                     ))}
                     <TableRow>
                         <TableCell colSpan={5} style={{ textAlign: 'right' }}>
-                            <strong>Total Cost Amount:</strong>
+                            <strong>{t('Total Cost Amount:')}</strong>
                         </TableCell>
                         <TableCell>
                             <strong>{formatCurrency(cartTotal)}</strong>
@@ -74,7 +76,7 @@ export default function PurchaseCartItems() {
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={5} style={{ textAlign: 'right' }}>
-                            <strong>Total Profit Amount:</strong>
+                            <strong>{t('Total Profit Amount:')}</strong>
                         </TableCell>
                         <TableCell>
                             <strong>{formatCurrency(totalProfit)}</strong>
@@ -82,7 +84,7 @@ export default function PurchaseCartItems() {
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={5} style={{ textAlign: 'right' }}>
-                            <strong>Total Items:</strong>
+                            <strong>{t('Total Items:')}</strong>
                         </TableCell>
                         <TableCell>
                             <strong>{cartState.length}</strong>

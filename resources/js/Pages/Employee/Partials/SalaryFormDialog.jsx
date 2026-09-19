@@ -10,8 +10,10 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import dayjs from "dayjs";
 import { MenuItem, Button } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function SalaryFormDialog({ open, setOpen, employee, stores, refreshEmployees }) {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         employee_id: employee?.id,
         salary_date: dayjs().format("YYYY-MM-DD"),
@@ -37,7 +39,7 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
             .post("/salary-records", formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: true,
@@ -48,8 +50,8 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
             .catch((error) => {
                 console.error("Submission failed:", error.response);
                 Swal.fire({
-                    title: "Error!",
-                    text: error.response?.data?.message || "An error occurred while saving.",
+                    title: t('Error!'),
+                    text: error.response?.data?.message || t('An error occurred while saving.'),
                     icon: "error",
                     showConfirmButton: true,
                 });
@@ -75,7 +77,7 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
                 }
             }}
         >
-            <DialogTitle>Salary Information</DialogTitle>
+            <DialogTitle>{t('Salary Information')}</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2} sx={{ mt: 2 }}>
 
@@ -90,7 +92,7 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
                         <TextField
                             fullWidth
                             name="salary_date"
-                            label="Salary Date"
+                            label={t('Salary Date')}
                             type="date"
                             variant="outlined"
                             required
@@ -103,7 +105,7 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
                         <TextField
                             fullWidth
                             name="net_salary"
-                            label="Net Salary"
+                            label={t('Net Salary')}
                             type="number"
                             variant="outlined"
                             required
@@ -119,38 +121,38 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
                         <TextField
                             fullWidth
                             name="salary_from"
-                            label="Salary"
+                            label={t('Salary')}
                             variant="outlined"
                             required
                             select
                             value={formData.salary_from}
                             onChange={handleChange}
                         >
-                            <MenuItem value={'Cash Drawer'}>Cash Drawer</MenuItem>
+                            <MenuItem value={'Cash Drawer'}>{t('Cash Drawer')}</MenuItem>
                             {/* <MenuItem value={'Pending Salary'}>Pending Salary</MenuItem> */}
-                            <MenuItem value={'External'}>External</MenuItem>
+                            <MenuItem value={'External'}>{t('External')}</MenuItem>
                         </TextField>
                     </Grid>
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <TextField
                             fullWidth
                             name="adjusts_balance"
-                            label="Adjust Balance"
+                            label={t('Adjust Balance')}
                             variant="outlined"
                             required
                             select
                             value={formData.adjusts_balance}
                             onChange={handleChange}
                         >
-                            <MenuItem value={1}>Yes</MenuItem>
-                            <MenuItem value={0}>No</MenuItem>
+                            <MenuItem value={1}>{t('Yes')}</MenuItem>
+                            <MenuItem value={0}>{t('No')}</MenuItem>
                         </TextField>
                     </Grid>
                     <Grid size={{ xs: 12, sm: 12 }}>
                         <TextField
                             fullWidth
                             name="remarks"
-                            label="Note"
+                            label={t('Note')}
                             type="text"
                             variant="outlined"
                             value={formData.remarks}
@@ -163,7 +165,7 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
                     <Grid size={{ xs: 12, sm: 12 }}>
                         <TextField
                             value={formData.store_id}
-                            label="Store"
+                            label={t('Store')}
                             onChange={handleChange}
                             required
                             name="store_id"
@@ -183,7 +185,7 @@ export default function SalaryFormDialog({ open, setOpen, employee, stores, refr
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button fullWidth size="large" variant="contained" type="submit" disabled={!formData.net_salary }>SAVE</Button>
+                <Button fullWidth size="large" variant="contained" type="submit" disabled={!formData.net_salary }>{t('SAVE')}</Button>
             </DialogActions>
         </Dialog>
     );

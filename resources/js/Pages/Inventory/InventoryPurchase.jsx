@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -27,6 +28,7 @@ import CustomPagination from "@/Components/CustomPagination";
 import InventoryItemDialog from "./Partials/InventoryItemDialog";
 
 const InventoryPurchase = ({ inventory_items, stores }) => {
+    const { t } = useTranslation();
     const [dataInventoryItems, setDataInventoryItems] = useState(inventory_items);
     const [inventoryItemModalOpen, setInventoryItemModalOpen] = useState(false);
     const [purchaseForm, setPurchaseForm] = useState(
@@ -80,8 +82,8 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
 
         if (!isValid) {
             Swal.fire({
-                title: "Error!",
-                text: "Please fill in all the fields",
+                title: t('Error!'),
+                text: t('Please fill in all the fields'),
                 icon: "error",
                 showConfirmButton: false,
                 timer: 2000,
@@ -99,7 +101,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
         axios.post('/inventory-purchase', formData)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -116,7 +118,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Inventory Purchase" />
+            <Head title={t('Inventory Purchase')} />
             <Grid
                 container
                 spacing={2}
@@ -126,7 +128,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                 <Grid size={3}>
                     <TextField
                         fullWidth
-                        label="Store"
+                        label={t('Store')}
                         variant="outlined"
                         select
                         size="small"
@@ -145,7 +147,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                 <Grid size={3}>
                     <TextField
                         fullWidth
-                        label="Purchase Date"
+                        label={t('Purchase Date')}
                         variant="outlined"
                         name="transaction_date"
                         type="date"
@@ -171,7 +173,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                             setInventoryItemModalOpen(true);
                         }}
                     >
-                        NEW INVENTORY ITEM
+                        {t('NEW INVENTORY ITEM')}
                     </Button>
                 </Grid>
             </Grid>
@@ -181,11 +183,11 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Inventory Item</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Unit Cost</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Quantity</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Line Total</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Action</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('Inventory Item')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('Unit Cost')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('Quantity')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('Line Total')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('Action')}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -215,7 +217,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                                             size="large"
                                             type="number"
                                             required
-                                            placeholder="Unit Cost"
+                                            placeholder={t('Unit Cost')}
                                             value={row.unitCost}
                                             onChange={(e) => handleChange(index, 'unitCost', e.target.value)}
                                         />
@@ -227,7 +229,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                                             fullWidth
                                             size="large"
                                             type="number"
-                                            placeholder="Quantity"
+                                            placeholder={t('Quantity')}
                                             value={row.quantity}
                                             onChange={(e) => handleChange(index, 'quantity', e.target.value)}
                                             required
@@ -261,7 +263,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                                 <TableCell></TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="right">
-                                    <span className="font-bold text-lg">Total</span>
+                                    <span className="font-bold text-lg">{t('Total')}</span>
                                 </TableCell>
                                 <TableCell>
                                     <span className="font-bold text-lg">
@@ -282,7 +284,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                                         onClick={() => router.get('/inventory')}
                                         sx={{ mr: 2 }}
                                     >
-                                        CANCEL
+                                        {t('CANCEL')}
                                     </Button>
                                     <Button
                                         variant="contained"
@@ -291,7 +293,7 @@ const InventoryPurchase = ({ inventory_items, stores }) => {
                                             handleSubmit()
                                         }}
                                     >
-                                        Submit
+                                        {t('Submit')}
                                     </Button>
 
                                 </TableCell>

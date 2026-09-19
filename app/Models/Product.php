@@ -27,7 +27,7 @@ class Product extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Product has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Product has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

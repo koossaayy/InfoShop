@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, router } from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
@@ -12,20 +13,21 @@ import FormDialog from './Partial/FormDialog';
 import { X } from 'lucide-react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import i18next from 'i18next';
 
 const columns = (handleAction) => [
   {
-    field: 'name', headerName: 'Name', width: 200,
+    field: 'name', get headerName() { return i18next.t('Name'); }, width: 200,
     renderCell: (params) => (
       <p className='cursor-pointer font-bold' onClick={() => handleAction(params.row, 'edit')}>
         {params.value}
       </p>
     )
   },
-  { field: 'collection_type', headerName: 'Collection Type', width: 150 },
+  { field: 'collection_type', get headerName() { return i18next.t('Collection Type'); }, width: 150 },
   {
     field: 'parent',
-    headerName: 'Parent Collection',
+    get headerName() { return i18next.t('Parent Collection'); },
     width: 180,
     renderCell: (params) => (
       <span className="text-gray-600">
@@ -33,11 +35,11 @@ const columns = (handleAction) => [
       </span>
     )
   },
-  { field: 'description', headerName: 'Description', width: 250 },
-  { field: 'created_at', headerName: 'Created At', width: 150 },
+  { field: 'description', get headerName() { return i18next.t('Description'); }, width: 250 },
+  { field: 'created_at', get headerName() { return i18next.t('Created At'); }, width: 150 },
   {
     field: 'action',
-    headerName: 'Actions',
+    get headerName() { return i18next.t('Actions'); },
     width: 150,
     renderCell: (params) => (
       <>
@@ -50,6 +52,7 @@ const columns = (handleAction) => [
 ];
 
 export default function Collection({ collections }) {
+    const { t } = useTranslation();
   const auth = usePage().props.auth.user;
   const [open, setOpen] = useState(false);
   const [selectedCollection, setSelectedCollection] = useState(null);
@@ -67,12 +70,12 @@ export default function Collection({ collections }) {
     else if (action === "delete") {
       console.log(collection.id);
       Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: t('Are you sure?'),
+        text: t('You won\'t be able to revert this!'),
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel',
+        confirmButtonText: t('Yes, delete it!'),
+        cancelButtonText: t('No, cancel'),
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
@@ -80,8 +83,8 @@ export default function Collection({ collections }) {
           axios.delete(`/collections/${collection.id}`)
             .then((response) => {
               Swal.fire(
-                'Deleted!',
-                'Collection has been deleted.',
+                t('Deleted!'),
+                t('Collection has been deleted.'),
                 'success'
               );
               router.reload();
@@ -89,8 +92,8 @@ export default function Collection({ collections }) {
             .catch((error) => {
               console.error(error);
               Swal.fire(
-                'Error!',
-                'Something went wrong.',
+                t('Error!'),
+                t('Something went wrong.'),
                 'error'
               );
             });
@@ -106,12 +109,12 @@ export default function Collection({ collections }) {
 
   return (
     <AuthenticatedLayout>
-      <Head title="Collection" />
+      <Head title={t('Collection')} />
 
       <Grid container spacing={2} sx={{ alignItems: "center", width: '100%' }}>
         <Grid size={12} container sx={{ justifyContent: "end" }}>
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleClickOpen}>
-            Add Collection
+            {t('Add Collection')}
           </Button>
         </Grid>
 

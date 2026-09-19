@@ -47,7 +47,7 @@ class MediaController extends Controller
             $attachment->path = Storage::url($attachment->path);
 
             // Convert size from bytes to KB
-            $attachment->size = round($attachment->size / 1024, 2) . 'KB'; // Converts bytes to KB and rounds to 2 decimal places
+            $attachment->size = __(':roundKB', ['round' => round($attachment->size / 1024, 2)]); // Converts bytes to KB and rounds to 2 decimal places
 
             return $attachment;
         });
@@ -56,7 +56,7 @@ class MediaController extends Controller
         // Pass the data to the view
         return Inertia::render('Media/Media', [
             'images' => $attachments, // Structure: ['directoryName' => ['file1', 'file2', ...]]
-            'pageLabel' => 'Media Library',
+            'pageLabel' => __('Media Library'),
             'settings' => $settings,
         ]);
     }
@@ -97,7 +97,7 @@ class MediaController extends Controller
             }
             DB::commit();
 
-            return 'Migration of product images completed successfully!';
+            return __('Migration of product images completed successfully!');
         } catch (\Exception $e) {
             // If an error occurs, roll back the transaction
             DB::rollBack();

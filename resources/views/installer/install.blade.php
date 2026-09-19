@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">Ready to Install</h2>
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ __('Ready to Install') }}</h2>
 
     @if(session('error'))
         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
@@ -15,7 +15,7 @@
 
     @if($errors->any())
         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <p class="text-sm font-medium text-red-800 mb-2">Please fix the following errors:</p>
+            <p class="text-sm font-medium text-red-800 mb-2">{{ __('Please fix the following errors:') }}</p>
             <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -35,9 +35,9 @@
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-blue-800">Installation Process</h3>
+                    <h3 class="text-sm font-medium text-blue-800">{{ __('Installation Process') }}</h3>
                     <p class="mt-1 text-sm text-blue-700">
-                        The installation will create database tables, set up your admin account, and configure your store. This may take a few minutes.
+                        {{ __('The installation will create database tables, set up your admin account, and configure your store. This may take a few minutes.') }}
                     </p>
                 </div>
             </div>
@@ -70,14 +70,14 @@
                 <svg class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
                 </svg>
-                Back
+                {{ __('Back') }}
             </a>
             
             <button type="submit" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition disabled:opacity-50 disabled:cursor-not-allowed" id="submitBtn">
                 <svg class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                 </svg>
-                <span id="btnText">Install InfoShop</span>
+                <span id="btnText">{{ __('Install InfoShop') }}</span>
             </button>
         </div>
     </form>
@@ -114,11 +114,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Validate required fields before submit
     form.addEventListener('submit', function(e) {
         const requiredFields = {
-            'store_name': 'Store Name',
-            'store_address': 'Store Address',
-            'admin_name': 'Admin Name',
-            'admin_email': 'Admin Email',
-            'admin_password': 'Admin Password'
+            'store_name': @json(__("Store Name")),
+            'store_address': @json(__("Store Address")),
+            'admin_name': @json(__("Admin Name")),
+            'admin_email': @json(__("Admin Email")),
+            'admin_password': @json(__("Admin Password"))
         };
 
         const missing = [];
@@ -131,13 +131,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (missing.length > 0) {
             e.preventDefault();
-            alert('Missing required information:\n\n' + missing.join('\n') + '\n\nPlease complete all steps.');
+            alert( @json(__("Missing required information:\\n\\n")) + missing.join('\n') + @json(__("\\n\\nPlease complete all steps.")));
             return false;
         }
 
         // Disable submit button to prevent double submission
         submitBtn.disabled = true;
-        btnText.textContent = 'Installing... Please wait...';
+        btnText.textContent =  @json(__("Installing... Please wait..."));
     });
 });
 </script>

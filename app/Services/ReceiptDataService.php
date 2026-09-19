@@ -91,7 +91,7 @@ class ReceiptDataService
             'sale' => $sale,
             'salesItems' => $salesItems,
             'settings' => $settingArray,
-            'user_name' => $user->name ?? 'Unknown',
+            'user_name' => $user->name ?? __('Unknown'),
         ];
     }
 }

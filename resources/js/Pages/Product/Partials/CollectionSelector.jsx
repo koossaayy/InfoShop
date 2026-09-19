@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Autocomplete, TextField, Box, Typography, Chip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useTranslation } from 'react-i18next';
 import QuickAddCollectionDialog from './QuickAddCollectionDialog';
 
 /**
@@ -16,6 +17,7 @@ export default function CollectionSelector({
     placeholder,
     onCollectionCreated // Callback to refresh collections in parent
 }) {
+    const { t } = useTranslation();
     const [dialogOpen, setDialogOpen] = useState(false);
 
     // Filter collections by type
@@ -30,7 +32,7 @@ export default function CollectionSelector({
     // Add "Create New" option at the beginning
     const CREATE_NEW_OPTION = {
         id: 'create-new',
-        label: `Create New ${label}`,
+        label: t('Create New {{0}}', { 0: label }),
         isCreateNew: true
     };
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ asset('infoshop-icon.png') }}">
-    <title>InfoShop Installer - @yield('title')</title>
+    <title>{{ __('InfoShop Installer -') }} @yield('title')</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -20,8 +20,8 @@
         <header class="bg-white border-b border-gray-200">
             <div class="max-w-4xl mx-auto px-6 py-4">
                 <div class="flex items-center justify-between">
-                    <h1 class="text-2xl font-bold text-gray-900">InfoShop Installation</h1>
-                    <span class="text-sm text-gray-500">Step @yield('step') of 8</span>
+                    <h1 class="text-2xl font-bold text-gray-900">{{ __('InfoShop Installation') }}</h1>
+                    <span class="text-sm text-gray-500">{{ __('Step') }} @yield('step') {{ __('of 8') }}</span>
                 </div>
             </div>
         </header>
@@ -46,7 +46,7 @@
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 py-6">
             <div class="max-w-4xl mx-auto px-6 text-center text-sm text-gray-500">
-                <p>&copy; {{ date('Y') }} InfoShop. All rights reserved.</p>
+                <p>&copy; {{ __(':param_1 InfoShop. All rights reserved.', ['param_1' => date('Y')]) }}</p>
             </div>
         </footer>
     </div>

@@ -16,6 +16,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import axios from "axios";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 
 const initialInventoryItemFormState = {
     name: '',
@@ -26,11 +28,11 @@ const initialInventoryItemFormState = {
 };
 
 const unit_types = [
-    { value: 'PC', label: 'Piece' },
-    { value: 'kg', label: 'Kilogram' },
-    { value: 'Box', label: 'Box' },
-    { value: 'l', label: 'Liter' },
-    { value: 'ml', label: 'Milliliter' },
+    { value: 'PC', get label() { return i18next.t('Piece'); } },
+    { value: 'kg', get label() { return i18next.t('Kilogram'); } },
+    { value: 'Box', get label() { return i18next.t('Box'); } },
+    { value: 'l', get label() { return i18next.t('Liter'); } },
+    { value: 'ml', get label() { return i18next.t('Milliliter'); } },
 ]
 
 export default function InventoryItemDialog({
@@ -40,6 +42,7 @@ export default function InventoryItemDialog({
     refreshInventoryItems,
     inventory_item,
 }) {
+    const { t } = useTranslation();
 
     const [inventoryItemsForm, setInventoryItemsForm] = useState(initialInventoryItemFormState);
 
@@ -76,7 +79,7 @@ export default function InventoryItemDialog({
             .post(url, formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -108,9 +111,9 @@ export default function InventoryItemDialog({
                     }
                 }}
             >
-                <DialogTitle id="alert-dialog-title">{inventory_item ? "UPDATE" : "ADD"} INVENTORY ITEM</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t('{{0}} INVENTORY ITEM', { 0: inventory_item ? t('UPDATE') : t('ADD') })}</DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -127,9 +130,9 @@ export default function InventoryItemDialog({
                             <TextField
                                 fullWidth
                                 variant="outlined"
-                                label={"Name"}
+                                label={t('Name')}
                                 name="name"
-                                placeholder="Name"
+                                placeholder={t('Name')}
                                 value={inventoryItemsForm.name}
                                 onChange={handleFieldChange}
                                 required
@@ -147,7 +150,7 @@ export default function InventoryItemDialog({
                                     variant="outlined"
                                     label={"Quantity"}
                                     name="quantity"
-                                    placeholder="Current Quantity"
+                                    placeholder={t('Current Quantity')}
                                     type="number"
                                     value={inventoryItemsForm.quantity}
                                     onChange={handleFieldChange}
@@ -187,9 +190,9 @@ export default function InventoryItemDialog({
                             <TextField
                                 fullWidth
                                 variant="outlined"
-                                label={"Cost"}
+                                label={t('Cost')}
                                 name="cost"
-                                placeholder="Cost"
+                                placeholder={t('Cost')}
                                 type="number"
                                 value={inventoryItemsForm.cost}
                                 onChange={handleFieldChange}
@@ -206,9 +209,9 @@ export default function InventoryItemDialog({
                             <TextField
                                 fullWidth
                                 variant="outlined"
-                                label={"Alert Quantity"}
+                                label={t('Alert Quantity')}
                                 name="alert_quantity"
-                                placeholder="Alert Quantity"
+                                placeholder={t('Alert Quantity')}
                                 type="number"
                                 value={inventoryItemsForm.alert_quantity}
                                 onChange={handleFieldChange}
@@ -223,7 +226,7 @@ export default function InventoryItemDialog({
                             <Grid size={12}>
                                 <TextField
                                     value={inventoryItemsForm.store_id}
-                                    label="Store"
+                                    label={t('Store')}
                                     fullWidth
                                     onChange={handleFieldChange}
                                     required
@@ -253,7 +256,7 @@ export default function InventoryItemDialog({
                         type="submit"
                         disabled={inventoryItemsForm.amount == 0}
                     >
-                        {inventory_item ? "UPDATE" : "ADD"} ITEM
+                        {t('{{0}} ITEM', { 0: inventory_item ? t('UPDATE') : t('ADD') })}
                     </Button>
                 </DialogActions>
             </Dialog>

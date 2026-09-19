@@ -11,8 +11,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
         </div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome to InfoShop</h2>
-        <p class="text-gray-600">Thank you for choosing InfoShop. Let's get your POS system up and running!</p>
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ __('Welcome to InfoShop') }}</h2>
+        <p class="text-gray-600">{{ __("Thank you for choosing InfoShop. Let's get your POS system up and running!") }}</p>
     </div>
 
     <div class="space-y-6 mb-8">
@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-900">Quick Setup</h3>
-                <p class="text-gray-600">Complete installation in just 8 simple steps</p>
+                <h3 class="text-lg font-semibold text-gray-900">{{ __('Quick Setup') }}</h3>
+                <p class="text-gray-600">{{ __('Complete installation in just 8 simple steps') }}</p>
             </div>
         </div>
 
@@ -39,8 +39,8 @@
                 </div>
             </div>
             <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-900">Powerful Features</h3>
-                <p class="text-gray-600">Manage sales, inventory, customers, and reports with ease</p>
+                <h3 class="text-lg font-semibold text-gray-900">{{ __('Powerful Features') }}</h3>
+                <p class="text-gray-600">{{ __('Manage sales, inventory, customers, and reports with ease') }}</p>
             </div>
         </div>
     </div>
@@ -53,9 +53,9 @@
                 </svg>
             </div>
             <div class="ml-3">
-                <h3 class="text-sm font-medium text-yellow-800">Before you begin</h3>
+                <h3 class="text-sm font-medium text-yellow-800">{{ __('Before you begin') }}</h3>
                 <p class="mt-1 text-sm text-yellow-700">
-                    Make sure you have your database credentials ready and ensure that your server meets all the requirements.
+                    {{ __('Make sure you have your database credentials ready and ensure that your server meets all the requirements.') }}
                 </p>
             </div>
         </div>
@@ -63,7 +63,7 @@
 
     <div class="flex justify-end">
         <a href="{{ route('installer.requirements') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
-            Get Started
+            {{ __('Get Started') }}
             <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>

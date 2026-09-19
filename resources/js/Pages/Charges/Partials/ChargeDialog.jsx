@@ -16,6 +16,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { router } from "@inertiajs/react";
 import Swal from "sweetalert2";
+import { useTranslation } from 'react-i18next';
 
 const initialChargeFormState = {
     name: "",
@@ -35,6 +36,7 @@ export default function ChargeDialog({
     refreshCharges,
     chargeToEdit,
 }) {
+    const { t } = useTranslation();
     const isEditMode = !!chargeToEdit;
     const [chargeForm, setChargeForm] = useState(initialChargeFormState);
     const [loading, setLoading] = useState(false);
@@ -86,10 +88,10 @@ export default function ChargeDialog({
         router[method](url, chargeForm, {
             onSuccess: () => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: isEditMode
-                        ? "Charge updated successfully."
-                        : "Charge created successfully.",
+                        ? t('Charge updated successfully.')
+                        : t('Charge created successfully.'),
                     icon: "success",
                     showConfirmButton: false,
                     timer: 2000,
@@ -101,8 +103,8 @@ export default function ChargeDialog({
             onError: (errors) => {
                 setErrors(errors);
                 Swal.fire({
-                    title: "Error!",
-                    text: "Please check the form for errors.",
+                    title: t('Error!'),
+                    text: t('Please check the form for errors.'),
                     icon: "error",
                 });
             },
@@ -126,10 +128,10 @@ export default function ChargeDialog({
             }}
         >
             <DialogTitle>
-                {isEditMode ? "Edit Charge" : "Create New Charge"}
+                {isEditMode ? t('Edit Charge') : t('Create New Charge')}
             </DialogTitle>
             <IconButton
-                aria-label="close"
+                aria-label={t('close')}
                 onClick={handleClose}
                 sx={(theme) => ({
                     position: "absolute",
@@ -146,13 +148,13 @@ export default function ChargeDialog({
                     {/* Name */}
                     <TextField
                         fullWidth
-                        label="Name"
+                        label={t('Name')}
                         name="name"
                         value={chargeForm.name}
                         onChange={handleFieldChange}
                         error={!!errors.name}
                         helperText={errors.name}
-                        placeholder="e.g., VAT (5%), Service Tax, Delivery Fee"
+                        placeholder={t('e.g., VAT (5%), Service Tax, Delivery Fee')}
                         variant="outlined"
                         size="small"
                     />
@@ -161,7 +163,7 @@ export default function ChargeDialog({
                     <TextField
                         fullWidth
                         select
-                        label="Charge Type"
+                        label={t('Charge Type')}
                         name="charge_type"
                         value={chargeForm.charge_type}
                         onChange={handleFieldChange}
@@ -180,7 +182,7 @@ export default function ChargeDialog({
                     {/* Rate Value */}
                     <TextField
                         fullWidth
-                        label="Rate Value"
+                        label={t('Rate Value')}
                         name="rate_value"
                         type="number"
                         inputProps={{
@@ -191,7 +193,7 @@ export default function ChargeDialog({
                         onChange={handleFieldChange}
                         error={!!errors.rate_value}
                         helperText={errors.rate_value}
-                        placeholder="e.g., 5 or 50"
+                        placeholder={t('e.g., 5 or 50')}
                         variant="outlined"
                         size="small"
                     />
@@ -200,7 +202,7 @@ export default function ChargeDialog({
                     <TextField
                         fullWidth
                         select
-                        label="Rate Type"
+                        label={t('Rate Type')}
                         name="rate_type"
                         value={chargeForm.rate_type}
                         onChange={handleFieldChange}
@@ -212,8 +214,8 @@ export default function ChargeDialog({
                         {rateTypes.map((type) => (
                             <MenuItem key={type} value={type}>
                                 {type === "percentage"
-                                    ? "Percentage (%)"
-                                    : "Fixed Amount"}
+                                    ? t('Percentage (%)')
+                                    : t('Fixed Amount')}
                             </MenuItem>
                         ))}
                     </TextField>
@@ -223,13 +225,13 @@ export default function ChargeDialog({
                         fullWidth
                         multiline
                         rows={3}
-                        label="Description"
+                        label={t('Description')}
                         name="description"
                         value={chargeForm.description}
                         onChange={handleFieldChange}
                         error={!!errors.description}
                         helperText={errors.description}
-                        placeholder="Add description for this charge..."
+                        placeholder={t('Add description for this charge...')}
                         variant="outlined"
                         size="small"
                     />
@@ -243,7 +245,7 @@ export default function ChargeDialog({
                                 onChange={handleFieldChange}
                             />
                         }
-                        label="Active"
+                        label={t('Active')}
                     />
 
                     <FormControlLabel
@@ -254,14 +256,14 @@ export default function ChargeDialog({
                                 onChange={handleFieldChange}
                             />
                         }
-                        label="Auto-apply to all sales (Default)"
+                        label={t('Auto-apply to all sales (Default)')}
                     />
                 </Stack>
             </DialogContent>
 
             <DialogActions>
                 <Button onClick={handleClose} color="inherit">
-                    Cancel
+                    {t('Cancel')}
                 </Button>
                 <Button
                     type="submit"
@@ -269,7 +271,7 @@ export default function ChargeDialog({
                     color="primary"
                     disabled={loading}
                 >
-                    {loading ? "Saving..." : isEditMode ? "Update" : "Create"}
+                    {loading ? t('Saving...') : isEditMode ? t('Update') : t('Create')}
                 </Button>
             </DialogActions>
         </Dialog>

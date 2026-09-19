@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -18,43 +19,45 @@ import numeral from "numeral";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import CustomPagination from "@/Components/CustomPagination";
 import ReloadFormDialog from "./ReloadFormDialog";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
     {
-        field: "id", headerName: "ID", width: 80,
+        field: "id", get headerName() { return i18next.t('ID'); }, width: 80,
         renderCell: (params) => {
             return params.value.toString().padStart(4, "0");
         },
     },
     {
-        field: "sale_date", headerName: "Date", width: 120,
+        field: "sale_date", get headerName() { return i18next.t('Date'); }, width: 120,
         renderCell: (params) => dayjs(params.value).format("YYYY-MM-DD"),
     },
-    { field: "contact_name", headerName: "Customer", width: 150 },
-    { field: "account_number", headerName: "Account Number", width: 200,
+    { field: "contact_name", get headerName() { return i18next.t('Customer'); }, width: 150 },
+    { field: "account_number", get headerName() { return i18next.t('Account Number'); }, width: 200,
         renderCell: (params) => (
             <Link underline="hover" href='#' className='hover:underline' onClick={(event) => { event.preventDefault(); handleRowClick(params.row, 'account_edit'); }}>
                 <p className='font-bold'>{params.value}</p>
             </Link>
         ),
      },
-    { field: "product_name", headerName: "Product Name", width: 150 },
+    { field: "product_name", get headerName() { return i18next.t('Product Name'); }, width: 150 },
     {
-        field: "reload_amount", headerName: "Reload", width: 100,
+        field: "reload_amount", get headerName() { return i18next.t('Reload'); }, width: 100,
         renderCell: (params) => numeral(params.row.unit_price - params.row.additional_commission).format('0,0.00'),
     },
     {
-        field: "additional_commission", headerName: "Addl. Comm", width: 150, align: "right", headerAlign: "right",
+        field: "additional_commission", get headerName() { return i18next.t('Addl. Comm'); }, width: 150, align: "right", headerAlign: "right",
         renderCell: (params) => numeral(params.value).format('0,0.00'),
     },
     {
-        field: "commission", headerName: "Comm", width: 100, align: "right", headerAlign: "right",
+        field: "commission", get headerName() { return i18next.t('Comm'); }, width: 100, align: "right", headerAlign: "right",
         renderCell: (params) => numeral(params.value).format('0,0.00'),
     },
     // { field: "description", headerName: "Description", width: 250 },
 ];
 
 export default function Reload({ reloads, transactionType }) {
+    const { t } = useTranslation();
     const [dataReloads, setDataReloads] = useState(reloads);
     const [totalCommission, setTotalCommission] = useState(0);
     const [reloadModalOpen, setReloadModalOpen] = useState(false)
@@ -103,7 +106,7 @@ export default function Reload({ reloads, transactionType }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Payments" />
+            <Head title={t('Payments')} />
             <Grid
                 container
                 spacing={2}
@@ -112,9 +115,9 @@ export default function Reload({ reloads, transactionType }) {
             >
                 <Grid size={{ xs: 12, sm: 4 }}>
                     <TextField
-                        label="Search Query"
+                        label={t('Search Query')}
                         name="search_query"
-                        placeholder="Search by account or product name"
+                        placeholder={t('Search by account or product name')}
                         value={searchTerms.search_query}
                         onChange={handleSearchChange}
                         fullWidth
@@ -122,7 +125,7 @@ export default function Reload({ reloads, transactionType }) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
                         type="date"
                         value={searchTerms.start_date}
@@ -137,7 +140,7 @@ export default function Reload({ reloads, transactionType }) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
                         type="date"
                         value={searchTerms.end_date}

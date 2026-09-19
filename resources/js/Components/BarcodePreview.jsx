@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, Box } from '@mui/material';
 import JsBarcode from 'jsbarcode';
+import { useTranslation } from 'react-i18next';
 
 const BarcodePreview = ({ template, barcodeSettings, templateData, maxHeight = '600px', maxWidth = '320px', isPrint = false }) => {
+    const { t } = useTranslation();
     const [previewHtml, setPreviewHtml] = useState('');
     const [error, setError] = useState(null);
 
@@ -50,7 +52,7 @@ const BarcodePreview = ({ template, barcodeSettings, templateData, maxHeight = '
                 }, 100);
             } catch (err) {
                 console.error('Error rendering template:', err);
-                setError('Failed to render template');
+                setError(t('Failed to render template'));
                 setPreviewHtml('');
             }
         };
@@ -117,7 +119,7 @@ const BarcodePreview = ({ template, barcodeSettings, templateData, maxHeight = '
                             textAlign: 'center',
                         }}
                     >
-                        No preview available
+                        {t('No preview available')}
                     </Box>
                 )}
             </CardContent>

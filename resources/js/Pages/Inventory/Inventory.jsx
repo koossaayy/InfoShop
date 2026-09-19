@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -23,16 +24,17 @@ import { DataGrid } from "@mui/x-data-grid";
 import CustomPagination from "@/Components/CustomPagination";
 import InventoryItemDialog from "./Partials/InventoryItemDialog";
 import InventoryTransactionDialog from "./Partials/InventoryTransactionDialog";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id', get headerName() { return i18next.t('ID'); }, width: 90 },
     {
-        field: 'name', headerName: 'Name', width: 150,
+        field: 'name', get headerName() { return i18next.t('Name'); }, width: 150,
         renderCell: (params) => <span className="hover:underline cursor-pointer font-bold" onClick={() => handleRowClick(params.row, 'edit_inventory_item')}>{params.value}</span>
     },
     {
         field: 'quantity',
-        headerName: 'Quantity',
+        get headerName() { return i18next.t('Quantity'); },
         width: 150,
         renderCell: (params) => (
             <span className="hover:underline cursor-pointer font-bold" onClick={() => handleRowClick(params.row, 'inventory_transaction')}>
@@ -43,7 +45,7 @@ const columns = (handleRowClick) => [
     {
         field: 'actions',
         type: 'actions',
-        headerName: 'Actions',
+        get headerName() { return i18next.t('Actions'); },
         width: 100,
         getActions: (params) => [
             <Grid size={12}>
@@ -59,6 +61,7 @@ const columns = (handleRowClick) => [
 ];
 
 const Inventory = ({ inventory_items, stores }) => {
+    const { t } = useTranslation();
     const [dataInventoryItems, setDataInventoryItems] = useState(inventory_items);
     const [inventoryItemModalOpen, setInventoryItemModalOpen] = useState(false);
     const [inventoryTransactionModalOpen, setInventoryTransactionModalOpen] = useState(false);
@@ -92,28 +95,28 @@ const Inventory = ({ inventory_items, stores }) => {
 
     const deleteInventoryItem = (inventory_item_id) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: t('Are you sure?'),
+            text: t('You won\'t be able to revert this!'),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: t('Yes, delete it!')
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.post(`/inventory-items/${inventory_item_id}`, {
                     _method: 'DELETE'
                 }).then((response) => {
                     Swal.fire(
-                        'Deleted!',
-                        'Inventory item has been deleted.',
+                        t('Deleted!'),
+                        t('Inventory item has been deleted.'),
                         'success'
                     );
                     refreshInventoryItems(window.location.href);
                 }).catch((error) => {
                     Swal.fire(
-                        'Error!',
-                        'Something went wrong.',
+                        t('Error!'),
+                        t('Something went wrong.'),
                         'error'
                     );
                 });
@@ -123,7 +126,7 @@ const Inventory = ({ inventory_items, stores }) => {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Inventory" />
+            <Head title={t('Inventory')} />
             <Grid
                 container
                 spacing={2}
@@ -144,7 +147,7 @@ const Inventory = ({ inventory_items, stores }) => {
                             setInventoryItemModalOpen(true);
                         }}
                     >
-                        ADD INVENTORY ITEM
+                        {t('ADD INVENTORY ITEM')}
                     </Button>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 2 }}>
@@ -157,7 +160,7 @@ const Inventory = ({ inventory_items, stores }) => {
                         color="success"
                         onClick={() => { router.get('/inventory-purchase') }}
                     >
-                        PURCHASE
+                        {t('PURCHASE')}
                     </Button>
                 </Grid>
                 <Grid size={{ xs: 8, sm: 2 }}>
@@ -170,7 +173,7 @@ const Inventory = ({ inventory_items, stores }) => {
                         color="primary"
                         onClick={() => { router.get('/inventory-logs') }}
                     >
-                        LOGS
+                        {t('LOGS')}
                     </Button>
                 </Grid>
             </Grid>

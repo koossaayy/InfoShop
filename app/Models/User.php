@@ -28,7 +28,7 @@ class User extends Authenticatable
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "User has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('User has been :eventName', ['eventName' => $eventName]));
     }
     /**
      * The attributes that are mass assignable.

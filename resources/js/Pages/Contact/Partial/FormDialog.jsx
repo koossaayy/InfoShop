@@ -9,6 +9,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 export default function FormDialog({
     open,
@@ -17,6 +18,7 @@ export default function FormDialog({
     contactType,
     onSuccess,
 }) {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -71,8 +73,8 @@ export default function FormDialog({
             .then((response) => {
                 // Notify user of success
                 Swal.fire({
-                    title: "Success!",
-                    text: "Successfully saved",
+                    title: t('Success!'),
+                    text: t('Successfully saved'),
                     icon: "success",
                     position: "bottom-start",
                     showConfirmButton: false,
@@ -99,10 +101,10 @@ export default function FormDialog({
 
                 // Show error message if submission fails
                 Swal.fire({
-                    title: "Error!",
+                    title: t('Error!'),
                     text:
                         error.response.data.message ||
-                        "An error occurred while saving.",
+                        t('An error occurred while saving.'),
                     icon: "error",
                     // position: '-start',
                     showConfirmButton: true,
@@ -122,7 +124,7 @@ export default function FormDialog({
                     }
                 }}
             >
-                <DialogTitle>Contact Information</DialogTitle>
+                <DialogTitle>{t('Contact Information')}</DialogTitle>
                 <DialogContent>
                     {/* Collection Name */}
                     {/* Name of the contact (both customers and vendors) */}
@@ -133,7 +135,7 @@ export default function FormDialog({
                         margin="dense"
                         id="name"
                         name="name"
-                        label="Name"
+                        label={t('Name')}
                         type="text"
                         fullWidth
                         variant="outlined" // Changed variant to "outlined"
@@ -147,7 +149,7 @@ export default function FormDialog({
                         margin="dense"
                         id="email"
                         name="email"
-                        label="Email"
+                        label={t('Email')}
                         type="email"
                         fullWidth
                         variant="outlined" // Changed variant to "outlined"
@@ -161,7 +163,7 @@ export default function FormDialog({
                         margin="dense"
                         id="phone"
                         name="phone"
-                        label="Phone"
+                        label={t('Phone')}
                         type="text"
                         fullWidth
                         variant="outlined" // Changed variant to "outlined"
@@ -175,7 +177,7 @@ export default function FormDialog({
                         margin="dense"
                         name="whatsapp"
                         placeholder="94XXXXXXXXX"
-                        label="Whatsapp"
+                        label={t('Whatsapp')}
                         type="text"
                         fullWidth
                         variant="outlined" // Changed variant to "outlined"
@@ -189,7 +191,7 @@ export default function FormDialog({
                         margin="dense"
                         id="address"
                         name="address"
-                        label="Address"
+                        label={t('Address')}
                         type="text"
                         fullWidth
                         variant="outlined" // Changed variant to "outlined"
@@ -198,8 +200,8 @@ export default function FormDialog({
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">SAVE</Button>
+                    <Button onClick={handleClose}>{t('Cancel')}</Button>
+                    <Button type="submit">{t('SAVE')}</Button>
                 </DialogActions>
             </Dialog>
         </>

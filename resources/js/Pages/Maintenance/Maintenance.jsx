@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { Box, Tabs, Tab } from "@mui/material";
@@ -11,6 +12,7 @@ import DatabaseStructureTab from "./Tabs/DatabaseStructureTab";
 import BackupFilesTab from "./Tabs/BackupFilesTab";
 
 export default function Maintenance() {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState(0);
 
     const handleTabChange = (event, newValue) => {
@@ -21,11 +23,11 @@ export default function Maintenance() {
         <AuthenticatedLayout
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Maintenance
+                    {t('Maintenance')}
                 </h2>
             }
         >
-            <Head title="Maintenance" />
+            <Head title={t('Maintenance')} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

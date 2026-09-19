@@ -10,12 +10,14 @@ import Select2 from "react-select";
 import axios from "axios";
 import _ from "lodash";
 
+import { useTranslation } from 'react-i18next';
 import AddToPurchase from "./AddToPurchase";
 
 import { usePurchase } from "@/Context/PurchaseContext";
 import { useCurrencyStore } from "@/stores/currencyStore";
 
 export default function ProductSearch() {
+    const { t } = useTranslation();
     const { addToCart } = usePurchase();
     const { settings: currencySettings } = useCurrencyStore();
 
@@ -95,7 +97,7 @@ export default function ProductSearch() {
         >
             <Select2
                 className="w-full"
-                placeholder="Select a product..."
+                placeholder={t('Select a product...')}
                 styles={{
                     control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -122,7 +124,7 @@ export default function ProductSearch() {
                     sx={{ minWidth: "200px", ml:'1rem' }}
                     startIcon={<AddBoxIcon />}
                 >
-                    Add Product
+                    {t('Add Product')}
                 </Button>
             </Link>
             <AddToPurchase

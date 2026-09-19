@@ -23,7 +23,7 @@ class ProductStock extends Model
             ->logOnly(['store_id', 'batch_id', 'quantity', 'product_id'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "ProductStock has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('ProductStock has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

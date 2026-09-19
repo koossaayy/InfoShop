@@ -1,8 +1,10 @@
 import React from 'react';
 import { Box, Button,  Grid, Paper, TextField, Typography } from '@mui/material';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const TelegramSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFormData, settings }) => {
+    const { t } = useTranslation();
 
     useEffect(() => {
         try {
@@ -89,7 +91,7 @@ const TelegramSetting = ({ handleSubmit, settingFormData, handleChange, setSetti
                                         });
                                     }}
                                 >
-                                    TEST TELEGRAM
+                                    {t('TEST TELEGRAM')}
                                 </Button>
 
                                 <Button
@@ -99,7 +101,7 @@ const TelegramSetting = ({ handleSubmit, settingFormData, handleChange, setSetti
                                     color="success"
                                     fullWidth
                                 >
-                                    UPDATE
+                                    {t('UPDATE')}
                                 </Button>
                             </Grid>
                         </Paper>

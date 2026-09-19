@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { Avatar, Box, Typography, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 import QuantityInput from './QuantityInput';
 import CartItemModal from './CartItemModal';
 import { usePage } from "@inertiajs/react";
@@ -18,6 +19,7 @@ import productplaceholder from "@/Pages/Product/product-placeholder.webp";
 import { useCurrencyFormatter } from '@/lib/currencyFormatter';
 
 export default function CartItems() {
+    const { t } = useTranslation();
   const formatCurrency = useCurrencyFormatter();
   const return_sale = usePage().props.return_sale;
   const edit_sale = usePage().props.edit_sale;
@@ -107,7 +109,7 @@ export default function CartItems() {
             <Box className="flex flex-row">
               <div className="relative w-full flex flex-row">
                 <QuantityInput cartItem={{ ...item, cart_index: index }}></QuantityInput>
-                <IconButton aria-label="delete" color='error' sx={{ ml: '8px' }} onClick={() => removeFromCart(index)}>
+                <IconButton aria-label={t('delete')} color='error' sx={{ ml: '8px' }} onClick={() => removeFromCart(index)}>
                   <DeleteIcon />
                 </IconButton>
               </div>
@@ -125,8 +127,8 @@ export default function CartItems() {
               },
             }}
           >
-            <MenuItem onClick={() => handleCartMenuClick(menuItem, 'free')}>ADD FREE ITEMS</MenuItem>
-            <MenuItem onClick={() => handleCartMenuClick(menuItem, 'duplicate')}>DUPLICATE</MenuItem>
+            <MenuItem onClick={() => handleCartMenuClick(menuItem, 'free')}>{t('ADD FREE ITEMS')}</MenuItem>
+            <MenuItem onClick={() => handleCartMenuClick(menuItem, 'duplicate')}>{t('DUPLICATE')}</MenuItem>
           </Menu>
         </React.Fragment>
       ))}

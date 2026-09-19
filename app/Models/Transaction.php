@@ -27,7 +27,7 @@ class Transaction extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Transaction has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Transaction has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [
@@ -60,7 +60,7 @@ class Transaction extends Model
             if ($this->amount < 0) {
                 // If amount is negative, it's a refund, so it's 'cash_out' in the CashLog
                 $transactionType = 'cash_out';
-                $description = 'Refund';
+                $description = __('Refund');
             } else {
                 // Normal cash transaction
                 $transactionType = 'cash_in';

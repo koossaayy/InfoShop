@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useTranslation } from 'react-i18next';
 import {
     Card,
     CardContent,
@@ -11,6 +12,7 @@ import { usePage } from "@inertiajs/react"
 import { useCurrencyFormatter } from "@/lib/currencyFormatter"
 
 export function OverViewCards() {
+    const { t } = useTranslation();
     const { data } = usePage().props;
     const auth = usePage().props.auth.user;
     const formatCurrency = useCurrencyFormatter();
@@ -21,21 +23,21 @@ export function OverViewCards() {
                     <Card className="bg-blue-300 text-blue-950">
                         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                             <CardTitle className='text-sm font-medium'>
-                                Total Items
+                                {t('Total Items')}
                             </CardTitle>
                             <Package />
                         </CardHeader>
                         <CardContent>
                             <div className='text-2xl font-bold'>{data.totalItems}</div>
                             <p className='text-muted-foreground text-xs'>
-                                {data.totalQuantities} QTY
+                                {t('{{0}} QTY', { 0: data.totalQuantities })}
                             </p>
                         </CardContent>
                     </Card>
                     <Card className="bg-yellow-200 text-yellow-900">
                         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                             <CardTitle className='text-sm font-medium'>
-                                Total valuation
+                                {t('Total valuation')}
                             </CardTitle>
                             <ChartLine />
                         </CardHeader>
@@ -48,7 +50,7 @@ export function OverViewCards() {
                     </Card>
                     <Card className="bg-green-300 text-green-950 cursor-pointer" onClick={() => window.location.href = route('sales.items.summary')}>
                         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                            <CardTitle className='text-sm font-medium'>Sold Items</CardTitle>
+                            <CardTitle className='text-sm font-medium'>{t('Sold Items')}</CardTitle>
                             <PackageCheck />
                         </CardHeader>
                         <CardContent>
@@ -61,7 +63,7 @@ export function OverViewCards() {
                     <Card className="bg-red-300 text-red-950">
                         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                             <CardTitle className='text-sm font-medium'>
-                                Customer balance
+                                {t('Customer balance')}
                             </CardTitle>
                             <User />
                         </CardHeader>

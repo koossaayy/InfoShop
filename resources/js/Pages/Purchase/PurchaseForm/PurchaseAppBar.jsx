@@ -10,9 +10,11 @@ import {
 import PaymentsIcon from "@mui/icons-material/Payments";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
+import { useTranslation } from 'react-i18next';
 import { usePurchase } from "@/Context/PurchaseContext";
 
 export default function PurchaseAppBar({setOpenPayment, selectedVendor, disable=true}) {
+    const { t } = useTranslation();
     const { cartState, cartTotal, } = usePurchase();
 
     return (
@@ -31,7 +33,7 @@ export default function PurchaseAppBar({setOpenPayment, selectedVendor, disable=
                             startIcon={<ArrowBackIosNewIcon />}
                             sx={{ mr: "1rem" }}
                         >
-                            BACK
+                            {t('BACK')}
                         </Button>
                     </Link>
 
@@ -44,7 +46,7 @@ export default function PurchaseAppBar({setOpenPayment, selectedVendor, disable=
                         onClick={() => setOpenPayment(true)}
                         disabled={cartState.length === 0 || !selectedVendor || disable}
                     >
-                        PAYMENTS
+                        {t('PAYMENTS')}
                     </Button>
                 </Toolbar>
             </AppBar>

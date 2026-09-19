@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, usePage } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -28,6 +29,7 @@ import Swal from "sweetalert2";
 
 import { DataGrid } from "@mui/x-data-grid";
 import CustomPagination from "@/Components/CustomPagination";
+import i18next from 'i18next';
 
 const formatProps = (properties) => {
     if (!properties || typeof properties !== "object") return "-";
@@ -51,34 +53,34 @@ const formatProps = (properties) => {
 const columns = (subjectTypes) => [
     {
         field: "created_at",
-        headerName: "When",
+        get headerName() { return i18next.t('When'); },
         width: 170,
         renderCell: (params) =>
             params.value ? dayjs(params.value).format("YYYY-MM-DD HH:mm:ss") : "-",
     },
     {
         field: "causer_name",
-        headerName: "User",
+        get headerName() { return i18next.t('User'); },
         width: 160,
         renderCell: (params) =>
-            params.value ? params.value : <Chip size="small" label="System" />,
+            params.value ? params.value : <Chip size="small" label={i18next.t('System')} />,
     },
-    { field: "description", headerName: "Description", width: 280 },
+    { field: "description", get headerName() { return i18next.t('Description'); }, width: 280 },
     {
         field: "subject_label",
-        headerName: "Model",
+        get headerName() { return i18next.t('Model'); },
         width: 130,
     },
     {
         field: "subject_id",
-        headerName: "Subject",
+        get headerName() { return i18next.t('Subject'); },
         width: 90,
         renderCell: (params) =>
             params.value ? `#${params.value}` : "-",
     },
     {
         field: "event",
-        headerName: "Event",
+        get headerName() { return i18next.t('Event'); },
         width: 110,
         renderCell: (params) => {
             const colors = {
@@ -93,13 +95,13 @@ const columns = (subjectTypes) => [
     },
     {
         field: "log_name",
-        headerName: "Log",
+        get headerName() { return i18next.t('Log'); },
         width: 120,
         renderCell: (params) => params.value || <Chip size="small" label="default" />,
     },
     {
         field: "properties_text",
-        headerName: "Changes",
+        get headerName() { return i18next.t('Changes'); },
         flex: 1,
         minWidth: 320,
         sortable: false,
@@ -112,6 +114,7 @@ const columns = (subjectTypes) => [
 ];
 
 export default function Index({ logs, subjectTypes, logNames, events, filters, flash }) {
+    const { t } = useTranslation();
     const user = usePage().props.auth.user;
     const permissions = usePage().props.userPermissions || [];
     const canAccess = (perm) =>
@@ -137,7 +140,7 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
     useEffect(() => {
         if (flash?.success) {
             Swal.fire({
-                title: "Success",
+                title: t('Success'),
                 text: flash.success,
                 icon: "success",
                 timer: 2500,
@@ -210,8 +213,8 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                         refreshLogs(window.location.pathname);
                     },
                     onError: (errors) => {
-                        const msg = errors?.days?.[0] || "Failed to prune activity logs.";
-                        Swal.fire({ title: "Error", text: msg, icon: "error" });
+                        const msg = errors?.days?.[0] || t('Failed to prune activity logs.');
+                        Swal.fire({ title: t('Error'), text: msg, icon: "error" });
                     },
                 }
             );
@@ -239,22 +242,22 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
             header={
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <HistoryIcon />
-                    <Typography variant="h6">Activity Log</Typography>
+                    <Typography variant="h6">{t('Activity Log')}</Typography>
                 </Box>
             }
         >
-            <Head title="Activity Log" />
+            <Head title={t('Activity Log')} />
             <Grid container spacing={2} sx={{ p: 2 }}>
                 <Grid item xs={12}>
                     <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center" }}>
                         <FormControl size="small" sx={{ minWidth: 180 }}>
-                            <InputLabel>Model</InputLabel>
+                            <InputLabel>{t('Model')}</InputLabel>
                             <Select
                                 value={searchTerms.subject_type}
-                                label="Model"
+                                label={t('Model')}
                                 onChange={(e) => handleFilterChange("subject_type", e.target.value)}
                             >
-                                <MenuItem value="">All</MenuItem>
+                                <MenuItem value="">{t('All')}</MenuItem>
                                 {Object.entries(subjectTypes).map(([fqcn, label]) => (
                                     <MenuItem key={fqcn} value={fqcn}>
                                         {label}
@@ -264,13 +267,13 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                         </FormControl>
 
                         <FormControl size="small" sx={{ minWidth: 150 }}>
-                            <InputLabel>Log</InputLabel>
+                            <InputLabel>{t('Log')}</InputLabel>
                             <Select
                                 value={searchTerms.log_name}
-                                label="Log"
+                                label={t('Log')}
                                 onChange={(e) => handleFilterChange("log_name", e.target.value)}
                             >
-                                <MenuItem value="">All</MenuItem>
+                                <MenuItem value="">{t('All')}</MenuItem>
                                 {logNames.map((name) => (
                                     <MenuItem key={name} value={name}>
                                         {name}
@@ -280,13 +283,13 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                         </FormControl>
 
                         <FormControl size="small" sx={{ minWidth: 140 }}>
-                            <InputLabel>Event</InputLabel>
+                            <InputLabel>{t('Event')}</InputLabel>
                             <Select
                                 value={searchTerms.event}
-                                label="Event"
+                                label={t('Event')}
                                 onChange={(e) => handleFilterChange("event", e.target.value)}
                             >
-                                <MenuItem value="">All</MenuItem>
+                                <MenuItem value="">{t('All')}</MenuItem>
                                 {events.map((ev) => (
                                     <MenuItem key={ev} value={ev}>
                                         {ev}
@@ -298,7 +301,7 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                         <TextField
                             size="small"
                             type="date"
-                            label="From"
+                            label={t('From')}
                             InputLabelProps={{ shrink: true }}
                             value={searchTerms.date_from}
                             onChange={(e) => handleFilterChange("date_from", e.target.value)}
@@ -306,27 +309,27 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                         <TextField
                             size="small"
                             type="date"
-                            label="To"
+                            label={t('To')}
                             InputLabelProps={{ shrink: true }}
                             value={searchTerms.date_to}
                             onChange={(e) => handleFilterChange("date_to", e.target.value)}
                         />
 
                         <Button size="small" onClick={handleClearFilters}>
-                            Clear
+                            {t('Clear')}
                         </Button>
 
                         <Box sx={{ flex: 1 }} />
 
                         {canAccess("activity-log") && (
-                            <Tooltip title="Prune old log entries">
+                            <Tooltip title={t('Prune old log entries')}>
                                 <Button
                                     variant="outlined"
                                     color="warning"
                                     startIcon={<DeleteSweepIcon />}
                                     onClick={() => setPruneOpen(true)}
                                 >
-                                    Prune Old Logs
+                                    {t('Prune Old Logs')}
                                 </Button>
                             </Tooltip>
                         )}
@@ -363,17 +366,17 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
             </Grid>
 
             <Dialog open={pruneOpen} onClose={() => !pruneLoading && setPruneOpen(false)} maxWidth="xs" fullWidth>
-                <DialogTitle>Prune Old Activity Logs</DialogTitle>
+                <DialogTitle>{t('Prune Old Activity Logs')}</DialogTitle>
                 <DialogContent>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                        Delete activity log entries older than the specified number of days. This cannot be undone.
+                        {t('Delete activity log entries older than the specified number of days. This cannot be undone.')}
                     </Typography>
                     <TextField
                         autoFocus
                         fullWidth
                         size="small"
                         type="number"
-                        label="Older than (days)"
+                        label={t('Older than (days)')}
                         value={pruneDays}
                         onChange={(e) => setPruneDays(e.target.value)}
                         inputProps={{ min: 1, max: 3650 }}
@@ -381,13 +384,13 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                     <Box sx={{ mt: 2 }}>
                         {pruneCount === null ? (
                             <Typography variant="body2" color="text.secondary">
-                                Enter a number of days to see how many records will be affected.
+                                {t('Enter a number of days to see how many records will be affected.')}
                             </Typography>
                         ) : pruneCount === 0 ? (
-                            <Alert severity="info">No log records older than {pruneDays} days.</Alert>
+                            <Alert severity="info">{t('No log records older than {{0}} days.', { 0: pruneDays })}</Alert>
                         ) : (
                             <Alert severity="warning">
-                                This will permanently delete <strong>{pruneCount.toLocaleString()}</strong>{" "}
+                                This will permanently delete <strong>{pruneCount.toLocaleString(globalThis.document?.documentElement?.lang || undefined)}</strong>{" "}
                                 log record(s) older than {pruneDays} days.
                             </Alert>
                         )}
@@ -395,7 +398,7 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setPruneOpen(false)} disabled={pruneLoading}>
-                        Cancel
+                        {t('Cancel')}
                     </Button>
                     <Button
                         onClick={handlePrune}
@@ -403,7 +406,7 @@ export default function Index({ logs, subjectTypes, logNames, events, filters, f
                         variant="contained"
                         disabled={pruneLoading || !pruneCount}
                     >
-                        {pruneLoading ? "Pruning..." : "Prune"}
+                        {pruneLoading ? t('Pruning...') : t('Prune')}
                     </Button>
                 </DialogActions>
             </Dialog>

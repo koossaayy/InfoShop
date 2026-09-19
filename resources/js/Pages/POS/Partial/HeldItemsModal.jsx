@@ -4,6 +4,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
+import { useTranslation } from 'react-i18next';
 import { useSales as useCart } from "@/Context/SalesContext";
 import dayjs from "dayjs";
 
@@ -17,6 +18,7 @@ export default function HeldItemsModal({
     modalOpen,
     setModalOpen,
 }) {
+    const { t } = useTranslation();
     const { setHeldCartToCart, removeHeldItem } = useCart();
     const [heldCartKeys, setHeldCartKeys] = useState([]);
 
@@ -52,10 +54,10 @@ export default function HeldItemsModal({
                 aria-labelledby="alert-dialog-title"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"HOLD ITEMS"}
+                    {t('HOLD ITEMS')}
                 </DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",

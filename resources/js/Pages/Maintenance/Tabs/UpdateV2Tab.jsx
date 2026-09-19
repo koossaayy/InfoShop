@@ -13,8 +13,10 @@ import {
     Shield,
     Zap
 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 export default function UpdateV2Tab() {
+    const { t } = useTranslation();
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -24,7 +26,7 @@ export default function UpdateV2Tab() {
     const logsEndRef = useRef(null);
 
     const addLog = (message, type = 'info') => {
-        const timestamp = new Date().toLocaleTimeString();
+        const timestamp = new Date().toLocaleTimeString(globalThis.document?.documentElement?.lang || undefined);
         setLogs(prev => [...prev, { message, type, timestamp }]);
     };
 
@@ -41,18 +43,18 @@ export default function UpdateV2Tab() {
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles[0]?.name.endsWith('.zip')) {
             if (acceptedFiles[0].size > MAX_FILE_SIZE) {
-                setError(`File too large. Maximum size is 50MB. Your file is ${(acceptedFiles[0].size / 1024 / 1024).toFixed(2)}MB`);
-                addLog(`Error: File exceeds 50MB limit (${(acceptedFiles[0].size / 1024 / 1024).toFixed(2)}MB)`, 'error');
+                setError(t('File too large. Maximum size is 50MB. Your file is {{0}}MB', { 0: (acceptedFiles[0].size / 1024 / 1024).toFixed(2) }));
+                addLog(t('Error: File exceeds 50MB limit ({{0}}MB)', { 0: (acceptedFiles[0].size / 1024 / 1024).toFixed(2) }), 'error');
                 return;
             }
             setFile(acceptedFiles[0]);
             setError(null);
             setLogs([]);
             setStatus('idle');
-            addLog(`File selected: ${acceptedFiles[0].name} (${(acceptedFiles[0].size / 1024 / 1024).toFixed(2)}MB)`, 'success');
+            addLog(t('File selected: {{0}} ({{1}}MB)', { 0: acceptedFiles[0].name, 1: (acceptedFiles[0].size / 1024 / 1024).toFixed(2) }), 'success');
         } else {
-            setError('Only ZIP files are allowed');
-            addLog('Error: Only ZIP files are allowed', 'error');
+            setError(t('Only ZIP files are allowed'));
+            addLog(t('Error: Only ZIP files are allowed'), 'error');
         }
     }, []);
 
@@ -65,8 +67,8 @@ export default function UpdateV2Tab() {
         onDropRejected: (rejectedFiles) => {
             const file = rejectedFiles[0];
             if (file.errors[0]?.code === 'file-too-large') {
-                setError(`File too large. Maximum size is 50MB. Your file is ${(file.file.size / 1024 / 1024).toFixed(2)}MB`);
-                addLog(`Error: File rejected - exceeds 50MB limit (${(file.file.size / 1024 / 1024).toFixed(2)}MB)`, 'error');
+                setError(t('File too large. Maximum size is 50MB. Your file is {{0}}MB', { 0: (file.file.size / 1024 / 1024).toFixed(2) }));
+                addLog(t('Error: File rejected - exceeds 50MB limit ({{0}}MB)', { 0: (file.file.size / 1024 / 1024).toFixed(2) }), 'error');
             }
         }
     });
@@ -81,17 +83,17 @@ export default function UpdateV2Tab() {
         setUploadProgress(0);
         setLogs([]);
 
-        addLog('Preparing update package...', 'info');
-        addLog('📋 Validating folder structure...', 'info');
-        addLog('Required folders: app, routes, resources, config, database, lang', 'info');
-        addLog('Optional folders: vendor, public (build folder will be replaced)', 'info');
+        addLog(t('Preparing update package...'), 'info');
+        addLog(t('📋 Validating folder structure...'), 'info');
+        addLog(t('Required folders: app, routes, resources, config, database, lang'), 'info');
+        addLog(t('Optional folders: vendor, public (build folder will be replaced)'), 'info');
 
         const formData = new FormData();
         formData.append('zip_file', file);
 
         try {
             setStatus('uploading');
-            addLog('Uploading to server...', 'info');
+            addLog(t('Uploading to server...'), 'info');
 
             const response = await axios.post('/upload-v2', formData, {
                 headers: {
@@ -106,16 +108,16 @@ export default function UpdateV2Tab() {
 
                     if (percentCompleted === 100) {
                         setStatus('processing');
-                        addLog('Upload complete. Processing update...', 'success');
+                        addLog(t('Upload complete. Processing update...'), 'success');
                     }
                 },
             });
 
             setStatus('success');
-            addLog('✓ Update completed successfully!', 'success');
+            addLog(t('✓ Update completed successfully!'), 'success');
 
             if (response.data.migrations_output) {
-                addLog('Migration Output:', 'info');
+                addLog(t('Migration Output:'), 'info');
                 const migrationLines = response.data.migrations_output.split('\n');
                 migrationLines.forEach(line => {
                     if (line.trim()) {
@@ -126,12 +128,12 @@ export default function UpdateV2Tab() {
 
         } catch (error) {
             setStatus('error');
-            const errorMsg = error.response?.data?.error || error.message || 'Update failed';
+            const errorMsg = error.response?.data?.error || error.message || t('Update failed');
             setError(errorMsg);
-            addLog(`✗ Error: ${errorMsg}`, 'error');
+            addLog(t('✗ Error: {{0}}', { 0: errorMsg }), 'error');
 
             if (error.response?.data?.details) {
-                addLog('Error Details:', 'error');
+                addLog(t('Error Details:'), 'error');
                 addLog(error.response.data.details, 'error');
             }
         } finally {
@@ -157,8 +159,8 @@ export default function UpdateV2Tab() {
                             <FolderSync className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                            <p className="text-xs text-gray-500">Migration Based</p>
-                            <p className="text-sm font-semibold text-gray-900">Auto Updates</p>
+                            <p className="text-xs text-gray-500">{t('Migration Based')}</p>
+                            <p className="text-sm font-semibold text-gray-900">{t('Auto Updates')}</p>
                         </div>
                     </div>
                 </div>
@@ -169,8 +171,8 @@ export default function UpdateV2Tab() {
                             <Shield className="w-5 h-5 text-green-600" />
                         </div>
                         <div>
-                            <p className="text-xs text-gray-500">Auto Backup</p>
-                            <p className="text-sm font-semibold text-gray-900">Safe Updates</p>
+                            <p className="text-xs text-gray-500">{t('Auto Backup')}</p>
+                            <p className="text-sm font-semibold text-gray-900">{t('Safe Updates')}</p>
                         </div>
                     </div>
                 </div>
@@ -181,8 +183,8 @@ export default function UpdateV2Tab() {
                             <Database className="w-5 h-5 text-purple-600" />
                         </div>
                         <div>
-                            <p className="text-xs text-gray-500">Smart Rollback</p>
-                            <p className="text-sm font-semibold text-gray-900">Fail-Safe</p>
+                            <p className="text-xs text-gray-500">{t('Smart Rollback')}</p>
+                            <p className="text-sm font-semibold text-gray-900">{t('Fail-Safe')}</p>
                         </div>
                     </div>
                 </div>
@@ -193,8 +195,8 @@ export default function UpdateV2Tab() {
                             <Zap className="w-5 h-5 text-orange-600" />
                         </div>
                         <div>
-                            <p className="text-xs text-gray-500">Pre-flight Checks</p>
-                            <p className="text-sm font-semibold text-gray-900">Validated</p>
+                            <p className="text-xs text-gray-500">{t('Pre-flight Checks')}</p>
+                            <p className="text-sm font-semibold text-gray-900">{t('Validated')}</p>
                         </div>
                     </div>
                 </div>
@@ -202,7 +204,7 @@ export default function UpdateV2Tab() {
 
             {/* Upload Card */}
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Upload Update Package</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('Upload Update Package')}</h3>
                 
                 {/* Dropzone */}
                 <div
@@ -223,10 +225,10 @@ export default function UpdateV2Tab() {
                                 </div>
                                 <div>
                                     <p className="text-sm font-semibold text-gray-900">
-                                        {isDragActive ? 'Drop the file here' : 'Drag & drop your update package'}
+                                        {isDragActive ? t('Drop the file here') : t('Drag & drop your update package')}
                                     </p>
                                     <p className="text-xs text-gray-500 mt-1">
-                                        or click to browse (ZIP files only, max 50MB)
+                                        {t('or click to browse (ZIP files only, max 50MB)')}
                                     </p>
                                 </div>
                             </>
@@ -238,7 +240,7 @@ export default function UpdateV2Tab() {
                                 <div>
                                     <p className="text-sm font-semibold text-gray-900">{file.name}</p>
                                     <p className="text-xs text-gray-500 mt-1">
-                                        {(file.size / 1024 / 1024).toFixed(2)} MB
+                                        {t('{{0}} MB', { 0: (file.size / 1024 / 1024).toFixed(2) })}
                                     </p>
                                 </div>
                             </>
@@ -251,7 +253,7 @@ export default function UpdateV2Tab() {
                     <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-3 flex items-start gap-3">
                         <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                         <div className="flex-1">
-                            <p className="text-sm font-semibold text-red-900">Update Failed</p>
+                            <p className="text-sm font-semibold text-red-900">{t('Update Failed')}</p>
                             <p className="text-xs text-red-700 mt-1">{error}</p>
                         </div>
                     </div>
@@ -262,9 +264,9 @@ export default function UpdateV2Tab() {
                     <div className="mt-4">
                         <div className="flex justify-between items-center mb-2">
                             <span className="text-sm font-semibold text-gray-900">
-                                {status === 'validating' && 'Validating...'}
+                                {status === 'validating' && t('Validating...')}
                                 {status === 'uploading' && `Uploading... ${uploadProgress}%`}
-                                {status === 'processing' && 'Processing update...'}
+                                {status === 'processing' && t('Processing update...')}
                             </span>
                             {status === 'processing' && (
                                 <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
@@ -284,8 +286,8 @@ export default function UpdateV2Tab() {
                     <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-3 flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                         <div className="flex-1">
-                            <p className="text-sm font-semibold text-green-900">Update Completed</p>
-                            <p className="text-xs text-green-700 mt-1">Your system has been updated successfully.</p>
+                            <p className="text-sm font-semibold text-green-900">{t('Update Completed')}</p>
+                            <p className="text-xs text-green-700 mt-1">{t('Your system has been updated successfully.')}</p>
                         </div>
                     </div>
                 )}
@@ -299,14 +301,14 @@ export default function UpdateV2Tab() {
                                 className="flex-1 bg-blue-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                             >
                                 <Upload className="w-4 h-4" />
-                                Start Update
+                                {t('Start Update')}
                             </button>
                             <button
                                 onClick={() => setFile(null)}
                                 className="bg-gray-300 text-gray-900 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-400 transition-colors flex items-center justify-center gap-2"
                             >
                                 <X className="w-4 h-4" />
-                                Clear
+                                {t('Clear')}
                             </button>
                         </>
                     )}
@@ -315,7 +317,7 @@ export default function UpdateV2Tab() {
                             onClick={resetForm}
                             className="w-full bg-blue-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors"
                         >
-                            Upload Another
+                            {t('Upload Another')}
                         </button>
                     )}
                 </div>
@@ -324,7 +326,7 @@ export default function UpdateV2Tab() {
             {/* Logs Section */}
             {logs.length > 0 && (
                 <div className="bg-gray-900 rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3">Update Logs</h3>
+                    <h3 className="text-sm font-semibold text-white mb-3">{t('Update Logs')}</h3>
                     <div className="bg-black rounded p-3 h-64 overflow-y-auto font-mono text-xs space-y-1">
                         {logs.map((log, index) => (
                             <div 

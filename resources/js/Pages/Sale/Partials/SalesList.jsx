@@ -4,8 +4,10 @@ import { Banknote, CornerDownLeft, Edit, Eye, MoreVertical, Printer, Trash, X } 
 import { Link, router } from '@inertiajs/react';
 import numeral from 'numeral';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 const SalesList = ({ sales, handleRowClick }) => {
+    const { t } = useTranslation();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedSale, setSelectedSale] = useState(null);
 
@@ -29,18 +31,18 @@ const SalesList = ({ sales, handleRowClick }) => {
                         {/* Middle section with transaction details */}
                         <div className="grid grid-cols-3 gap-4 items-center mt-4">
                             <div>
-                                <h3 className="text-base text-xs text-gray-500">Total</h3>
+                                <h3 className="text-base text-xs text-gray-500">{t('Total')}</h3>
                                 <p className="text-sm font-bold text-gray-900 mt-1">{numeral(sale.total_amount).format("0,0.00")}</p>
                             </div>
                             <div onClick={() => handleRowClick(sale, "add_payment")}>
-                                <h3 className="text-base text-xs text-gray-500">Pending</h3>
+                                <h3 className="text-base text-xs text-gray-500">{t('Pending')}</h3>
                                 <p className="text-sm font-bold text-gray-900 mt-1">{numeral(Number(sale.amount_received) - Number(sale.total_amount)).format("0,0.00")}</p>
                             </div>
                             <div className="flex justify-end gap-3 mt-2">
                                 <Link href={"/receipt/" + sale.id} className="text-gray-600">
                                     <Printer size={20} />
                                 </Link>
-                                <button aria-label="More options" className="text-gray-600" onClick={() => {
+                                <button aria-label={t('More options')} className="text-gray-600" onClick={() => {
                                     setSelectedSale(sale);
                                     setDrawerOpen(true);
                                 }}>
@@ -66,7 +68,7 @@ const SalesList = ({ sales, handleRowClick }) => {
                 >
                     <ul className="divide-y divide-gray-200 p-4 rounded-sm">
                         <li className="py-4 flex font-semibold text-gray-900 justify-between">
-                            More options
+                            {t('More options')}
                             <button onClick={() => setDrawerOpen(false)}><X size={25} /></button>
                         </li>
 
@@ -76,14 +78,14 @@ const SalesList = ({ sales, handleRowClick }) => {
                         }}>
                             <button className="flex items-center space-x-3 text-gray-700">
                                 <Eye size={20} />
-                                <span>View Details</span>
+                                <span>{t('View Details')}</span>
                             </button>
                         </li>
 
                         <li className="py-4 flex" onClick={() => handleRowClick(selectedSale, "add_payment")}>
                             <button className="flex items-center space-x-3 text-gray-700">
                                 <Banknote size={22} />
-                                <span>Add Payment</span>
+                                <span>{t('Add Payment')}</span>
                             </button>
                         </li>
                         
@@ -92,7 +94,7 @@ const SalesList = ({ sales, handleRowClick }) => {
                             <li className="py-4 flex" onClick={() => handleRowClick(selectedSale, "edit")}>
                                 <button className="flex items-center space-x-3 text-gray-700">
                                     <Edit size={20} />
-                                    <span>Edit</span>
+                                    <span>{t('Edit')}</span>
                                 </button>
                             </li>
                         )}
@@ -101,7 +103,7 @@ const SalesList = ({ sales, handleRowClick }) => {
                             <li className="py-4 flex">
                                 <Link href={`/pos/${selectedSale.id}/return`} className="flex items-center space-x-3 text-gray-700 w-full">
                                     <CornerDownLeft size={20} />
-                                    <span>Return</span>
+                                    <span>{t('Return')}</span>
                                 </Link>
                             </li>
                         )}
@@ -109,7 +111,7 @@ const SalesList = ({ sales, handleRowClick }) => {
                         <li className="py-4 flex">
                             <button onClick={() => handleRowClick(selectedSale, "delete")} className="flex items-center space-x-3 text-red-600 w-full">
                                 <Trash size={20} />
-                                <span>Delete</span>
+                                <span>{t('Delete')}</span>
                             </button>
                         </li>
 
