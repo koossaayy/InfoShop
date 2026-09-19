@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { usePage, Head } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Box,  Grid, Button } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
@@ -8,6 +9,7 @@ import Alpine from 'alpinejs';
 import numeral from 'numeral';
 import Mustache from 'mustache';
 const BarcodeView = ({ product, template, barcode_settings, }) => {
+    const { t } = useTranslation();
     const [renderedTemplate, setRenderedTemplate] = useState('');
 
     useEffect(() => {
@@ -23,7 +25,7 @@ const BarcodeView = ({ product, template, barcode_settings, }) => {
                 }
             } catch (error) {
                 console.error("Error rendering template:", error);
-                Swal.fire('Error', 'Failed to render template', 'error');
+                Swal.fire(t('Error'), t('Failed to render template'), 'error');
             }
         };
         renderTemplate();
@@ -31,7 +33,7 @@ const BarcodeView = ({ product, template, barcode_settings, }) => {
 
     return (
         <>
-            <Head title="Barcode" />
+            <Head title={t('Barcode')} />
             <div dangerouslySetInnerHTML={{ __html: renderedTemplate }} />
         </>
 

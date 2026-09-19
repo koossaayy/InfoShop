@@ -65,7 +65,7 @@ class ReloadController extends Controller
         return Inertia::render('Reload/Reload', [
             'reloads' => $reloads,
             'stores' => $stores,
-            'pageLabel' => 'Reloads',
+            'pageLabel' => __('Reloads'),
         ]);
     }
 

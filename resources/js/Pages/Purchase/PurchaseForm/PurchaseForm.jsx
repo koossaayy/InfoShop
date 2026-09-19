@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useState, useEffect, useContext } from "react";
 import { Head, Link } from "@inertiajs/react";
@@ -32,6 +33,7 @@ import { usePurchase } from "@/Context/PurchaseContext";
 import { SharedContext } from "@/Context/SharedContext";
 
 export default function PurchaseForm({ vendors, purchase, stores }) {
+    const { t } = useTranslation();
     const { cartState, cartTotal, } = usePurchase();
     const { selectedVendor, setSelectedVendor } = useContext(SharedContext);
 
@@ -85,7 +87,7 @@ export default function PurchaseForm({ vendors, purchase, stores }) {
         axios.post('/purchase/store', formJson)
         .then((resp) => {
             Swal.fire({
-                title: "Success!",
+                title: t('Success!'),
                 text: resp.data.message,
                 icon: "success",
                 showConfirmButton: false,
@@ -118,10 +120,10 @@ export default function PurchaseForm({ vendors, purchase, stores }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Add Purchase" />
+            <Head title={t('Add Purchase')} />
 
             <Box className="mb-10">
-                <Breadcrumbs aria-label="breadcrumb">
+                <Breadcrumbs aria-label={t('breadcrumb')}>
                     <Link
                         underline="hover"
                         sx={{ display: "flex", alignItems: "center" }}
@@ -132,13 +134,13 @@ export default function PurchaseForm({ vendors, purchase, stores }) {
                             sx={{ mr: 0.5, mb: "3px" }}
                             fontSize="inherit"
                         />
-                        Home
+                        {t('Home')}
                     </Link>
                     <Link underline="hover" color="inherit" href="/purchases">
-                        Purchases
+                        {t('Purchases')}
                     </Link>
                     <Typography sx={{ color: "text.primary" }}>
-                        {purchase ? "Edit Product" : "Add Purchase"}
+                        {purchase ? t('Edit Product') : t('Add Purchase')}
                     </Typography>
                 </Breadcrumbs>
             </Box>
@@ -151,10 +153,10 @@ export default function PurchaseForm({ vendors, purchase, stores }) {
                 <Grid container spacing={2}>
                     <Grid size={3}>
                         <FormControl fullWidth>
-                            <InputLabel>Store</InputLabel>
+                            <InputLabel>{t('Store')}</InputLabel>
                             <Select
                                 value={purchaseForm.store_id}
-                                label="Store"
+                                label={t('Store')}
                                 onChange={handlePurchaseForm}
                                 required
                                 name="store_id"
@@ -169,7 +171,7 @@ export default function PurchaseForm({ vendors, purchase, stores }) {
                     </Grid>
                     <Grid size={2}>
                         <TextField
-                            label="Reference No"
+                            label={t('Reference No')}
                             name="reference_no"
                             value={purchaseForm.reference_no}
                             onChange={handlePurchaseForm}
@@ -179,9 +181,9 @@ export default function PurchaseForm({ vendors, purchase, stores }) {
                     </Grid>
                     <Grid size={3}>
                         <TextField
-                            label="Purchase Date"
+                            label={t('Purchase Date')}
                             name="purchase_date"
-                            placeholder="Purchase Date"
+                            placeholder={t('Purchase Date')}
                             fullWidth
                             type="date"
                             slotProps={{
@@ -215,7 +217,7 @@ export default function PurchaseForm({ vendors, purchase, stores }) {
                                     setSelectedVendor(newValue);
                                 }}
                                 renderInput={(params) => (
-                                    <TextField {...params} label="Vendor" />
+                                    <TextField {...params} label={t('Vendor')} />
                                 )}
                             />
                         )}

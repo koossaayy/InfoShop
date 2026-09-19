@@ -44,10 +44,12 @@ import PermMediaIcon from '@mui/icons-material/PermMedia';
 import HistoryIcon from '@mui/icons-material/History';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyCheck, faFileInvoice, faBoxesStacked, faPercent } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from 'react-i18next';
 import infoshopLogo from "@/infoshop.png";
 const drawerWidth = 240;
 
 function AuthenticatedLayout({ header, children, ...props }) {
+    const { t } = useTranslation();
     const user = usePage().props.auth.user;
     const shop_name = usePage().props.settings.shop_name;
     const modules = usePage().props.modules;
@@ -165,7 +167,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                 <NavItem
                     href="/dashboard"
                     icon={DashboardIcon}
-                    label="Dashboard"
+                    label={t('Dashboard')}
                     open={open}
                     selected={isSelected("/dashboard")}
                 />
@@ -174,7 +176,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/pos"
                         icon={PointOfSaleIcon}
-                        label="POS"
+                        label={t('POS')}
                         open={open}
                         selected={isSelected("/pos")}
                     />
@@ -183,7 +185,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/products"
                         icon={InventoryIcon}
-                        label="Products"
+                        label={t('Products')}
                         open={open}
                         selected={isSelected("/products")}
                     />
@@ -193,7 +195,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/sales"
                         icon={PaidIcon}
-                        label="Sales"
+                        label={t('Sales')}
                         open={open}
                         selected={isSelected("/sales")}
                     />
@@ -201,7 +203,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                 <NavItem
                     href="/reports/dailycash"
                     icon={WorkIcon}
-                    label="Cash Drawer"
+                    label={t('Cash Drawer')}
                     open={open}
                     selected={isSelected("/reports/dailycash")}
                 />
@@ -210,7 +212,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/customers"
                         icon={CustomerIcon}
-                        label="Customers"
+                        label={t('Customers')}
                         open={open}
                         selected={isSelected("/customers")}
                     />
@@ -219,7 +221,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/vendors"
                         icon={VendorIcon}
-                        label="Suppliers"
+                        label={t('Suppliers')}
                         open={open}
                         selected={isSelected("/vendors")}
                     />
@@ -230,7 +232,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                         href="/inventory"
                         icon={faBoxesStacked}
                         icontype={'fa'}
-                        label="Inventory"
+                        label={t('Inventory')}
                         open={open}
                         selected={isSelected("/inventory")}
                     />
@@ -241,7 +243,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/collections"
                         icon={AccountTreeIcon}
-                        label="Collections"
+                        label={t('Collections')}
                         open={open}
                         selected={isSelected("/collections")}
                     />
@@ -251,7 +253,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/expenses"
                         icon={AccountBalanceWalletIcon}
-                        label="Expenses"
+                        label={t('Expenses')}
                         open={open}
                         selected={isSelected("/expenses")}
                     />
@@ -273,7 +275,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                         href="/quotations"
                         icon={faFileInvoice}
                         icontype={'fa'}
-                        label="Quotations"
+                        label={t('Quotations')}
                         open={open}
                         selected={isSelected("/quotations")}
                     />
@@ -283,7 +285,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/reloads"
                         icon={PhoneForwardedIcon}
-                        label="Reloads"
+                        label={t('Reloads')}
                         open={open}
                         selected={isSelected("/reloads")}
                     />
@@ -294,7 +296,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                         href="/cheques?status=pending"
                         icon={faMoneyCheck}
                         icontype={'fa'}
-                        label="Cheques"
+                        label={t('Cheques')}
                         open={open}
                         selected={isSelected("/cheques")}
                     />
@@ -303,7 +305,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/sold-items"
                         icon={ShoppingCartCheckoutIcon}
-                        label="Sold Items"
+                        label={t('Sold Items')}
                         open={open}
                         selected={isSelected("/sold-items")}
                     />
@@ -312,7 +314,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/purchases"
                         icon={AddShoppingCartIcon}
-                        label="Purchases"
+                        label={t('Purchases')}
                         open={open}
                         selected={isSelected("/purchases")}
                     />
@@ -321,7 +323,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/payments/sales"
                         icon={PaymentsIcon}
-                        label="Payments"
+                        label={t('Payments')}
                         open={open}
                         selected={isSelected("/payments")}
                     />
@@ -330,7 +332,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/stores"
                         icon={StoreIcon}
-                        label="Stores"
+                        label={t('Stores')}
                         open={open}
                         selected={isSelected("/stores")}
                     />
@@ -339,7 +341,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/employees"
                         icon={BadgeIcon}
-                        label="Employees"
+                        label={t('Employees')}
                         open={open}
                         selected={isSelected("/employees")}
                     />
@@ -348,7 +350,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/payroll"
                         icon={ReceiptIcon}
-                        label="Payroll"
+                        label={t('Payroll')}
                         open={open}
                         selected={isSelected("/payroll")}
                     />
@@ -357,7 +359,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/media"
                         icon={PermMediaIcon}
-                        label="Media"
+                        label={t('Media')}
                         open={open}
                         selected={isSelected("/media")}
                     />
@@ -366,7 +368,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/settings"
                         icon={SettingsIcon}
-                        label="Settings"
+                        label={t('Settings')}
                         open={open}
                         selected={isSelected("/settings")}
                     />
@@ -374,7 +376,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                 <NavItem
                     href="/profile"
                     icon={ManageAccountsIcon}
-                    label="Profile"
+                    label={t('Profile')}
                     open={open}
                     selected={isSelected("/profile")}
                 />
@@ -392,7 +394,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                                 <NavItem
                                     href="/users"
                                     icon={null}
-                                    label="All"
+                                    label={t('All')}
                                     open={open}
                                     // sx={{ pl: 5 }}
                                     selected={isSelected("/users")}
@@ -400,7 +402,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                                 <NavItem
                                     href="/user/role"
                                     icon={null}
-                                    label="User Role"
+                                    label={t('User Role')}
                                     open={open}
                                     // sx={{ pl: 5 }}
                                     selected={isSelected("/user/role")}
@@ -414,7 +416,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                     <NavItem
                         href="/activity-log"
                         icon={HistoryIcon}
-                        label="Activity Log"
+                        label={t('Activity Log')}
                         open={open}
                         selected={isSelected("/activity-log")}
                     />
@@ -423,7 +425,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                 <NavItem
                     href={"#"}
                     icon={LogoutIcon}
-                    label="Logout"
+                    label={t('Logout')}
                     open={open}
                     onClick={(e) => {
                         e.preventDefault(); // Prevent default link behavior
@@ -447,7 +449,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                 <Toolbar>
                     <IconButton
                         color="inherit"
-                        aria-label="open drawer"
+                        aria-label={t('open drawer')}
                         edge="start"
                         onClick={handleDrawerToggle}
                         sx={{ mr: 2, display: { sm: "none" } }}
@@ -476,7 +478,7 @@ function AuthenticatedLayout({ header, children, ...props }) {
                         >
                             {shop_name} | {pageLabel}
                         </Typography>
-                        <Tooltip title="Logout" arrow>
+                        <Tooltip title={t('Logout')} arrow>
                             <IconButton
                                 color="white"
                                 size="large"

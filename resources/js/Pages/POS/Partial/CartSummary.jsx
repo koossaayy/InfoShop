@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import { ListItem, TextField, Divider, Typography, Button, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
+import { useTranslation } from 'react-i18next';
 import { useSales as useCart } from '@/Context/SalesContext';
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,6 +11,7 @@ import { useCurrencyFormatter } from '@/lib/currencyFormatter';
 import { useCurrencyStore } from '@/stores/currencyStore';
 
 export default function CartSummary() {
+    const { t } = useTranslation();
     const { cartState, cartTotal, totalQuantity, charges, totalChargeAmount, finalTotal, discount, calculateChargeAmountWithDiscount, addCharge, removeCharge } = useCart();
     const { settings: currencySettings } = useCurrencyStore();
     const [availableCharges, setAvailableCharges] = useState([]);
@@ -73,7 +75,7 @@ export default function CartSummary() {
                     </Typography>
                 }
             >
-                <ListItemText primary="Total Items" />
+                <ListItemText primary={t('Total Items')} />
             </ListItem>
 
             {/* Subtotal */}
@@ -94,7 +96,7 @@ export default function CartSummary() {
                 <>
                     <Box sx={{ px: 2, py: 1 }}>
                         <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                            Charges & Taxes
+                            {t('Charges & Taxes')}
                         </Typography>
                         {charges.map((charge) => (
                             <Box
@@ -146,7 +148,7 @@ export default function CartSummary() {
                         onClick={() => setOpenChargesDialog(true)}
                         fullWidth
                     >
-                        Add Charge
+                        {t('Add Charge')}
                     </Button>
                 </Box>
             )}
@@ -160,7 +162,7 @@ export default function CartSummary() {
                         </Typography>
                     }
                 >
-                    <ListItemText primary="Total Charges" />
+                    <ListItemText primary={t('Total Charges')} />
                 </ListItem>
             )}
 
@@ -182,7 +184,7 @@ export default function CartSummary() {
                 }
             >
                 <ListItemText
-                    primary="FINAL TOTAL"
+                    primary={t('FINAL TOTAL')}
                     slotProps={{
                         primary: { sx: { fontWeight: 700, fontSize: "1.1rem" } },
                     }}
@@ -191,12 +193,12 @@ export default function CartSummary() {
 
             {/* Add Charge Dialog */}
             <Dialog open={openChargesDialog} onClose={() => setOpenChargesDialog(false)}>
-                <DialogTitle>Add Charge/Tax</DialogTitle>
+                <DialogTitle>{t('Add Charge/Tax')}</DialogTitle>
                 <DialogContent sx={{ minWidth: 300, pt: 2 }}>
                     <TextField
                         select
                         fullWidth
-                        label="Select Charge"
+                        label={t('Select Charge')}
                         value={selectedCharge}
                         onChange={(e) => setSelectedCharge(e.target.value)}
                         size="small"
@@ -209,13 +211,13 @@ export default function CartSummary() {
                     </TextField>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpenChargesDialog(false)}>Cancel</Button>
+                    <Button onClick={() => setOpenChargesDialog(false)}>{t('Cancel')}</Button>
                     <Button
                         onClick={handleAddCharge}
                         variant="contained"
                         disabled={!selectedCharge}
                     >
-                        Add
+                        {t('Add')}
                     </Button>
                 </DialogActions>
             </Dialog>

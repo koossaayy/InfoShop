@@ -26,7 +26,7 @@ class CashLog extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "CashLog has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('CashLog has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

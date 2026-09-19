@@ -102,7 +102,7 @@ class DashboardController extends Controller
 
         // Render the 'Dashboard' component with data
         return Inertia::render('Dashboard/Dashboard', [
-            'pageLabel' => 'Dashboard',
+            'pageLabel' => __('Dashboard'),
             'data' => $data,
             'logo' => $settingArray['shop_logo'],
             'version' => $version,

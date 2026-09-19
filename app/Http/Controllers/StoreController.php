@@ -17,7 +17,7 @@ class StoreController extends Controller
         return Inertia::render('Store/Store', [
             'stores' => $stores,
             'current_store_id' => $currentStoreId,
-            'pageLabel'=>'Stores',
+            'pageLabel'=>__('Stores'),
         ]);
     }
 
@@ -35,7 +35,7 @@ class StoreController extends Controller
         // 4. Save the data to the database
         Store::create($validatedData);
 
-        return Redirect::route('store')->with('success', 'Store created successfully!');
+        return Redirect::route('store')->with('success', __('Store created successfully!'));
     }
 
     public function update(Request $request, $id)
@@ -54,7 +54,7 @@ class StoreController extends Controller
         $store->update($validatedData);
 
         // Redirect with success message
-        return Redirect::route('store')->with('success', 'Store updated successfully!');
+        return Redirect::route('store')->with('success', __('Store updated successfully!'));
     }
 
     public function changeSelectedStore(Request $request)

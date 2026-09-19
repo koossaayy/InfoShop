@@ -34,7 +34,7 @@ class ExpenseController extends Controller
         return Inertia::render('Expense/Expense', [
             'expenses' => $expenses,
             'stores'=>$stores,
-            'pageLabel'=>'Expenses',
+            'pageLabel'=>__('Expenses'),
         ]);
     }
 

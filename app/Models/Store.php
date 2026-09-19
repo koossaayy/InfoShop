@@ -26,7 +26,7 @@ class Store extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Store has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Store has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

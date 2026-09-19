@@ -21,7 +21,7 @@ class SettingController extends Controller
         // Render the 'Settings' component with data
         return Inertia::render('Settings/Settings', [
             'settings' => $settingArray,
-            'pageLabel' => 'Settings',
+            'pageLabel' => __('Settings'),
         ]);
     }
 
@@ -76,7 +76,7 @@ class SettingController extends Controller
         // $content = File::exists($templatePath) ? File::get($templatePath) : '';
 
         return Inertia::render('Settings/QuoteTemplate', [
-            'pageLabel' => 'Quote Template',
+            'pageLabel' => __('Quote Template'),
             'template' => $content,
             'sale' => $sale,
             'salesItems' => $salesItems,
@@ -137,7 +137,7 @@ class SettingController extends Controller
         // $content = File::exists($templatePath) ? File::get($templatePath) : '';
 
         return Inertia::render('Settings/QuoteTemplate', [
-            'pageLabel' => 'Receipt Template',
+            'pageLabel' => __('Receipt Template'),
             'template' => $content,
             'sale' => $sale,
             'salesItems' => $salesItems,
@@ -167,7 +167,7 @@ class SettingController extends Controller
         $content = File::exists($templatePath) ? File::get($templatePath) : '';
 
         $product = [
-            'name' => 'ABC Product - XML',       // Product name
+            'name' => __('ABC Product - XML'),       // Product name
             'barcode' => '8718719850268',    // Product barcode
             'price' => 1000           // Price from the product batch
         ];
@@ -176,7 +176,7 @@ class SettingController extends Controller
         // $content = File::exists($templatePath) ? File::get($templatePath) : '';
 
         return Inertia::render('Settings/BarcodeTemplate', [
-            'pageLabel' => 'Barcode Template',
+            'pageLabel' => __('Barcode Template'),
             'template' => $content,
             'barcode_settings' => $settingArray,
             'product' => $product,
@@ -193,7 +193,7 @@ class SettingController extends Controller
         // $content = File::exists($templatePath) ? File::get($templatePath) : '';
 
         return Inertia::render('Settings/CustomCSS', [
-            'pageLabel' => 'Custom CSS',
+            'pageLabel' => __('Custom CSS'),
             'customCSS' => $content,
         ]);
     }
@@ -455,7 +455,7 @@ class SettingController extends Controller
         if ($template === false) {
             return response()->json([
                 'message' => 'Invalid template encoding',
-                'errors' => ['template must be valid Base64']
+                'errors' => [__('template must be valid Base64')]
             ], 422);
         }
 
@@ -465,7 +465,7 @@ class SettingController extends Controller
         if (!is_array($barcodeSettings)) {
             return response()->json([
                 'message' => 'Invalid barcode settings format',
-                'errors' => ['barcode_settings must be valid JSON']
+                'errors' => [__('barcode_settings must be valid JSON')]
             ], 422);
         }
 
@@ -501,7 +501,7 @@ class SettingController extends Controller
 
         // Check for script tags
         if (preg_match('/<script\b[^>]*>(.*?)<\/script>/is', $template)) {
-            $errors[] = 'Template cannot contain <script> tags';
+            $errors[] = __('Template cannot contain <script> tags');
         }
 
         // Whitelist of allowed variables
@@ -520,7 +520,7 @@ class SettingController extends Controller
         // Check if any used variable is not in the whitelist
         $invalidVariables = array_diff($usedVariables, $allowedVariables);
         if (!empty($invalidVariables)) {
-            $errors[] = 'Invalid template variables used: ' . implode(', ', $invalidVariables) . '. Allowed: ' . implode(', ', $allowedVariables);
+            $errors[] = __('Invalid template variables used: :implode. Allowed: :implode_2', ['implode' => implode(', ', $invalidVariables), 'implode_2' => implode(', ', $allowedVariables)]);
         }
 
         return [
@@ -545,7 +545,7 @@ class SettingController extends Controller
         if ($template === false) {
             return response()->json([
                 'message' => 'Invalid template encoding',
-                'errors' => ['template must be valid Base64']
+                'errors' => [__('template must be valid Base64')]
             ], 422);
         }
 
@@ -555,7 +555,7 @@ class SettingController extends Controller
         if (!is_array($sampleData)) {
             return response()->json([
                 'message' => 'Invalid sample data',
-                'errors' => ['sample_data must be a valid array']
+                'errors' => [__('sample_data must be a valid array')]
             ], 422);
         }
 

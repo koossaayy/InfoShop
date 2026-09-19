@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Archive, Download, Loader2, RefreshCw, Trash2, UploadCloud } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 export default function BackupFilesTab() {
+    const { t } = useTranslation();
     const [files, setFiles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -20,7 +22,7 @@ export default function BackupFilesTab() {
             const response = await axios.get("/api/backups");
             setFiles(response.data.files || []);
         } catch (err) {
-            setError("Failed to load backup files. Please try again.");
+            setError(t('Failed to load backup files. Please try again.'));
             console.error("Backup listing error:", err);
         } finally {
             setLoading(false);
@@ -29,7 +31,7 @@ export default function BackupFilesTab() {
 
     const handleDelete = async (file) => {
         if (deleting) return;
-        if (!confirm(`Delete backup ${file.name}? This cannot be undone.`)) {
+        if (!confirm(t('Delete backup {{0}}? This cannot be undone.', { 0: file.name }))) {
             return;
         }
 
@@ -39,7 +41,7 @@ export default function BackupFilesTab() {
             await axios.delete(`/api/backups/${encodeURIComponent(file.name)}`);
             setFiles((prev) => prev.filter((item) => item.name !== file.name));
         } catch (err) {
-            const message = err.response?.data?.message || "Failed to delete backup file.";
+            const message = err.response?.data?.message || t('Failed to delete backup file.');
             setError(message);
             console.error("Delete backup error:", err);
         } finally {
@@ -66,7 +68,7 @@ export default function BackupFilesTab() {
             window.URL.revokeObjectURL(blobUrl);
             await fetchFiles();
         } catch (err) {
-            const message = err.response?.data?.message || err.message || "Failed to generate backup.";
+            const message = err.response?.data?.message || err.message || t('Failed to generate backup.');
             setError(message);
             console.error("Backup now error:", err);
         } finally {
@@ -75,9 +77,9 @@ export default function BackupFilesTab() {
     };
 
     const formatDate = (value) => {
-        if (!value) return "Unknown";
+        if (!value) return t('Unknown');
         try {
-            return new Date(value).toLocaleString();
+            return new Date(value).toLocaleString(globalThis.document?.documentElement?.lang || undefined);
         } catch (error) {
             return value;
         }
@@ -88,9 +90,9 @@ export default function BackupFilesTab() {
             <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 flex items-start gap-3">
                 <Archive className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
                 <div>
-                    <p className="text-sm font-semibold text-teal-900">Backup Files</p>
+                    <p className="text-sm font-semibold text-teal-900">{t('Backup Files')}</p>
                     <p className="text-xs text-teal-700 mt-1">
-                        Review previously generated backups, download copies, or delete old archives to reclaim disk space.
+                        {t('Review previously generated backups, download copies, or delete old archives to reclaim disk space.')}
                     </p>
                 </div>
             </div>
@@ -102,7 +104,7 @@ export default function BackupFilesTab() {
                     className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2"
                 >
                     {runningBackup ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
-                    Backup Now
+                    {t('Backup Now')}
                 </button>
                 <button
                     onClick={fetchFiles}
@@ -110,10 +112,10 @@ export default function BackupFilesTab() {
                     className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2"
                 >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
-                    Refresh List
+                    {t('Refresh List')}
                 </button>
                 <div className="text-sm text-gray-600 px-3 py-2 bg-gray-100 rounded-lg border border-gray-200">
-                    {files.length} backup{files.length === 1 ? "" : "s"} available
+                    {t('{{count}} backup available', { count: files.length })}
                 </div>
             </div>
 
@@ -126,13 +128,13 @@ export default function BackupFilesTab() {
             {loading ? (
                 <div className="flex items-center justify-center py-12">
                     <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-                    <span className="ml-3 text-gray-600">Loading backups...</span>
+                    <span className="ml-3 text-gray-600">{t('Loading backups...')}</span>
                 </div>
             ) : files.length === 0 ? (
                 <div className="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-6 text-center">
                     <Archive className="w-10 h-10 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500 text-sm">No backups found</p>
-                    <p className="text-xs text-gray-400 mt-1">Use automation or manual backup tools to create one.</p>
+                    <p className="text-gray-500 text-sm">{t('No backups found')}</p>
+                    <p className="text-xs text-gray-400 mt-1">{t('Use automation or manual backup tools to create one.')}</p>
                 </div>
             ) : (
                 <div className="space-y-3">
@@ -144,7 +146,7 @@ export default function BackupFilesTab() {
                             <div className="flex-1 min-w-0">
                                 <p className="font-semibold text-gray-900 break-words">{file.name}</p>
                                 <p className="text-sm text-gray-600 mt-1">
-                                    {file.size_human} • Updated {formatDate(file.last_modified)}
+                                    {t('{{0}} • Updated {{1}}', { 0: file.size_human, 1: formatDate(file.last_modified) })}
                                 </p>
                             </div>
                             <div className="flex gap-2">
@@ -153,7 +155,7 @@ export default function BackupFilesTab() {
                                     className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2"
                                 >
                                     <Download className="w-4 h-4" />
-                                    Download
+                                    {t('Download')}
                                 </button>
                                 <button
                                     onClick={() => handleDelete(file)}

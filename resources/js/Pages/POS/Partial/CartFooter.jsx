@@ -15,6 +15,7 @@ import { useTheme, useMediaQuery } from '@mui/material';
 import { FolderCopy } from "@mui/icons-material";
 import { styled, alpha } from '@mui/material/styles';
 
+import { useTranslation } from 'react-i18next';
 import { useSales as useCart } from "@/Context/SalesContext";
 import { SharedContext } from "@/Context/SharedContext";
 import { usePage, Link } from "@inertiajs/react";
@@ -74,6 +75,7 @@ const StyledMenu = styled((props) => (
 }));
 
 export default function CartFooter() {
+    const { t } = useTranslation();
     const return_sale = usePage().props.return_sale;
     const edit_sale = usePage().props.edit_sale;
 
@@ -99,10 +101,10 @@ export default function CartFooter() {
     const onCartHold = () => {
         handleClose();
         Swal.fire({
-            title: "Do you want to hold this cart?",
+            title: t('Do you want to hold this cart?'),
             showDenyButton: true,
-            confirmButtonText: "YES",
-            denyButtonText: `NO`,
+            confirmButtonText: t('YES'),
+            denyButtonText: t('NO'),
         }).then((result) => {
             if (result.isConfirmed) {
                 holdCart();
@@ -112,10 +114,10 @@ export default function CartFooter() {
 
     const onCartEmpty = () => {
         Swal.fire({
-            title: "Do you want to clear this cart?",
+            title: t('Do you want to clear this cart?'),
             showDenyButton: true,
-            confirmButtonText: "YES",
-            denyButtonText: `NO`,
+            confirmButtonText: t('YES'),
+            denyButtonText: t('NO'),
         }).then((result) => {
             if (result.isConfirmed) {
                 emptyCart();
@@ -143,7 +145,7 @@ export default function CartFooter() {
                             size="large"
                             fullWidth
                         >
-                            EMPTY
+                            {t('EMPTY')}
                         </Button>
                     </Grid>
                 )}
@@ -167,7 +169,7 @@ export default function CartFooter() {
                             },
                         }}
                     >
-                        {isMobile ? "Actions" : "More"}
+                        {isMobile ? t('Actions') : t('More')}
                     </Button>
                     <StyledMenu
                         id="demo-customized-menu"
@@ -187,7 +189,7 @@ export default function CartFooter() {
                                     onClick={onCartEmpty}
                                 >
                                     <DeleteForeverIcon />
-                                    EMPTY
+                                    {t('EMPTY')}
                                 </MenuItem>
                                 <MenuItem
                                     disableRipple
@@ -198,7 +200,7 @@ export default function CartFooter() {
                                     }}
                                 >
                                     <AddCardIcon />
-                                    PAYMENT
+                                    {t('PAYMENT')}
                                 </MenuItem>
                             </div>
                         ) : null}
@@ -207,16 +209,16 @@ export default function CartFooter() {
                             cartState.length === 0 || selectedCustomer === null || return_sale
                         } onClick={onCartHold} sx={{ width: '100%' }}>
                             <BackHandIcon />
-                            HOLD
+                            {t('HOLD')}
                         </MenuItem>
                         <MenuItem disableRipple onClick={() => { setHeldModalOpen(true); handleClose(); }} disabled={return_sale}>
                             <ShoppingCartIcon />
-                            HOLD ITEMS
+                            {t('HOLD ITEMS')}
                         </MenuItem>
                         <Divider sx={{ my: 0.5 }} />
                         <MenuItem disabled={cartState.length === 0} onClick={() => { setSaleTemplateModalOpen(true); handleClose(); }}>
                             <FolderCopy />
-                            GROUP ITEMS
+                            {t('GROUP ITEMS')}
                         </MenuItem>
                         <Divider sx={{ my: 0.5 }} />
                         {/* <Link href={`/receipt/1`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -228,7 +230,7 @@ export default function CartFooter() {
                         <MenuItem onClick={() => setQuotationModalOpen(true)} disableRipple disabled={selectedCustomer?.id === 1 || cartState.length === 0 || selectedCustomer === null}
                         >
                             <ReceiptIcon />
-                            QUOTATION
+                            {t('QUOTATION')}
                         </MenuItem>
                     </StyledMenu>
                 </Grid>
@@ -246,7 +248,7 @@ export default function CartFooter() {
                             size="large"
                             fullWidth
                         >
-                            PAYMENTS
+                            {t('PAYMENTS')}
                         </Button>
                     </Grid>
                 )}

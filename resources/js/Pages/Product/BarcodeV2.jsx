@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { Printer } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import BarcodePreview from '@/Components/BarcodePreview';
 
 export default function ProductBarcodeV2({ product }) {
+    const { t } = useTranslation();
     const [barcodeSettings, setBarcodeSettings] = useState({
         format: 'CODE128',
         width: 2,
@@ -40,7 +42,7 @@ export default function ProductBarcodeV2({ product }) {
         price: product.selling_price ? `${product.selling_price}` : '',
         barcode_code: product.barcode || product.batch_number || '',
         store_name: shop_name || '',
-        date: new Date().toLocaleDateString(),
+        date: new Date().toLocaleDateString(globalThis.document?.documentElement?.lang || undefined),
     };
 
     const handlePrint = () => {
@@ -81,7 +83,7 @@ export default function ProductBarcodeV2({ product }) {
                         },
                     }}
                 >
-                    Print Barcode
+                    {t('Print Barcode')}
                 </Button>
 
                 <Box

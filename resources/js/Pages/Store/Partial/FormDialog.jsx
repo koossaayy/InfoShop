@@ -9,8 +9,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Swal from 'sweetalert2';
 import {  Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function FormDialog({ open, handleClose, store }) {
+    const { t } = useTranslation();
 
   const [formState, setFormState] = useState({
     name: '',
@@ -62,11 +64,11 @@ export default function FormDialog({ open, handleClose, store }) {
     // Send form data via Inertia
     router[method](endpoint, formJson, {
       onSuccess: (resp) => {
-        const responseMessage = resp.props.flash?.message || 'Store created!';
+        const responseMessage = resp.props.flash?.message || t('Store created!');
 
         Swal.fire({
-          title: 'Success!',
-          text: 'Successfully saved',
+          title: t('Success!'),
+          text: t('Successfully saved'),
           icon: 'success',
           position: 'bottom-start',
           showConfirmButton: false,
@@ -97,7 +99,7 @@ export default function FormDialog({ open, handleClose, store }) {
           }
         }}
       >
-        <DialogTitle>Store Information</DialogTitle>
+        <DialogTitle>{t('Store Information')}</DialogTitle>
         <DialogContent>
           <Grid container flexDirection={'column'} spacing={2.6}>
            {/* Store Name */}
@@ -106,7 +108,7 @@ export default function FormDialog({ open, handleClose, store }) {
             autoFocus
             required
             name="name"
-            label="Store name"
+            label={t('Store name')}
             type="text"
             fullWidth
             variant="outlined"
@@ -118,7 +120,7 @@ export default function FormDialog({ open, handleClose, store }) {
           <TextField
             required
             name="address"
-            label="Store Address"
+            label={t('Store Address')}
             type="text"
             fullWidth
             variant="outlined"
@@ -130,7 +132,7 @@ export default function FormDialog({ open, handleClose, store }) {
           <TextField
             required
             name="contact_number"
-            label="Contact Number"
+            label={t('Contact Number')}
             type="text"
             fullWidth
             variant="outlined"
@@ -142,7 +144,7 @@ export default function FormDialog({ open, handleClose, store }) {
           <TextField
           required
             name="sale_prefix"
-            label="Sale Prefeix"
+            label={t('Sale Prefeix')}
             type="text"
             fullWidth
             variant="outlined"
@@ -154,7 +156,7 @@ export default function FormDialog({ open, handleClose, store }) {
           <TextField
             required
             name="current_sale_number"
-            label="Current Sale Number"
+            label={t('Current Sale Number')}
             type="text"
             fullWidth
             variant="outlined"
@@ -164,8 +166,8 @@ export default function FormDialog({ open, handleClose, store }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">SAVE</Button>
+          <Button onClick={handleClose}>{t('Cancel')}</Button>
+          <Button type="submit">{t('SAVE')}</Button>
         </DialogActions>
       </Dialog>
     </>

@@ -9,38 +9,40 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import CreatableSelect from 'react-select/creatable';
 import { usePage, Link, router } from "@inertiajs/react";
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 
 const reasonOptions = [
-    { value: 'Stock Entry', label: 'Stock Entry' },
-    { value: 'Purchase', label: 'Purchase' },
-    { value: 'Damaged', label: 'Damaged' },
-    { value: 'Theft', label: 'Theft' },
-    { value: 'Expense', label: 'Expense' },
-    { value: 'Return', label: 'Return' },
-    { value: 'Donation', label: 'Donation' },
-    { value: 'Sample', label: 'Sample' },
-    { value: 'Promotion', label: 'Promotion' },
+    { value: 'Stock Entry', get label() { return i18next.t('Stock Entry'); } },
+    { value: 'Purchase', get label() { return i18next.t('Purchase'); } },
+    { value: 'Damaged', get label() { return i18next.t('Damaged'); } },
+    { value: 'Theft', get label() { return i18next.t('Theft'); } },
+    { value: 'Expense', get label() { return i18next.t('Expense'); } },
+    { value: 'Return', get label() { return i18next.t('Return'); } },
+    { value: 'Donation', get label() { return i18next.t('Donation'); } },
+    { value: 'Sample', get label() { return i18next.t('Sample'); } },
+    { value: 'Promotion', get label() { return i18next.t('Promotion'); } },
     { value: 'Write-Off', label: 'Write-Off' },
-    { value: 'Expired', label: 'Expired' },
-    { value: 'Lost', label: 'Lost' },
-    { value: 'Transfer Out', label: 'Transfer Out' },
-    { value: 'Transfer In', label: 'Transfer In' },
-    { value: 'Production', label: 'Production' },
-    { value: 'Consumption', label: 'Consumption' },
-    { value: 'Adjustment', label: 'Adjustment' },
-    { value: 'Vendor Return', label: 'Vendor Return' },
-    { value: 'Customer Return', label: 'Customer Return' },
-    { value: 'Internal Use', label: 'Internal Use' },
-    { value: 'Audit Correction', label: 'Audit Correction' },
-    { value: 'Seasonal Adjustment', label: 'Seasonal Adjustment' },
-    { value: 'Overstock Reduction', label: 'Overstock Reduction' },
-    { value: 'Understock Adjustment', label: 'Understock Adjustment' },
-    { value: 'Quality Control Reject', label: 'Quality Control Reject' },
-    { value: 'Repair', label: 'Repair' },
-    { value: 'Replacement', label: 'Replacement' },
-    { value: 'Disposal', label: 'Disposal' },
-    { value: 'Reconciliation', label: 'Reconciliation' },
-    { value: 'Miscellaneous', label: 'Miscellaneous' },
+    { value: 'Expired', get label() { return i18next.t('Expired'); } },
+    { value: 'Lost', get label() { return i18next.t('Lost'); } },
+    { value: 'Transfer Out', get label() { return i18next.t('Transfer Out'); } },
+    { value: 'Transfer In', get label() { return i18next.t('Transfer In'); } },
+    { value: 'Production', get label() { return i18next.t('Production'); } },
+    { value: 'Consumption', get label() { return i18next.t('Consumption'); } },
+    { value: 'Adjustment', get label() { return i18next.t('Adjustment'); } },
+    { value: 'Vendor Return', get label() { return i18next.t('Vendor Return'); } },
+    { value: 'Customer Return', get label() { return i18next.t('Customer Return'); } },
+    { value: 'Internal Use', get label() { return i18next.t('Internal Use'); } },
+    { value: 'Audit Correction', get label() { return i18next.t('Audit Correction'); } },
+    { value: 'Seasonal Adjustment', get label() { return i18next.t('Seasonal Adjustment'); } },
+    { value: 'Overstock Reduction', get label() { return i18next.t('Overstock Reduction'); } },
+    { value: 'Understock Adjustment', get label() { return i18next.t('Understock Adjustment'); } },
+    { value: 'Quality Control Reject', get label() { return i18next.t('Quality Control Reject'); } },
+    { value: 'Repair', get label() { return i18next.t('Repair'); } },
+    { value: 'Replacement', get label() { return i18next.t('Replacement'); } },
+    { value: 'Disposal', get label() { return i18next.t('Disposal'); } },
+    { value: 'Reconciliation', get label() { return i18next.t('Reconciliation'); } },
+    { value: 'Miscellaneous', get label() { return i18next.t('Miscellaneous'); } },
 ];
 
 export default function QuantityModal({
@@ -50,6 +52,7 @@ export default function QuantityModal({
     refreshProducts,
     stores,
 }) {
+    const { t } = useTranslation();
     const auth = usePage().props.auth.user;
     const initialFormState = {
         batch_id: "",
@@ -86,7 +89,7 @@ export default function QuantityModal({
             .then((response) => {
                 refreshProducts();
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: response.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -97,7 +100,7 @@ export default function QuantityModal({
                 handleClose();
             })
             .catch((error) => {
-                let errorMessage = "An unknown error occurred."; // Default error message
+                let errorMessage = t('An unknown error occurred.'); // Default error message
 
                 if (error.response && error.response.data) {
                     // Check for multiple errors in `error.response.data.errors`
@@ -112,7 +115,7 @@ export default function QuantityModal({
                 }
 
                 Swal.fire({
-                    title: "Failed!",
+                    title: t('Failed!'),
                     text: errorMessage,
                     icon: "error",
                     showConfirmButton: true,
@@ -181,13 +184,13 @@ export default function QuantityModal({
                     id="alert-dialog-title"
                     sx={{ alignItems: "center", display: "flex" }}
                 >
-                    {"QUANTITY ADJUSTMENT"}
+                    {t('QUANTITY ADJUSTMENT')}
                     {/* <Link href={'/stock/adjustment-log'} className="ml-5 text-sky-600">
                         Adjustment Log
                     </Link> */}
                 </DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -211,7 +214,7 @@ export default function QuantityModal({
                                 fullWidth
                                 type="number"
                                 name="quantity"
-                                label="Quantity"
+                                label={t('Quantity')}
                                 variant="outlined"
                                 required
                                 autoFocus
@@ -240,7 +243,7 @@ export default function QuantityModal({
                             <CreatableSelect
                                 isClearable
                                 options={reasonOptions}
-                                placeholder="Select or create a reason"
+                                placeholder={t('Select or create a reason')}
                                 name="reason"
                                 required
                                 menuContainerStyle={{'zIndex': 999}}
@@ -260,10 +263,10 @@ export default function QuantityModal({
                             <FormControl
                                 sx={{ minWidth: "200px", width: "100%" }}
                             >
-                                <InputLabel>Store</InputLabel>
+                                <InputLabel>{t('Store')}</InputLabel>
                                 <Select
                                     value={formState.store_id}
-                                    label="Store"
+                                    label={t('Store')}
                                     onChange={handleInputChange}
                                     required
                                     name="store_id"
@@ -292,7 +295,7 @@ export default function QuantityModal({
                         color={formState.quantity < 0 ? "error" : "primary"}
                         disabled={loading || !isValidQuantity(formState.quantity)}
                     >
-                        {formState.quantity < 0 ? "REMOVE QUANTITY" : "ADD QUANTITY"}
+                        {formState.quantity < 0 ? t('REMOVE QUANTITY') : t('ADD QUANTITY')}
                     </Button>
                     {formState.quantity > 0 && (
                         <Button
@@ -306,7 +309,7 @@ export default function QuantityModal({
                             value={'remove'}
                             disabled={loading || !isValidQuantity(formState.quantity)}
                         >
-                            {'REMOVE QUANTITY'}
+                            {t('REMOVE QUANTITY')}
                         </Button>
                     )}
                 </DialogActions>

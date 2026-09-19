@@ -11,7 +11,7 @@ class ActivityLogController extends Controller
     public function index(Request $request)
     {
         if (! $request->user()?->can('activity-log')) {
-            abort(403, 'You are not authorized to view the activity log.');
+            abort(403, __('You are not authorized to view the activity log.'));
         }
 
         $query = Activity::query()
@@ -93,12 +93,12 @@ class ActivityLogController extends Controller
     public function prune(Request $request)
     {
         if (! $request->user()?->can('activity-log')) {
-            abort(403, 'You are not authorized to prune the activity log.');
+            abort(403, __('You are not authorized to prune the activity log.'));
         }
 
         $data = $request->validate(['days' => 'required|integer|min:1|max:3650']);
         $deleted = Activity::where('created_at', '<', now()->subDays($data['days']))->delete();
 
-        return back()->with('success', "Pruned {$deleted} activity log record(s) older than {$data['days']} days.");
+        return back()->with('success', __('Pruned :deleted activity log record(s) older than :days days.', ['deleted' => $deleted, 'days' => $data['days']]));
     }
 }

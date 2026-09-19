@@ -20,6 +20,7 @@ import WifiOffIcon from "@mui/icons-material/WifiOff";
 import { Folder, FolderOpen } from "lucide-react";
 import { Button } from "@mui/material";
 
+import { useTranslation } from 'react-i18next';
 import ProductItem from "./Partial/ProductItem";
 import CartItems from "./Partial/CartItem";
 import CartSummary from "./Partial/CartSummary";
@@ -54,6 +55,7 @@ const DrawerFooter = styled("div")(({ theme }) => ({
 }));
 
 function POS({ products, customers, return_sale, categories, edit_sale, sale_data, default_charges, all_collections }) {
+    const { t } = useTranslation();
     const cartType = edit_sale ? 'sale_edit_cart' : (return_sale ? 'sales_return_cart' : 'sales_cart');
     const [mobileOpen, setMobileOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
@@ -92,10 +94,10 @@ function POS({ products, customers, return_sale, categories, edit_sale, sale_dat
     useEffect(() => {
         if (edit_sale && !sale_data.cart_snapshot) {
             Swal.fire({
-                title: 'Only recent sales can be edited',
-                text: 'Please select a recent sale to edit',
+                title: t('Only recent sales can be edited'),
+                text: t('Please select a recent sale to edit'),
                 icon: 'error',
-                confirmButtonText: 'Go to Sales',
+                confirmButtonText: t('Go to Sales'),
                 showCancelButton: false,
                 showCloseButton: false,
                 allowOutsideClick: false
@@ -192,7 +194,7 @@ function POS({ products, customers, return_sale, categories, edit_sale, sale_dat
 
     return (
         <SalesProvider cartType={cartType} defaultCharges={default_charges}>
-            <Head title="Point of Sale" />
+            <Head title={t('Point of Sale')} />
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
                 <AppBar
@@ -205,7 +207,7 @@ function POS({ products, customers, return_sale, categories, edit_sale, sale_dat
                     <Toolbar sx={{ paddingY: "10px" }}>
                         <IconButton
                             color="inherit"
-                            aria-label="open drawer"
+                            aria-label={t('open drawer')}
                             edge="start"
                             onClick={handleDrawerToggle}
                             sx={{ mr: 0, display: { sm: "none" } }}
@@ -214,7 +216,7 @@ function POS({ products, customers, return_sale, categories, edit_sale, sale_dat
                         </IconButton>
                         <Box sx={{ display: { xs: "none", sm: "flex" } }}>
                             <Typography variant="h4" noWrap component="div">
-                                POS
+                                {t('POS')}
                             </Typography>
                         </Box>
                         {/* Product Search Box  */}
@@ -272,7 +274,7 @@ function POS({ products, customers, return_sale, categories, edit_sale, sale_dat
                                         sx={{ cursor: 'pointer', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 0.5 }}
                                     >
                                         <HomeIcon sx={{ fontSize: '18px' }} />
-                                        Home
+                                        {t('Home')}
                                     </MuiLink>
                                     {selectedCollection.parent_id && (
                                         <MuiLink
@@ -306,7 +308,7 @@ function POS({ products, customers, return_sale, categories, edit_sale, sale_dat
                                     <>
                                         <Grid size={12} sx={{ mb: 2 }}>
                                             <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                                                Subcategories
+                                                {t('Subcategories')}
                                             </Typography>
                                         </Grid>
                                         {selectedChildCategories.map((child) => (
@@ -347,7 +349,7 @@ function POS({ products, customers, return_sale, categories, edit_sale, sale_dat
                                 <Grid size={12} sx={{ mt: 4, mb: 2 }}>
                                     <Divider textAlign="left">
                                         <Typography variant="h6" color="text.secondary">
-                                            Collections
+                                            {t('Collections')}
                                         </Typography>
                                     </Divider>
                                 </Grid>

@@ -40,12 +40,12 @@ class SaleCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('New Sale Created - #' . $this->sale['invoice_number'])
-            ->greeting('A new sale has been created.')
-            ->line('#' . $this->sale['invoice_number'].' By '.$this->sale['created_by'])
-            ->line('Amount: ' . $this->sale['total_amount'])
-            ->line('Created at: ' . \Carbon\Carbon::parse($this->sale['created_at'])->format('Y-m-d h:i A'))
-            ->action('View Sale', url('/receipt/' . $this->sale['id']));
+            ->subject(__('New Sale Created - #:invoice_number', ['invoice_number' => $this->sale['invoice_number']]))
+            ->greeting(__('A new sale has been created.'))
+            ->line(__('#:invoice_number By :created_by', ['invoice_number' => $this->sale['invoice_number'], 'created_by' => $this->sale['created_by']]))
+            ->line(__('Amount: :total_amount', ['total_amount' => $this->sale['total_amount']]))
+            ->line(__('Created at: :format', ['format' => \Carbon\Carbon::parse($this->sale['created_at'])->format('Y-m-d h:i A')]))
+            ->action(__('View Sale'), url('/receipt/' . $this->sale['id']));
     }
 
     public function toDatabase($notifiable)
@@ -53,7 +53,7 @@ class SaleCreated extends Notification
         return [
             'sale_id' => $this->sale['id'],
             'amount' => $this->sale['total_amount'],
-            'message' => 'A new sale has been created.',
+            'message' => __('A new sale has been created.'),
             'url' => url('/sales/' . $this->sale['id']),
         ];
     }
@@ -75,14 +75,15 @@ class SaleCreated extends Notification
         // Create the Telegram message
         return TelegramMessage::create()
             ->content(
-                "A new sale has been created.\n" .
-                "Invoice Number: #" . $this->sale['invoice_number'] . "\n" .
-                "Created By: " . $this->sale['created_by'] . "\n" .
-                "Amount: " . $this->sale['total_amount'] . "\n" .
-                "Created at: " . \Carbon\Carbon::parse($this->sale['created_at'])->format('Y-m-d h:i A') . "\n"
+                __('A new sale has been created.
+Invoice Number: #:invoice_number
+Created By: :created_by
+Amount: :total_amount
+Created at: :format
+', ['invoice_number' => $this->sale['invoice_number'], 'created_by' => $this->sale['created_by'], 'total_amount' => $this->sale['total_amount'], 'format' => \Carbon\Carbon::parse($this->sale['created_at'])->format('Y-m-d h:i A')])
             )
             ->token($this->botToken)
-            ->button('View Sale', url('/receipt/'.$this->sale['id']));  // Optional button to view the sale
+            ->button(__('View Sale'), url('/receipt/'.$this->sale['id']));  // Optional button to view the sale
     }
 
     /**

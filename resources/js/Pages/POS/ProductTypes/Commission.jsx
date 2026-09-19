@@ -1,11 +1,13 @@
 import {  Grid, TextField, InputAdornment } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function Commission({ handleChange, formState }) {
+    const { t } = useTranslation();
     return (
         <>
             <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
-                    label="Fixed Commission"
+                    label={t('Fixed Commission')}
                     name="fixed_commission"
                     required
                     value={formState.meta_data.fixed_commission}

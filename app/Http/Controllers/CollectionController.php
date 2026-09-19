@@ -23,7 +23,7 @@ class CollectionController extends Controller
         return Inertia::render('Collection/Collection', [
             'collections' => $collections,
             'allCollections' => $allCollections,
-            'pageLabel' => 'Collections',
+            'pageLabel' => __('Collections'),
         ]);
     }
 
@@ -40,7 +40,7 @@ class CollectionController extends Controller
         // 4. Save the data to the database
         Collection::create($validatedData);
 
-        return redirect()->route('collection')->with('success', 'Collection created successfully!');
+        return redirect()->route('collection')->with('success', __('Collection created successfully!'));
     }
 
     public function update(Request $request, $id)
@@ -57,7 +57,7 @@ class CollectionController extends Controller
         // 2. Update the data in the database
         $collection->update($validatedData);
 
-        return redirect()->route('collection')->with('success', 'Collection updated successfully!');
+        return redirect()->route('collection')->with('success', __('Collection updated successfully!'));
     }
 
     /**
@@ -79,7 +79,7 @@ class CollectionController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Collection created successfully!',
+            'message' => __('Collection created successfully!'),
             'collection' => [
                 'id' => $collection->id,
                 'name' => $collection->name,

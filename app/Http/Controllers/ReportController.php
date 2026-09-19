@@ -86,7 +86,7 @@ class ReportController extends Controller
             'stores' => $stores,
             'logs' => $cashLogs,
             'users' => $users,
-            'pageLabel' => 'Daily Cash Report',
+            'pageLabel' => __('Daily Cash Report'),
         ]);
     }
 
@@ -114,13 +114,13 @@ class ReportController extends Controller
         } elseif ($request->transaction_type === 'open_cashier') {
             $amount = abs($amount); // Opening cashier balance should be positive
             $actualTransactionType = 'cash_in';
-            $description = $description ?: "Opening Cashier Balance";
+            $description = $description ?: __("Opening Cashier Balance");
             $source = 'deposit';
         } elseif ($request->transaction_type === 'close_cashier') {
             $amount = -abs($amount); // Closing cashier balance as negative cash out
             $actualTransactionType = 'cash_out';
             $source = 'withdrawal';
-            $description = $description ?: "Closing Cashier Balance";
+            $description = $description ?: __("Closing Cashier Balance");
         }
         // Create a new Transaction instance
         $cashLog = new CashLog();
@@ -169,7 +169,7 @@ class ReportController extends Controller
             // Add the Sale record to the report
             $report[] = [
                 'date' => $sale->sale_date,
-                'description' => "Sale #{$sale->invoice_number}",
+                'description' => __('Sale #:invoice_number', ['invoice_number' => $sale->invoice_number]),
                 'receivable' => $sale->total_amount,
                 'settled' => 0, // To be calculated based on transactions
                 'profit' => $sale->profit_amount,
@@ -200,7 +200,7 @@ class ReportController extends Controller
         return Inertia::render('Report/SalesReport', [
             'stores' => $stores,
             'report' => $report,
-            'pageLabel' => 'Sales Report',
+            'pageLabel' => __('Sales Report'),
         ]);
     }
 
@@ -245,7 +245,7 @@ class ReportController extends Controller
         $report = [
             [
                 'date' => '-', // Static label to show it's previous data
-                'description' => 'Previous Balance', // Combined previous data
+                'description' => __('Previous Balance'), // Combined previous data
                 'debit' => $previousDebits + $previousDebitsFromCredits, // Previous Debits + Refunds (treated as debit)
                 'credit' => $previousCredits > 0 ? $previousCredits : 0, // Previous Credits (positive amounts paid)
             ],
@@ -256,7 +256,7 @@ class ReportController extends Controller
             // Add the Sale record to the report (debit - amount owed)
             $report[] = [
                 'date' => $sale->sale_date,
-                'description' => "Sale #{$sale->invoice_number}",
+                'description' => __('Sale #:invoice_number', ['invoice_number' => $sale->invoice_number]),
                 'debit' => $sale->total_amount, // Amount owed by customer
                 'credit' => 0, // No payment yet
             ];
@@ -313,7 +313,7 @@ class ReportController extends Controller
             'contacts' => $contacts,
             'contact' => $contact,
             'type' => 'customer',
-            'pageLabel' => 'Customer Report',
+            'pageLabel' => __('Customer Report'),
             'previousCredits' => $previousCredits,
             'previousDebits' => $previousDebits,
         ]);
@@ -359,7 +359,7 @@ class ReportController extends Controller
         // Combine both previous debits and credits into a single row
         $report[] = [
             'date' => '-', // Static label to show it's previous data
-            'description' => 'Previous Balance', // Combined previous data
+            'description' => __('Previous Balance'), // Combined previous data
             'debit' => $previousDebits + $previousDebitsFromCredits, // Previous Debits + Refunds (treated as debit)
             'credit' => $previousCredits > 0 ? $previousCredits : 0, // Previous Credits (positive amounts paid)
         ];
@@ -369,7 +369,7 @@ class ReportController extends Controller
             // Add the Purchase record to the report (debit - amount owed to the supplier)
             $report[] = [
                 'date' => $purchase->purchase_date,
-                'description' => "Purchase #{$purchase->reference_no}",
+                'description' => __('Purchase #:reference_no', ['reference_no' => $purchase->reference_no]),
                 'debit' => $purchase->total_amount, // Amount owed to the supplier
                 'credit' => 0, // No payment yet
             ];
@@ -426,7 +426,7 @@ class ReportController extends Controller
             'contacts' => $contacts,
             'contact' => $contact,
             'type' => 'vendor',
-            'pageLabel' => 'Vendor Report',
+            'pageLabel' => __('Vendor Report'),
             'previousCredits' => $previousCredits,
             'previousDebits' => $previousDebits,
         ]);
@@ -521,7 +521,7 @@ class ReportController extends Controller
         $report['salary_expense'] = SalaryRecord::StoreId($store_id)->DateFilter($start_date, $end_date)->sum('net_salary');
         $report['total_expenses'] += $report['salary_expense'];
         return Inertia::render('Report/SummaryReport', [
-            'pageLabel' => 'Summary Report',
+            'pageLabel' => __('Summary Report'),
             'stores' => $stores,
             'report' => $report,
         ]);

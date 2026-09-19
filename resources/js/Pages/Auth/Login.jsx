@@ -1,5 +1,6 @@
 
 import Checkbox from '@mui/material/Checkbox';
+import { useTranslation } from 'react-i18next';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -10,6 +11,7 @@ import infomaxlogo from '@/Infomax-logo.png';
 import infoshopLogo from '@/infoshop.png';
 
 export default function Login({ status, canResetPassword, version }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -26,7 +28,7 @@ export default function Login({ status, canResetPassword, version }) {
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title={t('Log in')} />
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
@@ -70,7 +72,7 @@ export default function Login({ status, canResetPassword, version }) {
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
                         />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
+                        <span className="ms-2 text-sm text-gray-600">{t('Remember me')}</span>
                     </label>
                 </div>
 
@@ -80,18 +82,18 @@ export default function Login({ status, canResetPassword, version }) {
                             href={route('password.request')}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Forgot your password?
+                            {t('Forgot your password?')}
                         </Link>
                     )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                        {t('Log in')}
                     </PrimaryButton>
                 </div>
             </form>
             <div className="divide-y divide-gray-300 divde-solid">
             <div className="text-center py-2"></div>
-            <div className="text-center py-3 text-gray-400 uppercase">info shop version {version} <br></br> Developed by: infomax </div>
+            <div className="text-center py-3 text-gray-400 uppercase">{t('info shop version {{0}}', { 0: version })} <br></br> {t('Developed by: infomax')} </div>
             </div>
 
             <div className='flex justify-center'>

@@ -10,6 +10,7 @@ import {
     Alert
 } from '@mui/material';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 /**
  * QuickAddCollectionDialog - WordPress-style inline collection creation
@@ -22,6 +23,7 @@ export default function QuickAddCollectionDialog({
     collectionType,
     label
 }) {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -30,7 +32,7 @@ export default function QuickAddCollectionDialog({
         e.preventDefault();
 
         if (!name.trim()) {
-            setError('Name is required');
+            setError(t('Name is required'));
             return;
         }
 
@@ -57,7 +59,7 @@ export default function QuickAddCollectionDialog({
             } else if (err.response?.data?.message) {
                 setError(err.response.data.message);
             } else {
-                setError('Failed to create collection. Please try again.');
+                setError(t('Failed to create collection. Please try again.'));
             }
         } finally {
             setLoading(false);
@@ -86,7 +88,7 @@ export default function QuickAddCollectionDialog({
             fullWidth
         >
             <DialogTitle>
-                Create New {label}
+                {t('Create New {{0}}', { 0: label })}
             </DialogTitle>
             <DialogContent>
                 <form onSubmit={handleSubmit}>
@@ -107,13 +109,13 @@ export default function QuickAddCollectionDialog({
                         onKeyPress={handleKeyPress}
                         disabled={loading}
                         placeholder={`Enter ${label.toLowerCase()} name...`}
-                        helperText="Slug will be auto-generated from the name"
+                        helperText={t('Slug will be auto-generated from the name')}
                     />
                 </form>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} disabled={loading}>
-                    Cancel
+                    {t('Cancel')}
                 </Button>
                 <Button
                     onClick={handleSubmit}
@@ -121,7 +123,7 @@ export default function QuickAddCollectionDialog({
                     disabled={loading || !name.trim()}
                     startIcon={loading && <CircularProgress size={16} />}
                 >
-                    {loading ? 'Creating...' : 'Create'}
+                    {loading ? t('Creating...') : t('Create')}
                 </Button>
             </DialogActions>
         </Dialog>

@@ -26,7 +26,7 @@ class Contact extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Contact has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Contact has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

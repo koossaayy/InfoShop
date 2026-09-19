@@ -1,8 +1,10 @@
 import React from 'react';
 import { Box, Button, Grid, Paper, TextField, MenuItem } from '@mui/material';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const MiscSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFormData, settings }) => {
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!settings?.misc_settings) return;
@@ -80,9 +82,9 @@ const MiscSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFo
                                     onChange={handleChange}
                                     select
                                 >
-                                    <MenuItem value="quantity">Quantity</MenuItem>
-                                    <MenuItem value="discount">Discount</MenuItem>
-                                    <MenuItem value="price">Price</MenuItem>
+                                    <MenuItem value="quantity">{t('Quantity')}</MenuItem>
+                                    <MenuItem value="discount">{t('Discount')}</MenuItem>
+                                    <MenuItem value="price">{t('Price')}</MenuItem>
                                 </TextField>
                             </Grid>
                             <Grid size={6}>
@@ -96,8 +98,8 @@ const MiscSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFo
                                     onChange={handleChange}
                                     select
                                 >
-                                    <MenuItem value="yes">Yes</MenuItem>
-                                    <MenuItem value="no">No</MenuItem>
+                                    <MenuItem value="yes">{t('Yes')}</MenuItem>
+                                    <MenuItem value="no">{t('No')}</MenuItem>
                                 </TextField>
                             </Grid>
                             <Grid size={6}>
@@ -111,8 +113,8 @@ const MiscSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFo
                                     onChange={handleChange}
                                     select
                                 >
-                                    <MenuItem value="yes">Yes</MenuItem>
-                                    <MenuItem value="no">No</MenuItem>
+                                    <MenuItem value="yes">{t('Yes')}</MenuItem>
+                                    <MenuItem value="no">{t('No')}</MenuItem>
                                 </TextField>
                             </Grid>
                             <Grid size={6}>
@@ -152,7 +154,7 @@ const MiscSetting = ({ handleSubmit, settingFormData, handleChange, setSettingFo
                             color="success"
                             fullWidth
                         >
-                            UPDATE
+                            {t('UPDATE')}
                         </Button>
                     </Grid>
                 </Grid>

@@ -37,7 +37,7 @@ class EmployeeController extends Controller
         return Inertia::render('Employee/Employee', [
             'employees' => $employees,
             'stores' => $stores,
-            'pageLabel' => 'Employees',
+            'pageLabel' => __('Employees'),
         ]);
     }
 

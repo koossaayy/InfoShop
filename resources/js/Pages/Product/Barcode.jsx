@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Head, usePage } from "@inertiajs/react";
+import { useTranslation } from 'react-i18next';
 import { renderBarcodeTemplate, generateBarcodeInTemplate } from "@/lib/barcodeTemplateRenderer";
 
 export default function ProoductBarcode({
@@ -7,6 +8,7 @@ export default function ProoductBarcode({
     barcode_settings,
     template,
 }) {
+    const { t } = useTranslation();
     const shop_name = usePage().props.settings.shop_name;
     const formattedPrice = product.selling_price ? `${product.selling_price}` : '';
 
@@ -54,7 +56,7 @@ export default function ProoductBarcode({
                 price: formattedPrice,
                 barcode_code: product.barcode || '',
                 store_name: shop_name || '',
-                date: new Date().toLocaleDateString(),
+                date: new Date().toLocaleDateString(globalThis.document?.documentElement?.lang || undefined),
             };
 
             // Render the template with data
@@ -82,7 +84,7 @@ export default function ProoductBarcode({
 
     return (
         <>
-            <Head title="Barcode" />
+            <Head title={t('Barcode')} />
             <div dangerouslySetInnerHTML={{ __html: renderedTemplate }} />
         </>
     );

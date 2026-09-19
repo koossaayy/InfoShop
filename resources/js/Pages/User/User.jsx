@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, router } from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
@@ -12,10 +13,11 @@ import { DataGrid} from '@mui/x-data-grid';
 import FormDialog from './UserFormDialog';
 import Swal from 'sweetalert2';
 import { X } from 'lucide-react';
+import i18next from 'i18next';
 
 
   const columns = (handleAction) => [
-    { field: 'name', headerName: 'Profile Name', width: 200,
+    { field: 'name', get headerName() { return i18next.t('Profile Name'); }, width: 200,
       renderCell: (params) => (
         <p
           onClick={() => handleAction(params.row, 'edit')}
@@ -25,16 +27,16 @@ import { X } from 'lucide-react';
         </p>
       ),
     },
-    { field: 'user_name', headerName: 'User Name', width: 150 },
-    { field: 'user_role', headerName: 'User Role', width: 150 },
-    { field: 'email', headerName: 'Email', width: 150 },
-    { field: 'store_name', headerName: 'Store', width: 150 },
-    { field: 'created_at', headerName: 'Created At', width: 200,
+    { field: 'user_name', get headerName() { return i18next.t('User Name'); }, width: 150 },
+    { field: 'user_role', get headerName() { return i18next.t('User Role'); }, width: 150 },
+    { field: 'email', get headerName() { return i18next.t('Email'); }, width: 150 },
+    { field: 'store_name', get headerName() { return i18next.t('Store'); }, width: 150 },
+    { field: 'created_at', get headerName() { return i18next.t('Created At'); }, width: 200,
       renderCell: (params) => (
         <p>{dayjs(params.value).format('YYYY-MM-DD hh:mm A')}</p>
       )
      },
-     {field: "action", headerName: "Actions", width: 100,
+     {field: "action", get headerName() { return i18next.t('Actions'); }, width: 100,
       renderCell: (params) => (
         <IconButton
           onClick={() => handleAction(params.row, 'deactivate')}
@@ -49,6 +51,7 @@ import { X } from 'lucide-react';
   ];
 
  export default function User({users, stores, roles}) {
+    const { t } = useTranslation();
     const auth = usePage().props.auth.user
     const [open, setOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -66,27 +69,27 @@ import { X } from 'lucide-react';
         else if (action === "deactivate") {
           console.log(user.id);
           Swal.fire({
-            title: 'Are you sure?',
-            text: `You won't be able to revert this action!`,
+            title: t('Are you sure?'),
+            text: t('You won\'t be able to revert this action!'),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, deactivate!'
+            confirmButtonText: t('Yes, deactivate!')
           }).then((result) => {
             if (result.isConfirmed) {
               axios.post(`/users/${user.id}/deactivate`)
                 .then((response) => {
                   Swal.fire(
-                    'Deactivated!',
-                    `User ${user.name} has been deactivated.`,
+                    t('Deactivated!'),
+                    t('User {{0}} has been deactivated.', { 0: user.name }),
                     'success'
                   );
                   router.reload();
                 })
                 .catch((error) => {
                   Swal.fire(
-                    'Failed',
+                    t('Failed'),
                     error.response.data.message,
                     'error'
                   );
@@ -105,10 +108,10 @@ import { X } from 'lucide-react';
     return (
         <AuthenticatedLayout>
           
-            <Head title="User" />
+            <Head title={t('User')} />
                 <Grid container spacing={2} sx={{ alignItems: 'center', width: "100%" }}>
                     <Grid size={12} container sx={{ justifyContent: 'end' }}>
-                        <Button variant="contained" startIcon={<AddIcon />} onClick={handleClickOpen}>Add User</Button>
+                        <Button variant="contained" startIcon={<AddIcon />} onClick={handleClickOpen}>{t('Add User')}</Button>
                     </Grid>
 
                     <Box className='py-6 w-full' sx={{display: 'grid', gridTemplateColumns: '1fr'}}>

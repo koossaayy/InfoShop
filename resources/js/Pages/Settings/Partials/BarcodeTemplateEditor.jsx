@@ -23,8 +23,11 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Save, RotateCcw, ChevronDown } from 'lucide-react';
 import JsBarcode from 'jsbarcode';
+import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const BarcodeTemplateEditor = ({ settings }) => {
+    const { t } = useTranslation();
     const [template, setTemplate] = useState('');
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -46,19 +49,19 @@ const BarcodeTemplateEditor = ({ settings }) => {
     ];
 
     const allowedVariables = [
-        { name: 'product_name', description: 'Product/item name' },
-        { name: 'price', description: 'Product price' },
-        { name: 'barcode_code', description: 'Barcode code/number' },
-        { name: 'store_name', description: 'Store/shop name' },
-        { name: 'date', description: 'Current date' },
+        { name: 'product_name', description: t('Product/item name') },
+        { name: 'price', description: t('Product price') },
+        { name: 'barcode_code', description: t('Barcode code/number') },
+        { name: 'store_name', description: t('Store/shop name') },
+        { name: 'date', description: t('Current date') },
     ];
 
     const [sampleData, setSampleData] = useState({
-        product_name: 'ABC Product - XYZ',
-        price: '1,000.00 Rs.',
+        product_name: t('ABC Product - XYZ'),
+        price: t('1,000.00 Rs.'),
         barcode_code: '8718719850268',
-        store_name: 'Main Store',
-        date: new Date().toLocaleDateString(),
+        store_name: t('Main Store'),
+        date: new Date().toLocaleDateString(globalThis.document?.documentElement?.lang || undefined),
     });
 
     useEffect(() => {
@@ -82,7 +85,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
             setError(null);
         } catch (err) {
             console.error('Error fetching template:', err);
-            setError('Failed to load barcode template');
+            setError(t('Failed to load barcode template'));
             setTemplate('');
         } finally {
             setLoading(false);
@@ -130,7 +133,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
             if (err.response?.data?.errors) {
                 setValidationErrors(err.response.data.errors);
             } else {
-                setValidationErrors([err.message || 'Error rendering preview']);
+                setValidationErrors([err.message || t('Error rendering preview')]);
             }
             setPreviewHtml('');
         }
@@ -138,7 +141,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
 
     const handleTemplateSave = async () => {
         if (!template.trim()) {
-            Swal.fire('Warning', 'Template cannot be empty', 'warning');
+            Swal.fire(t('Warning'), t('Template cannot be empty'), 'warning');
             return;
         }
 
@@ -155,19 +158,19 @@ const BarcodeTemplateEditor = ({ settings }) => {
             });
 
             Swal.fire({
-                title: 'Success!',
-                text: 'Barcode template updated successfully',
+                title: t('Success!'),
+                text: t('Barcode template updated successfully'),
                 icon: 'success',
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true,
             });
         } catch (err) {
-            const errorMessage = err.response?.data?.message || 'Failed to save template';
+            const errorMessage = err.response?.data?.message || t('Failed to save template');
             const errors = err.response?.data?.errors || [];
 
             Swal.fire({
-                title: 'Error',
+                title: t('Error'),
                 html: `
                     <div style="text-align: left;">
                         <p>${errorMessage}</p>
@@ -205,7 +208,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
     if (loading) {
         return (
             <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Typography>Loading template...</Typography>
+                <Typography>{t('Loading template...')}</Typography>
             </Box>
         );
     }
@@ -219,10 +222,10 @@ const BarcodeTemplateEditor = ({ settings }) => {
             <Paper elevation={2} sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                        Barcode Template Editor
+                        {t('Barcode Template Editor')}
                     </Typography>
                     <Stack direction="row" spacing={1}>
-                        <Tooltip title="Save Template">
+                        <Tooltip title={t('Save Template')}>
                             <IconButton
                                 size="large"
                                 onClick={handleTemplateSave}
@@ -238,7 +241,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                                 <Save size={24} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Reset Template">
+                        <Tooltip title={t('Reset Template')}>
                             <IconButton
                                 size="large"
                                 onClick={fetchBarcodeTemplate}
@@ -262,7 +265,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                 <Accordion defaultExpanded sx={{ mb: 3, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
                     <AccordionSummary expandIcon={<ChevronDown size={20} />}>
                         <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                            Barcode Format Settings
+                            {t('Barcode Format Settings')}
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ pt: 2 }}>
@@ -270,7 +273,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                             <Grid item xs={12} sm={6} md={3}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                                     <Typography variant="caption" sx={{ fontWeight: 500, color: '#666' }}>
-                                        Format
+                                        {t('Format')}
                                     </Typography>
                                     <select
                                         value={barcodeSettings.format}
@@ -292,7 +295,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                             <Grid item xs={12} sm={6} md={3}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                                     <Typography variant="caption" sx={{ fontWeight: 500, color: '#666' }}>
-                                        Width
+                                        {t('Width')}
                                     </Typography>
                                     <TextField
                                         type="number"
@@ -307,7 +310,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                             <Grid item xs={12} sm={6} md={3}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                                     <Typography variant="caption" sx={{ fontWeight: 500, color: '#666' }}>
-                                        Height
+                                        {t('Height')}
                                     </Typography>
                                     <TextField
                                         type="number"
@@ -322,7 +325,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                             <Grid item xs={12} sm={6} md={3}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                                     <Typography variant="caption" sx={{ fontWeight: 500, color: '#666' }}>
-                                        Font Size
+                                        {t('Font Size')}
                                     </Typography>
                                     <TextField
                                         type="number"
@@ -344,7 +347,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                         {/* Template Editor */}
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 500 }}>
-                                Template HTML
+                                {t('Template HTML')}
                             </Typography>
                             <TextField
                                 id="template-textarea"
@@ -371,7 +374,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                             <Accordion defaultExpanded sx={{ boxShadow: 'none', border: '1px solid #e0e0e0' }}>
                                 <AccordionSummary expandIcon={<ChevronDown size={20} />}>
                                     <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                                        Variables (Click to Insert)
+                                        {t('Variables (Click to Insert)')}
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails sx={{ pt: 1 }}>
@@ -395,7 +398,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                             <Accordion sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', mt: 1 }}>
                                 <AccordionSummary expandIcon={<ChevronDown size={20} />}>
                                     <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                                        Sample Data for Preview
+                                        {t('Sample Data for Preview')}
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails sx={{ pt: 1 }}>
@@ -420,7 +423,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                     {/* Right Column: Preview */}
                     <Grid item xs={12} md={8} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                         <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                            Live Preview
+                            {t('Live Preview')}
                         </Typography>
 
                         {validationErrors.length > 0 && (
@@ -466,7 +469,7 @@ const BarcodeTemplateEditor = ({ settings }) => {
                                         }}
                                     >
                                         <Typography variant="body2">
-                                            Enter template on the left to see preview
+                                            {t('Enter template on the left to see preview')}
                                         </Typography>
                                     </Box>
                                 )}
@@ -478,19 +481,19 @@ const BarcodeTemplateEditor = ({ settings }) => {
 
             <Paper elevation={1} sx={{ p: 2, backgroundColor: '#f0f7ff', border: '1px solid #b3d9ff' }}>
                 <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 500, color: '#0066cc' }}>
-                    💡 Template Tips
+                    {t('💡 Template Tips')}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 0.5, fontSize: '0.9rem' }}>
-                    • Use HTML and CSS to structure your barcode template
+                    {t('• Use HTML and CSS to structure your barcode template')}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 0.5, fontSize: '0.9rem' }}>
-                    • Insert variables using double curly braces: <code>{"{{variable_name}}"}</code>
+                    <Trans i18nKey="• Insert variables using double curly braces: <0>{{v0}}</0>" components={[<code />]} values={{ v0: "{{variable_name}}" }} />
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 0.5, fontSize: '0.9rem' }}>
                     • For barcodes, create an SVG element with <code>id="barcode-svg"</code>
                 </Typography>
                 <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
-                    • Click any variable chip on the left to insert it into your template
+                    {t('• Click any variable chip on the left to insert it into your template')}
                 </Typography>
             </Paper>
         </Box>

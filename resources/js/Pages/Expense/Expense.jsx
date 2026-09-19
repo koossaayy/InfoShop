@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -21,29 +22,30 @@ import numeral from "numeral";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import CustomPagination from "@/Components/CustomPagination";
 import ExpenseDialog from "./Partials/ExpenseDialog";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
-    { field: "id", headerName: "ID", width: 80 },
+    { field: "id", get headerName() { return i18next.t('ID'); }, width: 80 },
     {
         field: "expense_date",
-        headerName: "Date",
+        get headerName() { return i18next.t('Date'); },
         width: 100,
         renderCell: (params) => {
             // Format the date to 'YYYY-MM-DD'
             return dayjs(params.value).format("YYYY-MM-DD");
         },
     },
-    { field: "description", headerName: "Description", width: 300 },
+    { field: "description", get headerName() { return i18next.t('Description'); }, width: 300 },
     {
         field: "source",
-        headerName: "Source",
+        get headerName() { return i18next.t('Source'); },
         width: 120,
         renderCell: (params) => {
             return params.value ? params.value.toUpperCase() : '-';
         },
     },
     {
-        field: "amount", headerName: "Amount", width: 130, align: 'right', headerAlign: 'right',
+        field: "amount", get headerName() { return i18next.t('Amount'); }, width: 130, align: 'right', headerAlign: 'right',
         renderCell: (params) => {
             return numeral(params.value).format('0,0.00');
         },
@@ -51,7 +53,7 @@ const columns = (handleRowClick) => [
 
     {
         field: 'action',
-        headerName: 'Actions',
+        get headerName() { return i18next.t('Actions'); },
         width: 150, align: 'right', headerAlign: 'right',
         renderCell: (params) => (
             <>
@@ -64,6 +66,7 @@ const columns = (handleRowClick) => [
 ];
 
 export default function Expense({ expenses, stores }) {
+    const { t } = useTranslation();
     const [dataExpenses, setDataExpenses] = useState(expenses);
     const [totalExpense, setTotalExpense] = useState(0)
     const [expenseModalOpen, setExpenseModalOpen] = useState(false)
@@ -82,10 +85,10 @@ export default function Expense({ expenses, stores }) {
 
     const deleteExpense = (expenseID) => {
         Swal.fire({
-            title: "Do you want to remove the record?",
+            title: t('Do you want to remove the record?'),
             showDenyButton: true,
-            confirmButtonText: "YES",
-            denyButtonText: `NO`,
+            confirmButtonText: t('YES'),
+            denyButtonText: t('NO'),
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.post(`/expense/${expenseID}/delete`)
@@ -93,7 +96,7 @@ export default function Expense({ expenses, stores }) {
                         const updatedData = dataExpenses.data.filter((item) => item.id !== expenseID);
                         setDataExpenses({ ...dataExpenses, data: updatedData });
                         Swal.fire({
-                            title: "Success!",
+                            title: t('Success!'),
                             text: response.data.message,
                             icon: "success",
                             showConfirmButton: false,
@@ -139,7 +142,7 @@ export default function Expense({ expenses, stores }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Expenses" />
+            <Head title={t('Expenses')} />
             <Grid
                 container
                 spacing={2}
@@ -149,10 +152,10 @@ export default function Expense({ expenses, stores }) {
 
                 <Grid size={{ xs: 12, sm: 3 }}>
                     <TextField
-                        label="Search..."
+                        label={t('Search...')}
                         name="search_query"
                         size="small"
-                        placeholder="Start typing..."
+                        placeholder={t('Start typing...')}
                         value={searchTerms.search_query}
                         onChange={handleSearchChange}
                         fullWidth
@@ -160,9 +163,9 @@ export default function Expense({ expenses, stores }) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
-                        placeholder="Start Date"
+                        placeholder={t('Start Date')}
                         fullWidth
                         size="small"
                         type="date"
@@ -180,10 +183,10 @@ export default function Expense({ expenses, stores }) {
 
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
                         size="small"
-                        placeholder="End Date"
+                        placeholder={t('End Date')}
                         fullWidth
                         type="date"
                         slotProps={{
@@ -207,7 +210,7 @@ export default function Expense({ expenses, stores }) {
                         fullWidth
                         color="success"
                     >
-                        ADD EXPENSE
+                        {t('ADD EXPENSE')}
                     </Button>
                 </Grid>
             </Grid>

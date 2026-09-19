@@ -12,6 +12,7 @@ import {
     FormControlLabel,
     Checkbox,
 } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 import PrintReceiptModal from "@/Components/PrintReceiptModal";
 
 import PercentIcon from '@mui/icons-material/Percent';
@@ -39,6 +40,7 @@ export default function PaymentsCheckoutDialog({
     formData,
     is_sale = false,
 }) {
+    const { t } = useTranslation();
     const formatCurrency = useCurrencyFormatter();
     const currencySymbol = useCurrencyStore((state) => state.settings.currency_symbol);
     const { cartState, cartTotal, emptyCart, totalProfit, charges, totalChargeAmount, finalTotal, discount, setDiscount: setContextDiscount, calculateChargesWithDiscount } = useCart();
@@ -153,7 +155,7 @@ export default function PaymentsCheckoutDialog({
             .post(url, formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -185,7 +187,7 @@ export default function PaymentsCheckoutDialog({
             .catch((error) => {
                 const errorMessages = JSON.stringify(error.response, Object.getOwnPropertyNames(error));
                 Swal.fire({
-                    title: "Failed!",
+                    title: t('Failed!'),
                     text: errorMessages,
                     icon: "error",
                     showConfirmButton: true,
@@ -201,7 +203,7 @@ export default function PaymentsCheckoutDialog({
         const netTotal = (cartTotal - discount) + recalculatedCharges;
         const balance = amountReceived + parseFloat(amount)
         if (netTotal < balance) {
-            alert('Payment cannot be exceeded the total amount')
+            alert(t('Payment cannot be exceeded the total amount'))
         }
         else if (amount) {
             const newPayment = { payment_method: paymentMethod, amount: parseFloat(amount) };
@@ -221,7 +223,7 @@ export default function PaymentsCheckoutDialog({
 
     const discountPercentage = () => {
         if (discount < 0 || discount > 100) {
-            alert("Discount must be between 0 and 100");
+            alert(t('Discount must be between 0 and 100'));
             return;
         }
         const discountAmount = (cartTotal * discount) / 100;
@@ -247,9 +249,9 @@ export default function PaymentsCheckoutDialog({
                     }
                 }}
             >
-                <DialogTitle id="alert-dialog-title">ADD PAYMENTS</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t('ADD PAYMENTS')}</DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -267,7 +269,7 @@ export default function PaymentsCheckoutDialog({
                                 fullWidth
                                 type="number"
                                 name="discount"
-                                label="Discount"
+                                label={t('Discount')}
                                 variant="outlined"
                                 value={discount}
                                 onChange={handleDiscountChange}
@@ -301,7 +303,7 @@ export default function PaymentsCheckoutDialog({
                                 size="large"
                                 fullWidth
                                 name="net_total"
-                                label="Total"
+                                label={t('Total')}
                                 variant="outlined"
                                 sx={{
                                     input: { fontWeight: 'bold' },
@@ -336,7 +338,7 @@ export default function PaymentsCheckoutDialog({
                                     fullWidth
                                     type="number"
                                     name="amount"
-                                    label="Amount"
+                                    label={t('Amount')}
                                     variant="outlined"
                                     value={amount}
                                     onChange={(e) => setAmount(e.target.value)}
@@ -370,7 +372,7 @@ export default function PaymentsCheckoutDialog({
                                         onClick={() => addPayment('Cash')}
                                         color="success"
                                     >
-                                        CASH
+                                        {t('CASH')}
                                     </Button>
                                 </Grid>
                                 {selectedContact?.id !== 1 && (
@@ -384,7 +386,7 @@ export default function PaymentsCheckoutDialog({
                                             onClick={() => addPayment('Credit')}
                                             color="error"
                                         >
-                                            CREDIT
+                                            {t('CREDIT')}
                                         </Button>
                                     </Grid>
                                 )}
@@ -397,7 +399,7 @@ export default function PaymentsCheckoutDialog({
                                         startIcon={<CreditCardIcon />}
                                         onClick={() => addPayment('Cheque')}
                                     >
-                                        CHEQUE
+                                        {t('CHEQUE')}
                                     </Button>
                                 </Grid>
                                 <Grid size={{xs:6,sm:4}}>
@@ -409,7 +411,7 @@ export default function PaymentsCheckoutDialog({
                                         startIcon={<FontAwesomeIcon icon={faCreditCard} size={"2xl"} />}
                                         onClick={() => addPayment('Card')}
                                     >
-                                        CARD
+                                        {t('CARD')}
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -455,7 +457,7 @@ export default function PaymentsCheckoutDialog({
                                     name="open_print_dialog"
                                 />
                             }
-                            label="Open Print Dialog"
+                            label={t('Open Print Dialog')}
                         />
                     </Grid>
 
@@ -477,7 +479,7 @@ export default function PaymentsCheckoutDialog({
                         type="submit"
                         disabled={amountReceived - ((cartTotal - discount) + recalculatedCharges) < 0 || loading || amountReceived > ((cartTotal - discount) + recalculatedCharges)}
                     >
-                        {loading ? 'Loading...' : 'PAY'}
+                        {loading ? t('Loading...') : t('PAY')}
                     </Button>
                 </DialogActions>
             </Dialog>

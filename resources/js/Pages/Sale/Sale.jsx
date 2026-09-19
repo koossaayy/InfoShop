@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { Button, Box, IconButton, TextField, MenuItem, Tooltip, Chip, Grid } from "@mui/material";
@@ -20,11 +21,12 @@ import CustomPagination from "@/Components/CustomPagination";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SalesList from "./Partials/SalesList";
+import i18next from 'i18next';
 
 const columns = (handleRowClick, formatCurrency) => [
     {
         field: "id",
-        headerName: "ID",
+        get headerName() { return i18next.t('ID'); },
         width: 80,
         renderCell: (params) => {
             return "#" + params.value.toString().padStart(4, "0");
@@ -32,7 +34,7 @@ const columns = (handleRowClick, formatCurrency) => [
     },
     {
         field: "invoice_number",
-        headerName: "No",
+        get headerName() { return i18next.t('No'); },
         width: 160,
         renderCell: (params) => (
             <Button
@@ -44,7 +46,7 @@ const columns = (handleRowClick, formatCurrency) => [
         ),
     },
     {
-        field: "name", headerName: "Customer Name", width: 200,
+        field: "name", get headerName() { return i18next.t('Customer Name'); }, width: 200,
         renderCell: (params) => (
             <Tooltip title={'' + params.row.balance} arrow>
                 <Button>{params.value}</Button>
@@ -52,20 +54,20 @@ const columns = (handleRowClick, formatCurrency) => [
         ),
     },
     {
-        field: "discount", headerName: "Discount", width: 80, align: 'right', headerAlign: 'right',
+        field: "discount", get headerName() { return i18next.t('Discount'); }, width: 80, align: 'right', headerAlign: 'right',
         renderCell: (params) => {
             return formatCurrency(params.value, false);
         },
     },
     {
-        field: "total_amount", headerName: "Bill Amount", width: 120, align: 'right', headerAlign: 'right',
+        field: "total_amount", get headerName() { return i18next.t('Bill Amount'); }, width: 120, align: 'right', headerAlign: 'right',
         renderCell: (params) => {
             return formatCurrency(params.value, false);
         },
     },
     {
         field: "amount_received",
-        headerName: "Received",
+        get headerName() { return i18next.t('Received'); },
         width: 130, align: 'right', headerAlign: 'right',
         renderCell: (params) => (
             <Button
@@ -84,23 +86,23 @@ const columns = (handleRowClick, formatCurrency) => [
     },
     {
         field: "change",
-        headerName: "Change",
+        get headerName() { return i18next.t('Change'); },
         width: 100, align: 'right', headerAlign: 'right',
         renderCell: (params) => {
             const change = params.row.amount_received - params.row.total_amount;
             return formatCurrency(change, false);
         },
     },
-    { field: 'profit_amount', headerName: 'Profit', width: 120 },
-    { field: "status", headerName: "Status", width: 100 },
+    { field: 'profit_amount', get headerName() { return i18next.t('Profit'); }, width: 120 },
+    { field: "status", get headerName() { return i18next.t('Status'); }, width: 100 },
     {
         field: "sale_date",
-        headerName: "Date",
+        get headerName() { return i18next.t('Date'); },
         width: 100,
     },
     {
         field: "action",
-        headerName: "Actions",
+        get headerName() { return i18next.t('Actions'); },
         width: 180,
         renderCell: (params) => (
             <>
@@ -134,6 +136,7 @@ const columns = (handleRowClick, formatCurrency) => [
 ];
 
 export default function Sale({ sales, contacts }) {
+    const { t } = useTranslation();
     const formatCurrency = useCurrencyFormatter();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -182,12 +185,12 @@ export default function Sale({ sales, contacts }) {
 
     const deleteSale = (id) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: t('Are you sure?'),
+            text: t('You won\'t be able to revert this!'),
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
+            confirmButtonText: t('Yes, delete it!'),
+            cancelButtonText: t('No, cancel!'),
             reverseButtons: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
@@ -196,12 +199,12 @@ export default function Sale({ sales, contacts }) {
                 axios
                     .delete(`/sales/${id}`)
                     .then(response => {
-                        Swal.fire('Deleted!', 'The sale has been deleted.', 'success');
+                        Swal.fire(t('Deleted!'), t('The sale has been deleted.'), 'success');
                         refreshSales(window.location.pathname)
                         // Optionally refresh the sales data or update the UI here
                     })
                     .catch(error => {
-                        Swal.fire('Error!', error.response.data.error, 'error');
+                        Swal.fire(t('Error!'), error.response.data.error, 'error');
                     });
 
             }
@@ -247,7 +250,7 @@ export default function Sale({ sales, contacts }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Sales" />
+            <Head title={t('Sales')} />
 
             <Grid
                 container
@@ -258,7 +261,7 @@ export default function Sale({ sales, contacts }) {
                 <Grid size={{ xs: 12, sm: 3 }} sx={{ zIndex: 999 }}>
                     <Select2
                         className="w-full"
-                        placeholder="Select a contact..."
+                        placeholder={t('Select a contact...')}
                         styles={{
                             control: (baseStyles, state) => ({
                                 ...baseStyles,
@@ -276,24 +279,24 @@ export default function Sale({ sales, contacts }) {
                 <Grid size={{ xs: 12, sm: 2 }}>
                     <TextField
                         value={searchTerms.status}
-                        label="Status"
+                        label={t('Status')}
                         onChange={handleSearchChange}
                         name="status"
                         select
                         fullWidth
                         size="small"
                     >
-                        <MenuItem value={"all"}>All</MenuItem>
-                        <MenuItem value={"completed"}>Completed</MenuItem>
-                        <MenuItem value={"pending"}>Pending</MenuItem>
+                        <MenuItem value={"all"}>{t('All')}</MenuItem>
+                        <MenuItem value={"completed"}>{t('Completed')}</MenuItem>
+                        <MenuItem value={"pending"}>{t('Pending')}</MenuItem>
                     </TextField>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
-                        placeholder="Start Date"
+                        placeholder={t('Start Date')}
                         fullWidth
                         size="small"
                         type="date"
@@ -309,9 +312,9 @@ export default function Sale({ sales, contacts }) {
 
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
-                        placeholder="End Date"
+                        placeholder={t('End Date')}
                         fullWidth
                         size="small"
                         type="date"
@@ -328,7 +331,7 @@ export default function Sale({ sales, contacts }) {
                 <Grid size={{ xs: 12, sm: 2 }}>
                     <TextField
                         value={searchTerms.query}
-                        label="Search"
+                        label={t('Search')}
                         size="small"
                         onChange={handleSearchChange}
                         name="query"

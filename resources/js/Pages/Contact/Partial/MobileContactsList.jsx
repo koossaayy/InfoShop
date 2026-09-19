@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { ClipboardClock, PrinterIcon, ReceiptText, ShoppingCart, Trash2 } from 'lucide-react';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import Catalog from '@/Pages/CatalogPOS/Catalog';
 
 const MobileContactsList = ({ contacts, handleContactEdit, handleDelete }) => {
+    const { t } = useTranslation();
     const [dialog, setDialog] = useState({ open: false, id: null });
 
     const openDialog = (type, id = null) => setDialog({ open: true, type, id });
@@ -24,7 +26,7 @@ const MobileContactsList = ({ contacts, handleContactEdit, handleDelete }) => {
                             </div>
                             <div className="flex ml-2">
                                 <Link href={`/reports/${contact.id}/${contact.type}`}>
-                                    <Tooltip title="REPORT">
+                                    <Tooltip title={t('REPORT')}>
                                         <IconButton color="primary">
                                             <PrinterIcon size={20} />
                                         </IconButton>
@@ -34,14 +36,14 @@ const MobileContactsList = ({ contacts, handleContactEdit, handleDelete }) => {
                                 {contact.type === 'customer' && (
                                     <>
                                         <Link href={`/pending-sales-receipt/${contact.id}`}>
-                                            <Tooltip title="PENDING RECEIPT">
+                                            <Tooltip title={t('PENDING RECEIPT')}>
                                                 <IconButton color="primary">
                                                     <ClipboardClock size={20} />
                                                 </IconButton>
                                             </Tooltip>
                                         </Link>
                                         <Link href={`/sales/?pending-sales-receipt=${contact.id}`}>
-                                            <Tooltip title="PENDING RECEIPT">
+                                            <Tooltip title={t('PENDING RECEIPT')}>
                                                 <IconButton color="primary">
                                                     <ReceiptText size={20} />
                                                 </IconButton>
@@ -50,7 +52,7 @@ const MobileContactsList = ({ contacts, handleContactEdit, handleDelete }) => {
                                     </>
                                 )}
 
-                                <Tooltip title="DELETE">
+                                <Tooltip title={t('DELETE')}>
                                     <IconButton
                                         color="error"
                                         onClick={() => handleDelete(contact.id, contact.name)}
@@ -63,11 +65,11 @@ const MobileContactsList = ({ contacts, handleContactEdit, handleDelete }) => {
 
                         <div className="mt-2 grid grid-cols-2 gap-4">
                             <div onClick={() => handleContactEdit(contact, 'add_payment')}>
-                                <div className="text-gray-500 text-sm">Balance</div>
-                                <div className="text-gray-700 text-sm font-bold">Rs. {contact.balance}</div>
+                                <div className="text-gray-500 text-sm">{t('Balance')}</div>
+                                <div className="text-gray-700 text-sm font-bold">{t('Rs. {{0}}', { 0: contact.balance })}</div>
                             </div>
                             <div>
-                                <div className="text-gray-500 text-sm">Phone</div>
+                                <div className="text-gray-500 text-sm">{t('Phone')}</div>
                                 <div className="text-gray-700 text-sm font-bold">{contact.phone ?? '-'}</div>
                             </div>
                         </div>

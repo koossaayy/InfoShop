@@ -24,7 +24,7 @@ class Quotation extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Quotation has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Quotation has been :eventName', ['eventName' => $eventName]));
     }
 
     public function contact() {

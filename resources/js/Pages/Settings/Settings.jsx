@@ -18,6 +18,7 @@ import {
     Paper,
 } from "@mui/material";
 
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
@@ -31,6 +32,7 @@ import TelegramSetting from "./Partials/TelegramSetting";
 import LoyaltyPointsSetting from "./Partials/LoyaltyPointsSetting";
 import CurrencySetting from "./Partials/CurrencySetting";
 import BarcodeTemplateEditor from "./Partials/BarcodeTemplateEditor";
+import i18next from 'i18next';
 
 const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -45,34 +47,34 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const fontOptions = [
-    { label: "Arial", fontFamily: "Arial, sans-serif" },
-    { label: "Helvetica", fontFamily: "Helvetica, sans-serif" },
-    { label: "Times New Roman", fontFamily: "'Times New Roman', serif" },
-    { label: "Georgia", fontFamily: "Georgia, serif" },
-    { label: "Courier New", fontFamily: "'Courier New', monospace" },
-    { label: "Verdana", fontFamily: "Verdana, sans-serif" },
-    { label: "Tahoma", fontFamily: "Tahoma, sans-serif" },
-    { label: "Trebuchet MS", fontFamily: "'Trebuchet MS', sans-serif" },
-    { label: "Comic Sans MS", fontFamily: "'Comic Sans MS', cursive" },
-    { label: "OCR A Extended", fontFamily: "'OCR A Extended', monospace" },
-    { label: "Monaco", fontFamily: "Monaco, monospace" },
-    { label: "Lucida Console", fontFamily: "'Lucida Console', monospace" },
-    { label: "Consolas", fontFamily: "Consolas, monospace" },
+    { get label() { return i18next.t('Arial'); }, fontFamily: "Arial, sans-serif" },
+    { get label() { return i18next.t('Helvetica'); }, fontFamily: "Helvetica, sans-serif" },
+    { get label() { return i18next.t('Times New Roman'); }, fontFamily: "'Times New Roman', serif" },
+    { get label() { return i18next.t('Georgia'); }, fontFamily: "Georgia, serif" },
+    { get label() { return i18next.t('Courier New'); }, fontFamily: "'Courier New', monospace" },
+    { get label() { return i18next.t('Verdana'); }, fontFamily: "Verdana, sans-serif" },
+    { get label() { return i18next.t('Tahoma'); }, fontFamily: "Tahoma, sans-serif" },
+    { get label() { return i18next.t('Trebuchet MS'); }, fontFamily: "'Trebuchet MS', sans-serif" },
+    { get label() { return i18next.t('Comic Sans MS'); }, fontFamily: "'Comic Sans MS', cursive" },
+    { get label() { return i18next.t('OCR A Extended'); }, fontFamily: "'OCR A Extended', monospace" },
+    { get label() { return i18next.t('Monaco'); }, fontFamily: "Monaco, monospace" },
+    { get label() { return i18next.t('Lucida Console'); }, fontFamily: "'Lucida Console', monospace" },
+    { get label() { return i18next.t('Consolas'); }, fontFamily: "Consolas, monospace" },
     {
-        label: "Bitstream Vera Sans Mono",
+        get label() { return i18next.t('Bitstream Vera Sans Mono'); },
         fontFamily: "'Bitstream Vera Sans Mono', monospace",
     },
-    { label: "DejaVu Sans Mono", fontFamily: "'DejaVu Sans Mono', monospace" },
-    { label: "Inconsolata", fontFamily: "'Inconsolata', monospace" },
-    { label: "Source Code Pro", fontFamily: "'Source Code Pro', monospace" },
-    { label: "Fira Code", fontFamily: "'Fira Code', monospace" },
-    { label: "Droid Sans Mono", fontFamily: "'Droid Sans Mono', monospace" },
-    { label: "Ubuntu Mono", fontFamily: "'Ubuntu Mono', monospace" },
-    { label: "PT Mono", fontFamily: "'PT Mono', monospace" },
-    { label: "Noto Mono", fontFamily: "'Noto Mono', monospace" },
-    { label: "Hack", fontFamily: "'Hack', monospace" },
-    { label: "Tisa Mono", fontFamily: "'Tisa Mono', monospace" },
-    { label: "Space Mono", fontFamily: "'Space Mono', monospace" },
+    { get label() { return i18next.t('DejaVu Sans Mono'); }, fontFamily: "'DejaVu Sans Mono', monospace" },
+    { get label() { return i18next.t('Inconsolata'); }, fontFamily: "'Inconsolata', monospace" },
+    { get label() { return i18next.t('Source Code Pro'); }, fontFamily: "'Source Code Pro', monospace" },
+    { get label() { return i18next.t('Fira Code'); }, fontFamily: "'Fira Code', monospace" },
+    { get label() { return i18next.t('Droid Sans Mono'); }, fontFamily: "'Droid Sans Mono', monospace" },
+    { get label() { return i18next.t('Ubuntu Mono'); }, fontFamily: "'Ubuntu Mono', monospace" },
+    { get label() { return i18next.t('PT Mono'); }, fontFamily: "'PT Mono', monospace" },
+    { get label() { return i18next.t('Noto Mono'); }, fontFamily: "'Noto Mono', monospace" },
+    { get label() { return i18next.t('Hack'); }, fontFamily: "'Hack', monospace" },
+    { get label() { return i18next.t('Tisa Mono'); }, fontFamily: "'Tisa Mono', monospace" },
+    { get label() { return i18next.t('Space Mono'); }, fontFamily: "'Space Mono', monospace" },
 ];
 
 function TabPanel(props) {
@@ -96,6 +98,7 @@ function TabPanel(props) {
 }
 
 export default function Setting({ settings }) {
+    const { t } = useTranslation();
     const [settingFormData, setSettingFormData] = useState(() => {
         let currencySettings = {
             currency_symbol: 'Rs.',
@@ -222,8 +225,8 @@ export default function Setting({ settings }) {
         })
             .then((response) => {
                 Swal.fire({
-                    title: "Success!",
-                    text: "Successfully saved",
+                    title: t('Success!'),
+                    text: t('Successfully saved'),
                     icon: "success",
                     showConfirmButton: false,
                     timer: 2000,
@@ -244,7 +247,7 @@ export default function Setting({ settings }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Settings" />
+            <Head title={t('Settings')} />
             <Box component="div">
                 <Box
                     sx={{
@@ -254,14 +257,14 @@ export default function Setting({ settings }) {
                     }}
                 >
                     <Tabs value={tabValue} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
-                        <Tab label="SHOP" value="shop" />
-                        <Tab label="RECEIPT" value="receipt" />
-                        <Tab label="BARCODE" value="barcode" />
-                        <Tab label="CURRENCY" value="currency" />
-                        <Tab label="MISC" value="misc" />
-                        <Tab label="MODULES" value="modules" />
-                        <Tab label="MAIL" value="mail" />
-                        <Tab label="TELEGRAM" value="telegram" />
+                        <Tab label={t('SHOP')} value="shop" />
+                        <Tab label={t('RECEIPT')} value="receipt" />
+                        <Tab label={t('BARCODE')} value="barcode" />
+                        <Tab label={t('CURRENCY')} value="currency" />
+                        <Tab label={t('MISC')} value="misc" />
+                        <Tab label={t('MODULES')} value="modules" />
+                        <Tab label={t('MAIL')} value="mail" />
+                        <Tab label={t('TELEGRAM')} value="telegram" />
                     </Tabs>
                 </Box>
 
@@ -299,7 +302,7 @@ export default function Setting({ settings }) {
                                                         backgroundOrigin: "content-box",
                                                     }}
                                                     image={settingFormData.shop_logo}
-                                                    title="shop logo"
+                                                    title={t('shop logo')}
                                                 />
                                                 <CardActions className="mt-0">
                                                     <Button
@@ -310,7 +313,7 @@ export default function Setting({ settings }) {
                                                         startIcon={<CloudUploadIcon />}
                                                         fullWidth
                                                     >
-                                                        Upload shop logo
+                                                        {t('Upload shop logo')}
                                                         <VisuallyHiddenInput
                                                             type="file"
                                                             onChange={handleFileChange}
@@ -333,7 +336,7 @@ export default function Setting({ settings }) {
                                                         backgroundOrigin: "content-box",
                                                     }}
                                                     image={settingFormData.app_icon}
-                                                    title="app icon"
+                                                    title={t('app icon')}
                                                 />
                                                 <CardActions className="mt-0">
                                                     <Button
@@ -344,7 +347,7 @@ export default function Setting({ settings }) {
                                                         startIcon={<CloudUploadIcon />}
                                                         fullWidth
                                                     >
-                                                        Upload app icon
+                                                        {t('Upload app icon')}
                                                         <VisuallyHiddenInput
                                                             type="file"
                                                             onChange={handleFileChange}
@@ -381,7 +384,7 @@ export default function Setting({ settings }) {
                                         color="success"
                                         fullWidth
                                     >
-                                        UPDATE
+                                        {t('UPDATE')}
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -454,8 +457,8 @@ export default function Setting({ settings }) {
                                                 onChange={handleChange}
                                                 select
                                             >
-                                                <MenuItem value={1}>Show</MenuItem>
-                                                <MenuItem value={0}>Hide</MenuItem>
+                                                <MenuItem value={1}>{t('Show')}</MenuItem>
+                                                <MenuItem value={0}>{t('Hide')}</MenuItem>
                                             </TextField>
                                         </Grid>
                                         <Grid size={{ xs: 6, sm: 3 }}>
@@ -486,7 +489,7 @@ export default function Setting({ settings }) {
                                             <TextField
                                                 fullWidth
                                                 name="sale_print_font"
-                                                label="Choose Font for Receipt"
+                                                label={t('Choose Font for Receipt')}
                                                 value={settingFormData.sale_print_font}
                                                 onChange={handleFontChange}
                                                 select
@@ -514,8 +517,8 @@ export default function Setting({ settings }) {
                                                 onChange={handleChange}
                                                 select
                                             >
-                                                <MenuItem value="1">Yes</MenuItem>
-                                                <MenuItem value="0">No</MenuItem>
+                                                <MenuItem value="1">{t('Yes')}</MenuItem>
+                                                <MenuItem value="0">{t('No')}</MenuItem>
                                             </TextField>
                                         </Grid>
                                     </Grid>
@@ -531,7 +534,7 @@ export default function Setting({ settings }) {
                                         color="success"
                                         fullWidth
                                     >
-                                        UPDATE
+                                        {t('UPDATE')}
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -561,7 +564,7 @@ export default function Setting({ settings }) {
                                 <input type="hidden" name="setting_type" value={'barcode'} />
                                 <Paper elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
                                     <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                                        Barcode Display Options
+                                        {t('Barcode Display Options')}
                                     </Typography>
                                     <Grid
                                         container
@@ -581,7 +584,7 @@ export default function Setting({ settings }) {
                                                         checked={settingFormData.show_barcode_store === "on"}
                                                     />
                                                 }
-                                                label="STORE NAME"
+                                                label={t('STORE NAME')}
                                             />
                                         </Grid>
                                         <Grid size={{ xs: 12, sm: 6 }}>
@@ -594,7 +597,7 @@ export default function Setting({ settings }) {
                                                         checked={settingFormData.show_barcode_product_price === "on"}
                                                     />
                                                 }
-                                                label="PRODUCT PRICE"
+                                                label={t('PRODUCT PRICE')}
                                             />
                                         </Grid>
                                         <Grid size={{ xs: 12, sm: 6 }}>
@@ -607,7 +610,7 @@ export default function Setting({ settings }) {
                                                         checked={settingFormData.show_barcode_product_name === "on"}
                                                     />
                                                 }
-                                                label="PRODUCT NAME"
+                                                label={t('PRODUCT NAME')}
                                             />
                                         </Grid>
                                     </Grid>
@@ -633,7 +636,7 @@ export default function Setting({ settings }) {
                                             size="large"
                                             color="success"
                                         >
-                                            UPDATE OPTIONS
+                                            {t('UPDATE OPTIONS')}
                                         </Button>
                                     </Box>
                                 </Paper>

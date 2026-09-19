@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import {
@@ -18,24 +19,25 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import numeral from "numeral";
 import CustomPagination from "@/Components/CustomPagination";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
-    { field: "id", headerName: "ID", width: 80 },
+    { field: "id", get headerName() { return i18next.t('ID'); }, width: 80 },
     {
         field: "employee_id",
-        headerName: "Employee",
+        get headerName() { return i18next.t('Employee'); },
         width: 200,
         renderCell: (params) => params.row.employee_name,
     },
     {
         field: "salary_date",
-        headerName: "Salary Date",
+        get headerName() { return i18next.t('Salary Date'); },
         width: 150,
         renderCell: (params) => dayjs(params.value).format("YYYY-MM-DD"),
     },
     {
         field: "net_salary",
-        headerName: "Net Salary",
+        get headerName() { return i18next.t('Net Salary'); },
         width: 150,
         align: "right",
         headerAlign: "right",
@@ -43,18 +45,18 @@ const columns = (handleRowClick) => [
     },
     {
         field: "salary_from",
-        headerName: "Salary From",
+        get headerName() { return i18next.t('Salary From'); },
         width: 200,
     },
     {
         field: "store_id",
-        headerName: "Store",
+        get headerName() { return i18next.t('Store'); },
         width: 200,
         renderCell: (params) => params.row.store_name,
     },
     {
         field: "action",
-        headerName: "Actions",
+        get headerName() { return i18next.t('Actions'); },
         width: 150,
         align: "right",
         headerAlign: "right",
@@ -70,6 +72,7 @@ const columns = (handleRowClick) => [
 ];
 
 export default function Payroll({ salaries, employees, stores }) {
+    const { t } = useTranslation();
     const [dataSalaries, setDataSalaries] = useState(salaries);
     const [selectedSalary, setSelectedSalary] = useState(null);
     const [searchTerms, setSearchTerms] = useState({
@@ -88,10 +91,10 @@ export default function Payroll({ salaries, employees, stores }) {
 
     const deleteSalary = (salaryID) => {
         Swal.fire({
-            title: "Do you want to remove the record?",
+            title: t('Do you want to remove the record?'),
             showDenyButton: true,
-            confirmButtonText: "YES",
-            denyButtonText: `NO`,
+            confirmButtonText: t('YES'),
+            denyButtonText: t('NO'),
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.post(`/salary/${salaryID}/delete`)
@@ -99,7 +102,7 @@ export default function Payroll({ salaries, employees, stores }) {
                         const updatedData = dataSalaries.data.filter((item) => item.id !== salaryID);
                         setDataSalaries({ ...dataSalaries, data: updatedData });
                         Swal.fire({
-                            title: "Success!",
+                            title: t('Success!'),
                             text: response.data.message,
                             icon: "success",
                             showConfirmButton: false,
@@ -137,20 +140,20 @@ export default function Payroll({ salaries, employees, stores }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Salaries" />
+            <Head title={t('Salaries')} />
             <Grid container spacing={2} sx={{ alignItems: "center", width: "100%", justifyContent: 'end' }}>
 
                 <Grid size={{ xs: 12, sm: 3 }}>
 
                     <TextField
-                        label="Employee"
+                        label={t('Employee')}
                         name="employee_id"
                         value={searchTerms.employee_id}
                         onChange={handleSearchChange}
                         select
                         fullWidth
                     >
-                        <MenuItem value="">All Employees</MenuItem>
+                        <MenuItem value="">{t('All Employees')}</MenuItem>
                         {employees.map((employee) => (
                             <MenuItem key={employee.id} value={employee.id}>
                                 {employee.name}
@@ -161,14 +164,14 @@ export default function Payroll({ salaries, employees, stores }) {
                 <Grid size={{ xs: 12, sm: 3 }}>
 
                     <TextField
-                        label="Store"
+                        label={t('Store')}
                         name="store_id"
                         value={searchTerms.store_id}
                         onChange={handleSearchChange}
                         select
                         fullWidth
                     >
-                        <MenuItem value="">All Stores</MenuItem>
+                        <MenuItem value="">{t('All Stores')}</MenuItem>
                         {stores.map((store) => (
                             <MenuItem key={store.id} value={store.id}>
                                 {store.name}
@@ -178,9 +181,9 @@ export default function Payroll({ salaries, employees, stores }) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
-                        placeholder="Start Date"
+                        placeholder={t('Start Date')}
                         fullWidth
                         type="date"
                         slotProps={{
@@ -195,9 +198,9 @@ export default function Payroll({ salaries, employees, stores }) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
-                        placeholder="End Date"
+                        placeholder={t('End Date')}
                         fullWidth
                         type="date"
                         slotProps={{

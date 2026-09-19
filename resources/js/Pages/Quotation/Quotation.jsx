@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, Link } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -22,42 +23,43 @@ import numeral from "numeral";
 
 import { DataGrid } from "@mui/x-data-grid";
 import CustomPagination from "@/Components/CustomPagination";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
-    { field: "id", headerName: "ID", width: 80 },
+    { field: "id", get headerName() { return i18next.t('ID'); }, width: 80 },
     {
         field: "quotation_number",
-        headerName: "Quotation Number",
+        get headerName() { return i18next.t('Quotation Number'); },
         width: 150,
     },
 
     {
         field: "contact_name",
-        headerName: "Contact Name",
+        get headerName() { return i18next.t('Contact Name'); },
         width: 200,
     },
     {
         field: "quotation_date",
-        headerName: "Quotation Date",
+        get headerName() { return i18next.t('Quotation Date'); },
         width: 150,
         renderCell: (params) => dayjs(params.value).format("YYYY-MM-DD"),
     },
     {
         field: "expiry_date",
-        headerName: "Expiry Date",
+        get headerName() { return i18next.t('Expiry Date'); },
         width: 100,
         renderCell: (params) => dayjs(params.value).format("YYYY-MM-DD"),
     },
     {
         field: "total",
-        headerName: "Total",
+        get headerName() { return i18next.t('Total'); },
         width: 100,
         align: 'right', headerAlign: 'right',
         renderCell: (params) => numeral(params.value).format('0,0.00'),
     },
     {
         field: 'action',
-        headerName: 'Actions',
+        get headerName() { return i18next.t('Actions'); },
         width: 150, align: 'right', headerAlign: 'right',
         renderCell: (params) => (
             <>
@@ -75,6 +77,7 @@ const columns = (handleRowClick) => [
 ];
 
 export default function Quotation({ quotations }) {
+    const { t } = useTranslation();
     const [dataQuotations, setDataQuotations] = useState(quotations);
     const [selectedQuotation, setSelectedQuotation] = useState(null);
 
@@ -113,10 +116,10 @@ export default function Quotation({ quotations }) {
 
     const deleteQuotation = (quotationID) => {
         Swal.fire({
-            title: "Do you want to remove the record?",
+            title: t('Do you want to remove the record?'),
             showDenyButton: true,
-            confirmButtonText: "YES",
-            denyButtonText: `NO`,
+            confirmButtonText: t('YES'),
+            denyButtonText: t('NO'),
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.post(`/quotation/${quotationID}/delete`)
@@ -124,7 +127,7 @@ export default function Quotation({ quotations }) {
                         const updatedData = dataQuotations.data.filter((item) => item.id !== quotationID);
                         setDataQuotations({ ...dataQuotations, data: updatedData });
                         Swal.fire({
-                            title: "Success!",
+                            title: t('Success!'),
                             text: response.data.message,
                             icon: "success",
                             showConfirmButton: false,
@@ -157,7 +160,7 @@ export default function Quotation({ quotations }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Quotations" />
+            <Head title={t('Quotations')} />
             <Grid
                 container
                 spacing={2}
@@ -166,8 +169,8 @@ export default function Quotation({ quotations }) {
             >
                 <Grid size={{ xs: 12, sm: 3 }}>
                     <TextField
-                        label="Search..."
-                        placeholder="Start typing..."
+                        label={t('Search...')}
+                        placeholder={t('Start typing...')}
                         fullWidth
                     />
                 </Grid>
@@ -181,7 +184,7 @@ export default function Quotation({ quotations }) {
                         fullWidth
                         color="success"
                     >
-                        QUOTATION
+                        {t('QUOTATION')}
                     </Button>
                 </Grid>
             </Grid>
@@ -198,7 +201,7 @@ export default function Quotation({ quotations }) {
             </Box>
             <Grid size={12} container sx={{ justifyContent: "end" }}>
                 <TextField
-                    label="Per page"
+                    label={t('Per page')}
                     value={searchTerms.per_page}
                     onChange={handleFilterChange}
                     name="per_page"

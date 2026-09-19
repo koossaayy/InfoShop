@@ -63,7 +63,7 @@ class Expense extends Model
             ->logOnly(['description', 'amount', 'expense_date', 'store_id', 'source'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Expense has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Expense has been :eventName', ['eventName' => $eventName]));
     }
 
     public function scopeStoreId($query, $storeId)

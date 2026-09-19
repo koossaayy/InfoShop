@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import InputAdornment from "@mui/material/InputAdornment";
 import Swal from "sweetalert2";
 
+import { useTranslation } from 'react-i18next';
 import { usePurchase } from "@/Context/PurchaseContext";
 
 export default function AddToPurchase({
@@ -20,6 +21,7 @@ export default function AddToPurchase({
     addToPurchaseOpen,
     setAddToPurchaseOpen,
 }) {
+    const { t } = useTranslation();
     const { addToCart } = usePurchase();
     const [isSelectBatch, setIsSelectBatch] = useState(true);
     const [loading, setLoading] = useState(false)
@@ -49,7 +51,7 @@ export default function AddToPurchase({
 
                 Swal.fire({
                     title: resp.data.message,
-                    text: 'New Batch',
+                    text: t('New Batch'),
                     icon: "warning",
                 });
             }
@@ -62,7 +64,7 @@ export default function AddToPurchase({
             }));
 
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -79,7 +81,7 @@ export default function AddToPurchase({
         .catch((error) => {
             const errorMessages = Object.values(error.response.data.errors).flat().join(' | ');
             Swal.fire({
-                title: "Failed!",
+                title: t('Failed!'),
                 text: errorMessages,
                 icon: "error",
                 showConfirmButton: true,
@@ -134,7 +136,7 @@ export default function AddToPurchase({
                     {formState.name}
                 </DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -152,7 +154,7 @@ export default function AddToPurchase({
                                 fullWidth
                                 type="number"
                                 name="quantity"
-                                label="Quantity"
+                                label={t('Quantity')}
                                 variant="outlined"
                                 autoFocus
                                 value={formState.quantity}
@@ -223,7 +225,7 @@ export default function AddToPurchase({
                                 fullWidth
                                 type="number"
                                 name="cost"
-                                label="Cost"
+                                label={t('Cost')}
                                 variant="outlined"
                                 required
                                 value={formState.cost}
@@ -249,7 +251,7 @@ export default function AddToPurchase({
                                 fullWidth
                                 type="number"
                                 name="price"
-                                label="Price"
+                                label={t('Price')}
                                 variant="outlined"
                                 required
                                 value={formState.price}
@@ -278,7 +280,7 @@ export default function AddToPurchase({
                         // onClick={handleClose}
                         disabled={loading}
                     >
-                        ADD TO CART
+                        {t('ADD TO CART')}
                     </Button>
                 </DialogActions>
             </Dialog>

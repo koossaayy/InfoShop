@@ -41,11 +41,11 @@ class SaleDeleted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Sale Deleted - #' . $this->sale['invoice_number'])
-            ->greeting('A sale has been deleted.')
-            ->line('#' . $this->sale['invoice_number'].' By '.Auth::user()->name)
-            ->line('Amount: ' . $this->sale['total_amount'])
-            ->line('Deleted at: ' . \Carbon\Carbon::parse($this->sale['deleted_at'])->format('Y-m-d h:i A'));
+            ->subject(__('Sale Deleted - #:invoice_number', ['invoice_number' => $this->sale['invoice_number']]))
+            ->greeting(__('A sale has been deleted.'))
+            ->line(__('#:invoice_number By :name', ['invoice_number' => $this->sale['invoice_number'], 'name' => Auth::user()->name]))
+            ->line(__('Amount: :total_amount', ['total_amount' => $this->sale['total_amount']]))
+            ->line(__('Deleted at: :format', ['format' => \Carbon\Carbon::parse($this->sale['deleted_at'])->format('Y-m-d h:i A')]));
     }
 
     public function toDatabase($notifiable)
@@ -53,7 +53,7 @@ class SaleDeleted extends Notification
         return [
             'sale_id' => $this->sale['id'],
             'amount' => $this->sale['total_amount'],
-            'message' => 'A sale has been deleted.',
+            'message' => __('A sale has been deleted.'),
             'url' => url('/sales'),
         ];
     }
@@ -63,11 +63,12 @@ class SaleDeleted extends Notification
         // Create the Telegram message
         return TelegramMessage::create()
             ->content(
-                "A sale has been deleted.\n" .
-                "Invoice Number: #" . $this->sale['invoice_number'] . "\n" .
-                "Deleted By: " . Auth::user()->name . "\n" .
-                "Amount: " . $this->sale['total_amount'] . "\n" .
-                "Deleted at: " . \Carbon\Carbon::parse($this->sale['deleted_at'])->format('Y-m-d h:i A') . "\n"
+                __('A sale has been deleted.
+Invoice Number: #:invoice_number
+Deleted By: :name
+Amount: :total_amount
+Deleted at: :format
+', ['invoice_number' => $this->sale['invoice_number'], 'name' => Auth::user()->name, 'total_amount' => $this->sale['total_amount'], 'format' => \Carbon\Carbon::parse($this->sale['deleted_at'])->format('Y-m-d h:i A')])
             )
             ->token($this->botToken);
     }

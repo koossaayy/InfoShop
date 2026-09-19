@@ -3,9 +3,11 @@ import { Trash2 } from "lucide-react";
 import dayjs from "dayjs";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useTranslation } from 'react-i18next';
 import BatchModal from "./BatchModal";
 
 export default function BatchesTable({ product, batches = [], onBatchesChange, contacts = [] }) {
+    const { t } = useTranslation();
     const [localBatches, setLocalBatches] = useState(batches);
     const [batchModalOpen, setBatchModalOpen] = useState(false);
     const [selectedBatch, setSelectedBatch] = useState(null);
@@ -50,13 +52,13 @@ export default function BatchesTable({ product, batches = [], onBatchesChange, c
         e.stopPropagation();
         
         Swal.fire({
-            title: "Delete Batch?",
-            text: "Are you sure you want to delete this batch?",
+            title: t('Delete Batch?'),
+            text: t('Are you sure you want to delete this batch?'),
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d32f2f",
             cancelButtonColor: "#757575",
-            confirmButtonText: "Delete",
+            confirmButtonText: t('Delete'),
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteBatch(batchId);
@@ -74,8 +76,8 @@ export default function BatchesTable({ product, batches = [], onBatchesChange, c
 
             Swal.fire({
                 icon: "success",
-                title: "Deleted",
-                text: "Batch deleted successfully",
+                title: t('Deleted'),
+                text: t('Batch deleted successfully'),
                 position: "bottom",
                 toast: true,
                 timer: 1500,
@@ -84,8 +86,8 @@ export default function BatchesTable({ product, batches = [], onBatchesChange, c
         } catch (error) {
             Swal.fire({
                 icon: "error",
-                title: "Error",
-                text: error.response?.data?.message || "Failed to delete batch",
+                title: t('Error'),
+                text: error.response?.data?.message || t('Failed to delete batch'),
                 position: "bottom",
                 toast: true,
                 timer: 1500,
@@ -95,10 +97,10 @@ export default function BatchesTable({ product, batches = [], onBatchesChange, c
     };
 
     const getSupplierName = (batch) => {
-        if (!batch.contact_id) return 'No Supplier';
+        if (!batch.contact_id) return t('No Supplier');
         if (batch.contact) return batch.contact.name;
         const contact = contacts.find(c => c.id === batch.contact_id);
-        return contact ? contact.name : 'Unknown Supplier';
+        return contact ? contact.name : t('Unknown Supplier');
     };
 
     const DisplayField = ({ label, value }) => (
@@ -158,28 +160,28 @@ export default function BatchesTable({ product, batches = [], onBatchesChange, c
                             <div className="px-4 py-3">
                                 <div className="grid grid-cols-3 gap-3">
                                     <DisplayField
-                                        label="Cost"
+                                        label={t('Cost')}
                                         value={batch.cost}
                                     />
                                     
                                     <DisplayField
-                                        label="Price"
+                                        label={t('Price')}
                                         value={batch.price}
                                     />
                                     
                                     <DisplayField
-                                        label="Discount %"
+                                        label={t('Discount %')}
                                         value={`${batch.discount_percentage || 0}%`}
                                     />
                                     
                                     <DisplayField
-                                        label="Flat Discount"
+                                        label={t('Flat Discount')}
                                         value={batch.discount || 0}
                                     />
                                     
                                     <div className="col-span-2">
                                         <DisplayField
-                                            label="Expiry Date"
+                                            label={t('Expiry Date')}
                                             value={batch.expiry_date ? dayjs(batch.expiry_date).format("DD/MM/YYYY") : "No expiry"}
                                         />
                                     </div>
@@ -189,8 +191,8 @@ export default function BatchesTable({ product, batches = [], onBatchesChange, c
                     ))
                 ) : (
                     <div className="bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
-                        <p className="text-gray-600 font-medium">No batches found</p>
-                        <p className="text-xs text-gray-500 mt-1">Create batches to track inventory</p>
+                        <p className="text-gray-600 font-medium">{t('No batches found')}</p>
+                        <p className="text-xs text-gray-500 mt-1">{t('Create batches to track inventory')}</p>
                     </div>
                 )}
             </div>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useCallback } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import {
@@ -14,6 +15,7 @@ import axios from "axios";
 import { useDropzone } from 'react-dropzone';
 
 export default function Update() {
+    const { t } = useTranslation();
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false)
 
@@ -24,7 +26,7 @@ export default function Update() {
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Only zip files are allowed',
+                title: t('Only zip files are allowed'),
             });
         }
     }, []);
@@ -51,10 +53,10 @@ export default function Update() {
             });
 
             Swal.fire({
-                title: 'Success!',
+                title: t('Success!'),
                 text: response.data.success,
                 icon: 'success',
-                confirmButtonText: 'OK',
+                confirmButtonText: t('OK'),
             }).then(() => {
                 axios.get('/clear-cache');
             });
@@ -62,10 +64,10 @@ export default function Update() {
         } catch (error) {
             console.log(error);
             Swal.fire({
-                title: 'Error!',
+                title: t('Error!'),
                 text: error.response.data.error,
                 icon: 'error',
-                confirmButtonText: 'OK',
+                confirmButtonText: t('OK'),
             });
         } finally {
             setLoading(false);
@@ -76,11 +78,11 @@ export default function Update() {
         <AuthenticatedLayout
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Update
+                    {t('Update')}
                 </h2>
             }
         >
-            <Head title="Update" />
+            <Head title={t('Update')} />
             <Grid container sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                 <Grid spacing={2} size={6}>
                   {/* Dropzone area */}
@@ -100,16 +102,16 @@ export default function Update() {
                 >
                     <input {...getInputProps()} />
                     {isDragActive ? (
-                        <Typography>Drop the zip file here...</Typography>
+                        <Typography>{t('Drop the zip file here...')}</Typography>
                     ) : (
-                        <Typography>Drag 'n' drop a zip file here, or click to select one</Typography>
+                        <Typography>{t('Drag \'n\' drop a zip file here, or click to select one')}</Typography>
                     )}
                 </div>
 
                 {/* If a file is selected, show details */}
                 {file && (
                     <Paper elevation={3} style={{ padding: '10px', marginTop: '20px' }}>
-                        <Typography variant="h6">Selected File:</Typography>
+                        <Typography variant="h6">{t('Selected File:')}</Typography>
                         <Typography>{file.name}</Typography>
                     </Paper>
                 )}
@@ -122,7 +124,7 @@ export default function Update() {
                             color="error"
                             onClick={() => setFile(null)}
                         >
-                            Remove File
+                            {t('Remove File')}
                         </Button>
                         <Button
                             variant="contained"
@@ -130,7 +132,7 @@ export default function Update() {
                             onClick={handleUpload}
                             disabled={loading}
                         >
-                            {loading ? 'Updating...' : 'Update'}
+                            {loading ? t('Updating...') : t('Update')}
                         </Button>
                     </Grid>
                 )}

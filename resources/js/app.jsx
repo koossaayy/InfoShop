@@ -2,7 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 
 import { createRoot } from 'react-dom/client';
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { PurchaseProvider } from './Context/PurchaseContext';
 import { SharedProvider } from './Context/SharedContext';
@@ -11,6 +11,7 @@ import { useCurrencyStore } from './stores/currencyStore';
 const appName = import.meta.env.VITE_APP_NAME || 'InfoShop';
 
 import { InertiaProgress } from '@inertiajs/progress';
+import i18n from './i18n-setup';
 
 InertiaProgress.init({
   color:'#0a0a0a',
@@ -22,6 +23,12 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
     setup({ el, App, props }) {
+        i18n.changeLanguage(String(props.initialPage.props.locale ?? 'en'));
+        if (typeof window !== 'undefined') {
+            router.on('navigate', (event) => {
+                i18n.changeLanguage(String(event.detail.page.props.locale ?? 'en'));
+            });
+        }
         const root = createRoot(el);
 
         // Initialize currency store from Inertia props

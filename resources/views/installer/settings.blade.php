@@ -5,7 +5,7 @@
 
 @section('content')
 <div x-data="settingsData()" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">Application Settings</h2>
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ __('Application Settings') }}</h2>
 
     <form @submit.prevent="submitForm()" method="POST" action="{{ route('installer.settings.save') }}" id="settingsForm" class="space-y-6">
         @csrf
@@ -13,35 +13,35 @@
         <input type="hidden" name="app_url"      id="f_app_url">
         <input type="hidden" name="app_timezone" id="f_app_timezone">
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Application Name</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Application Name') }}</label>
             <input type="text" x-model="app_name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="InfoShop">
-            <p class="mt-1 text-sm text-gray-500">The name of your application</p>
+            <p class="mt-1 text-sm text-gray-500">{{ __('The name of your application') }}</p>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Application URL</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Application URL') }}</label>
             <input type="url" x-model="app_url" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://yourshop.com">
-            <p class="mt-1 text-sm text-gray-500">The URL where your application will be accessible</p>
+            <p class="mt-1 text-sm text-gray-500">{{ __('The URL where your application will be accessible') }}</p>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Environment</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Environment') }}</label>
             <select x-model="app_env" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="production">Production</option>
-                <option value="local">Local/Development</option>
+                <option value="production">{{ __('Production') }}</option>
+                <option value="local">{{ __('Local/Development') }}</option>
             </select>
-            <p class="mt-1 text-sm text-gray-500">Select 'Production' for live site, 'Local' for testing</p>
+            <p class="mt-1 text-sm text-gray-500">{{ __("Select 'Production' for live site, 'Local' for testing") }}</p>
         </div>
 
         <div class="relative" @click.away="open = false">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Timezone') }}</label>
             <div class="relative">
                 <input 
                     type="text" 
                     x-model="timezoneSearch"
                     @focus="open = true"
                     @input="open = true"
-                    placeholder="Search timezone..."
+                    placeholder="{{ __('Search timezone...') }}"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     autocomplete="off"
                 >
@@ -54,7 +54,7 @@
             
             <!-- Selected Timezone Display -->
             <div x-show="app_timezone && !open" class="mt-2 text-sm text-gray-600">
-                Selected: <span class="font-medium text-gray-900" x-text="app_timezone"></span>
+                {{ __('Selected:') }} <span class="font-medium text-gray-900" x-text="app_timezone"></span>
             </div>
             
             <!-- Dropdown List -->
@@ -64,7 +64,7 @@
                 class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto"
             >
                 <template x-if="getFilteredTimezones().length === 0">
-                    <div class="px-4 py-3 text-sm text-gray-500">No timezones found</div>
+                    <div class="px-4 py-3 text-sm text-gray-500">{{ __('No timezones found') }}</div>
                 </template>
                 <template x-for="timezone in getFilteredTimezones()" :key="timezone">
                     <div 
@@ -76,7 +76,7 @@
                 </template>
             </div>
             
-            <p class="mt-1 text-sm text-gray-500">Search and select your local timezone</p>
+            <p class="mt-1 text-sm text-gray-500">{{ __('Search and select your local timezone') }}</p>
         </div>
 
         <div class="flex justify-between mt-8">
@@ -84,7 +84,7 @@
                 <svg class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
                 </svg>
-                Back
+                {{ __('Back') }}
             </a>
             
             <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">

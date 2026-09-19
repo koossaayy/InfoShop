@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
@@ -9,10 +10,11 @@ import Typography from '@mui/material/Typography';
 
 import { DataGrid, GridToolbar} from '@mui/x-data-grid';
 import UserRoleDialog from './UserRoleDialog';
+import i18next from 'i18next';
 
   const columns = (handleEdit) => [
-    { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'name', headerName: 'Profile Name', width: 200,
+    { field: 'id', get headerName() { return i18next.t('ID'); }, width: 100 },
+    { field: 'name', get headerName() { return i18next.t('Profile Name'); }, width: 200,
       renderCell: (params) => (
         <Button
           onClick={() => handleEdit(params.row)}
@@ -23,10 +25,11 @@ import UserRoleDialog from './UserRoleDialog';
         </Button>
       ),
     },
-    { field: 'permissions_list', headerName: 'User Name', width: 500 },
+    { field: 'permissions_list', get headerName() { return i18next.t('User Name'); }, width: 500 },
   ];
 
  export default function UserRole({roles, permissions}) {
+    const { t } = useTranslation();
     const auth = usePage().props.auth.user
     const [open, setOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState()
@@ -50,10 +53,10 @@ import UserRoleDialog from './UserRoleDialog';
     return (
         <AuthenticatedLayout>
           
-            <Head title="User Roles" />
+            <Head title={t('User Roles')} />
                 <Grid container spacing={2} sx={{ alignItems: 'center', justifyContent: 'end' }}>
                     <Grid size={{xs:12, sm:4, md:3}}>
-                        <Button fullWidth variant="contained" startIcon={<AddIcon />} onClick={handleClickOpen}>Add Role</Button>
+                        <Button fullWidth variant="contained" startIcon={<AddIcon />} onClick={handleClickOpen}>{t('Add Role')}</Button>
                     </Grid>
                 </Grid>
 

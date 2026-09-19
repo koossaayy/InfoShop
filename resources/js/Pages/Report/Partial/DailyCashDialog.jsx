@@ -16,6 +16,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import axios from "axios";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import { useTranslation } from 'react-i18next';
 import { useCurrencyStore } from "@/stores/currencyStore";
 export default function DailyCashDialog({
     open,
@@ -24,6 +25,7 @@ export default function DailyCashDialog({
     refreshTransactions,
     auth
 }) {
+    const { t } = useTranslation();
     const { settings: currencySettings } = useCurrencyStore();
     const initialFormState = {
         amount: 0,
@@ -65,7 +67,7 @@ export default function DailyCashDialog({
             .post(url, formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -100,10 +102,10 @@ export default function DailyCashDialog({
                 }}
             >
                 <DialogTitle id="transaction-dialog-title">
-                    ADD CASH LOG
+                    {t('ADD CASH LOG')}
                 </DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -121,7 +123,7 @@ export default function DailyCashDialog({
                                 fullWidth
                                 type="number"
                                 name="amount"
-                                label="Amount"
+                                label={t('Amount')}
                                 variant="outlined"
                                 autoFocus
                                 required
@@ -148,7 +150,7 @@ export default function DailyCashDialog({
 
                         <Grid size={{ xs: 12, sm: 4 }}>
                             <TextField
-                                label="Date"
+                                label={t('Date')}
                                 name="transaction_date"
                                 fullWidth
                                 type="date"
@@ -166,7 +168,7 @@ export default function DailyCashDialog({
                         <Grid size={{ xs: 12, sm: 4 }}>
                             <TextField
                                 select
-                                label="Transaction Type"
+                                label={t('Transaction Type')}
                                 name="transaction_type"
                                 fullWidth
                                 value={formState.transaction_type}
@@ -189,12 +191,12 @@ export default function DailyCashDialog({
                                     });
                                 }}
                             >
-                                <MenuItem value="deposit">Deposit</MenuItem>
+                                <MenuItem value="deposit">{t('Deposit')}</MenuItem>
                                 <MenuItem value="withdrawal">
-                                    Withdrawal
+                                    {t('Withdrawal')}
                                 </MenuItem>
-                                <MenuItem value="open_cashier">Open Cashier</MenuItem>
-                                <MenuItem value="close_cashier">Close Cashier</MenuItem>
+                                <MenuItem value="open_cashier">{t('Open Cashier')}</MenuItem>
+                                <MenuItem value="close_cashier">{t('Close Cashier')}</MenuItem>
                             </TextField>
                         </Grid>
 
@@ -213,7 +215,7 @@ export default function DailyCashDialog({
                         <Grid size={12}>
                             <TextField
                                 value={formState.store_id}
-                                label="Store"
+                                label={t('Store')}
                                 onChange={handleFieldChange}
                                 required
                                 name="store_id"
@@ -245,7 +247,7 @@ export default function DailyCashDialog({
                             !formState.transaction_type || loading
                         }
                     >
-                        {loading ? 'Loading...' : 'SAVE'}
+                        {loading ? t('Loading...') : t('SAVE')}
 
                     </Button>
                 </DialogActions>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { usePage, Head } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Box,  Grid, Button } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
@@ -8,6 +9,7 @@ import Alpine from 'alpinejs';
 import numeral from 'numeral';
 import Mustache from 'mustache';
 const QuotationView = ({ quotation, template }) => {
+    const { t } = useTranslation();
     const [renderedTemplate, setRenderedTemplate] = useState('');
 
     useEffect(() => {
@@ -23,7 +25,7 @@ const QuotationView = ({ quotation, template }) => {
                 }
             } catch (error) {
                 console.error("Error rendering template:", error);
-                Swal.fire('Error', 'Failed to render template', 'error');
+                Swal.fire(t('Error'), t('Failed to render template'), 'error');
             }
         };
         renderTemplate();
@@ -31,7 +33,7 @@ const QuotationView = ({ quotation, template }) => {
 
     return (
         <>
-            <Head title="Quotation" />
+            <Head title={t('Quotation')} />
             <Grid container spacing={2} sx={{ justifyContent: "center", margin: '20px 0' }}>
                 <Grid size={12} style={{ textAlign: 'center' }}>
                     <div className="no-print print:hidden">
@@ -40,7 +42,7 @@ const QuotationView = ({ quotation, template }) => {
                             endIcon={<PrintIcon />}
                             onClick={() => window.print()}
                         >
-                            Print
+                            {t('Print')}
                         </Button>
                     </div>
                 </Grid>

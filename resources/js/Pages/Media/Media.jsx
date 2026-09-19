@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { Dialog, DialogContent,  Grid, TextField } from '@mui/material';
@@ -7,6 +8,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 export default function Media({ images, settings }) {
+    const { t } = useTranslation();
     const [uploading, setUploading] = useState(false);
     const [imageOpen, setImageOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -37,7 +39,7 @@ export default function Media({ images, settings }) {
             return response.data; // This is the Blob object
         } catch (error) {
             console.error('Error fetching image:', error);
-            throw new Error('Failed to fetch image');
+            throw new Error(t('Failed to fetch image'));
         }
     };
 
@@ -75,14 +77,14 @@ export default function Media({ images, settings }) {
             });
 
             if (response.status === 200) {
-                alert('Image uploaded successfully!');
+                alert(t('Image uploaded successfully!'));
                 console.log('Server response:', response.data);
             } else {
-                alert('Failed to upload image');
+                alert(t('Failed to upload image'));
             }
         } catch (error) {
             console.error('Upload failed:', error);
-            alert('Error uploading image');
+            alert(t('Error uploading image'));
         }
 
         setUploading(false);
@@ -91,7 +93,7 @@ export default function Media({ images, settings }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Media Library" />
+            <Head title={t('Media Library')} />
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <div className="media-grid" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px' }}>
                     {images && images.length > 0 ? (
@@ -142,7 +144,7 @@ export default function Media({ images, settings }) {
                                     <p style={{ margin: 0 }}>{image.file_name}</p>
                                     <p style={{ margin: 0, color: '#555' }}>{image.size}</p>
                                     <p style={{ margin: 0, color: '#999', fontSize: '10px' }}>
-                                        {dayjs(image.created_at).format('DD/MM/YYYY h:mm A')}
+                                        {dayjs(image.created_at).format(t('DD/MM/YYYY h:mm A'))}
                                     </p>
                                 </div>
 
@@ -161,13 +163,13 @@ export default function Media({ images, settings }) {
                                             fontSize: '10px',
                                         }}
                                     >
-                                        {uploading ? 'Uploading...' : 'Optimize & Upload'}
+                                        {uploading ? t('Uploading...') : t('Optimize & Upload')}
                                     </button>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p>No images found.</p>
+                        <p>{t('No images found.')}</p>
                     )}
                 </div>
             </div>
@@ -182,7 +184,7 @@ export default function Media({ images, settings }) {
                     {selectedImage && (
                         <img
                             src={selectedImage}
-                            alt="Selected Media"
+                            alt={t('Selected Media')}
                             style={{
                                 width: '100%',
                                 height: '100%',

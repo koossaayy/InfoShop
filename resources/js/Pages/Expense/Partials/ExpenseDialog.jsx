@@ -16,6 +16,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import axios from "axios";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import { useTranslation } from 'react-i18next';
 import { useCurrencyStore } from "../../../stores/currencyStore";
 
 const initialPaymentFormState = {
@@ -32,6 +33,7 @@ export default function ExpenseDialog({
     stores,
     refreshExpenses
 }) {
+    const { t } = useTranslation();
 
     const [expensesForm, setPaymentFormState] = useState(initialPaymentFormState);
     const { settings: currencySettings } = useCurrencyStore();
@@ -60,7 +62,7 @@ export default function ExpenseDialog({
             .post(url, formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -91,9 +93,9 @@ export default function ExpenseDialog({
                     }
                 }}
             >
-                <DialogTitle id="alert-dialog-title">ADD EXPENSE</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t('ADD EXPENSE')}</DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -111,7 +113,7 @@ export default function ExpenseDialog({
                                 fullWidth
                                 type="number"
                                 name="amount"
-                                label="Amount"
+                                label={t('Amount')}
                                 variant="outlined"
                                 autoFocus
                                 sx={{ input: { fontWeight: "bold" } }}
@@ -137,7 +139,7 @@ export default function ExpenseDialog({
 
                         <Grid size={{xs:6, sm:4}}>
                             <TextField
-                                label="Date"
+                                label={t('Date')}
                                 name="expense_date"
                                 fullWidth
                                 type="date"
@@ -153,7 +155,7 @@ export default function ExpenseDialog({
                         </Grid>
                         <Grid size={{xs:12, sm:4}}>
                             <TextField
-                                label="Source"
+                                label={t('Source')}
                                 name="source"
                                 fullWidth
                                 select
@@ -167,18 +169,18 @@ export default function ExpenseDialog({
                                 required
                             >
                                 <MenuItem value={"drawer"}>
-                                    Cash Drawer
+                                    {t('Cash Drawer')}
                                 </MenuItem>
-                                <MenuItem value={"external"}>External</MenuItem>
+                                <MenuItem value={"external"}>{t('External')}</MenuItem>
                             </TextField>
                         </Grid>
                         <Grid container size={{xs:12, sm:12}} spacing={2}>
                             <TextField
                                 fullWidth
                                 variant="outlined"
-                                label={"Description"}
+                                label={t('Description')}
                                 name="description"
-                                placeholder="Description"
+                                placeholder={t('Description')}
                                 value={expensesForm.note}
                                 onChange={handleFieldChange}
                                 required
@@ -193,7 +195,7 @@ export default function ExpenseDialog({
                         <Grid size={12}>
                                 <TextField
                                     value={expensesForm.store_id}
-                                    label="Store"
+                                    label={t('Store')}
                                     fullWidth
                                     onChange={handleFieldChange}
                                     required
@@ -222,7 +224,7 @@ export default function ExpenseDialog({
                         type="submit"
                         disabled={expensesForm.amount == 0}
                     >
-                        ADD EXPENSE
+                        {t('ADD EXPENSE')}
                     </Button>
                 </DialogActions>
             </Dialog>

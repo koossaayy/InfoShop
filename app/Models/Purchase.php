@@ -26,7 +26,7 @@ class Purchase extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Purchase has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Purchase has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

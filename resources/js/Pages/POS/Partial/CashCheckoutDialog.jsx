@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import { Box, Grid, IconButton, TextField, FormControlLabel, Checkbox } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from 'react-i18next';
 import PrintReceiptModal from "@/Components/PrintReceiptModal";
 import PercentIcon from '@mui/icons-material/Percent';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -22,6 +23,7 @@ import { useCurrencyFormatter, toNumeric } from "@/lib/currencyFormatter";
 import { useCurrencyStore } from "@/stores/currencyStore";
 
 export default function CashCheckoutDialog({ disabled }) {
+    const { t } = useTranslation();
     const formatCurrency = useCurrencyFormatter();
     const currencySymbol = useCurrencyStore((state) => state.settings.currency_symbol);
     const return_sale = usePage().props.return_sale;
@@ -99,7 +101,7 @@ export default function CashCheckoutDialog({ disabled }) {
         formJson.profit_amount = totalProfit - discount; //total profit is from the sale items, but we apply discount for the bill also
         formJson.sale_date = saleDate;
         formJson.sale_time = saleTime;
-        formJson.payment_method = 'Cash'
+        formJson.payment_method = t('Cash')
         formJson.contact_id = selectedCustomer.id
         formJson.return_sale = return_sale;
         formJson.return_sale_id = return_sale_id;
@@ -109,7 +111,7 @@ export default function CashCheckoutDialog({ disabled }) {
         axios.post('/pos/checkout', formJson)
             .then((resp) => {
                 Swal.fire({
-                    title: "Success!",
+                    title: t('Success!'),
                     text: resp.data.message,
                     icon: "success",
                     showConfirmButton: false,
@@ -137,7 +139,7 @@ export default function CashCheckoutDialog({ disabled }) {
             .catch((error) => {
                 // console.error("Submission failed with errors:", error);
                 Swal.fire({
-                    title: "Failed!",
+                    title: t('Failed!'),
                     text: error.response.data.error,
                     icon: "error",
                     showConfirmButton: true,
@@ -152,7 +154,7 @@ export default function CashCheckoutDialog({ disabled }) {
 
     const discountPercentage = () => {
         if (discount < 0 || discount > 100) {
-            alert("Discount must be between 0 and 100");
+            alert(t('Discount must be between 0 and 100'));
             return;
         }
         const discountAmount = (cartTotal * discount) / 100;
@@ -191,10 +193,10 @@ export default function CashCheckoutDialog({ disabled }) {
                 fullScreen={isMobile}
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Cash Checkout"}
+                    {t('Cash Checkout')}
                 </DialogTitle>
                 <IconButton
-                    aria-label="close"
+                    aria-label={t('close')}
                     onClick={handleClose}
                     sx={(theme) => ({
                         position: "absolute",
@@ -244,7 +246,7 @@ export default function CashCheckoutDialog({ disabled }) {
                         // label="Discount"
                         type="number"
                         name="discount"
-                        label="Discount"
+                        label={t('Discount')}
                         variant="outlined"
                         value={discount}
                         sx={{ mt: "1.5rem", mb: "2rem", input: { textAlign: "center", fontSize: '2rem' }, }}
@@ -274,7 +276,7 @@ export default function CashCheckoutDialog({ disabled }) {
                             {/* Net total (after discount + recalculated charges) */}
                             <TextField
                                 fullWidth
-                                label="Payable Amount"
+                                label={t('Payable Amount')}
                                 variant="outlined"
                                 name="net_total"
                                 value={formatCurrency((cartTotal - discount) + recalculatedCharges, false)}
@@ -292,7 +294,7 @@ export default function CashCheckoutDialog({ disabled }) {
                             <TextField
                                 id="txtChange"
                                 fullWidth
-                                label="Change"
+                                label={t('Change')}
                                 variant="outlined"
                                 name="change_amount"
                                 sx={{input: { textAlign: "center", fontSize: '2rem' } }}
@@ -325,7 +327,7 @@ export default function CashCheckoutDialog({ disabled }) {
                                     name="open_print_dialog"
                                 />
                             }
-                            label="Open Print Dialog"
+                            label={t('Open Print Dialog')}
                         />
                     </Grid>
 
@@ -346,7 +348,7 @@ export default function CashCheckoutDialog({ disabled }) {
 
                         }
                     >
-                        {loading ? 'Loading...' : cartTotal < 0 ? 'REFUND' : 'PAY'}
+                        {loading ? t('Loading...') : cartTotal < 0 ? t('REFUND') : t('PAY')}
                     </Button>
                 </DialogActions>
             </Dialog>

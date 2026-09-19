@@ -16,14 +16,14 @@ class UpgradeController extends Controller
     public function showUploadForm()
     {
         return Inertia::render('Update/Update',[
-            'pageLabel'=>'Update',
+            'pageLabel'=>__('Update'),
         ]);
     }
 
     public function showUploadFormV2()
     {
         return Inertia::render('Update/UpdateV2',[
-            'pageLabel'=>'Update V2',
+            'pageLabel'=>__('Update V2'),
         ]);
     }
 
@@ -33,7 +33,7 @@ class UpgradeController extends Controller
     public function showMaintenance()
     {
         return Inertia::render('Maintenance/Maintenance', [
-            'pageLabel' => 'Maintenance',
+            'pageLabel' => __('Maintenance'),
         ]);
     }
 
@@ -515,7 +515,7 @@ class UpgradeController extends Controller
         if ($freeSpace < 100 * 1024 * 1024) {
             return [
                 'success' => false,
-                'message' => 'Insufficient disk space. At least 100MB required.'
+                'message' => __('Insufficient disk space. At least 100MB required.')
             ];
         }
 
@@ -526,7 +526,7 @@ class UpgradeController extends Controller
             if (!is_writable($path)) {
                 return [
                     'success' => false,
-                    'message' => "Write permission denied on folder: {$folder}"
+                    'message' => __('Write permission denied on folder: :folder', ['folder' => $folder])
                 ];
             }
         }
@@ -537,7 +537,7 @@ class UpgradeController extends Controller
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'message' => 'Database connection failed: ' . $e->getMessage()
+                'message' => __('Database connection failed: :message', ['message' => $e->getMessage()])
             ];
         }
 
@@ -568,7 +568,7 @@ class UpgradeController extends Controller
         if (!empty($missingFolders)) {
             return [
                 'success' => false,
-                'message' => 'Update package is incomplete. Missing required folders: ' . implode(', ', $missingFolders)
+                'message' => __('Update package is incomplete. Missing required folders: :implode', ['implode' => implode(', ', $missingFolders)])
             ];
         }
 

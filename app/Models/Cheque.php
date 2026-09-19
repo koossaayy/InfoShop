@@ -24,7 +24,7 @@ class Cheque extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
-            ->setDescriptionForEvent(fn(string $eventName) => "Cheque has been {$eventName}");
+            ->setDescriptionForEvent(fn(string $eventName) => __('Cheque has been :eventName', ['eventName' => $eventName]));
     }
 
     protected $fillable = [

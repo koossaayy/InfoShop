@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, Link } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -25,12 +26,13 @@ import SalaryFormDialog from "./Partials/SalaryFormDialog";
 import EmployeeBalanceDialog from "./Partials/EmployeeBalanceDialog";
 import PrintIcon from "@mui/icons-material/Print";
 import { data } from "autoprefixer";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
-    { field: "id", headerName: "ID", width: 80 },
+    { field: "id", get headerName() { return i18next.t('ID'); }, width: 80 },
     {
         field: "name",
-        headerName: "Name",
+        get headerName() { return i18next.t('Name'); },
         width: 200,
         renderCell: (params) => (
             <Link underline="hover" href='#' className='hover:underline' onClick={(event) => { event.preventDefault(); handleRowClick(params.row, 'employee_edit'); }}>
@@ -40,17 +42,17 @@ const columns = (handleRowClick) => [
     },
     {
         field: "contact_number",
-        headerName: "Contact Number",
+        get headerName() { return i18next.t('Contact Number'); },
         width: 150,
     },
     {
         field: "address",
-        headerName: "Address",
+        get headerName() { return i18next.t('Address'); },
         width: 300,
     },
     {
         field: "joined_at",
-        headerName: "Joined At",
+        get headerName() { return i18next.t('Joined At'); },
         width: 120,
         renderCell: (params) => {
             return dayjs(params.value).format("YYYY-MM-DD");
@@ -58,7 +60,7 @@ const columns = (handleRowClick) => [
     },
     {
         field: "salary",
-        headerName: "Salary",
+        get headerName() { return i18next.t('Salary'); },
         width: 180,
         align: 'right', headerAlign: 'right',
 
@@ -79,7 +81,7 @@ const columns = (handleRowClick) => [
     },
     {
         field: "balance",
-        headerName: "Balance",
+        get headerName() { return i18next.t('Balance'); },
         width: 120,
         align: 'right', headerAlign: 'right',
         renderCell: (params) => (
@@ -99,17 +101,17 @@ const columns = (handleRowClick) => [
     },
     {
         field: "role",
-        headerName: "Role",
+        get headerName() { return i18next.t('Role'); },
         width: 120,
     },
     {
         field: "status",
-        headerName: "Status",
+        get headerName() { return i18next.t('Status'); },
         width: 120,
     },
     {
         field: 'action',
-        headerName: 'Actions',
+        get headerName() { return i18next.t('Actions'); },
         width: 150, align: 'right', headerAlign: 'right',
         renderCell: (params) => (
             <>
@@ -128,6 +130,7 @@ const columns = (handleRowClick) => [
 ];
 
 export default function Employee({ employees, stores, }) {
+    const { t } = useTranslation();
     const [dataEmployees, setDataEmployees] = useState(employees);
     const [totalEmployees, setTotalEmployees] = useState(0)
     const [employeeModalOpen, setEmployeeModalOpen] = useState(false)
@@ -160,10 +163,10 @@ export default function Employee({ employees, stores, }) {
 
     const deleteEmployee = (employeeID) => {
         Swal.fire({
-            title: "Do you want to remove the record?",
+            title: t('Do you want to remove the record?'),
             showDenyButton: true,
-            confirmButtonText: "YES",
-            denyButtonText: `NO`,
+            confirmButtonText: t('YES'),
+            denyButtonText: t('NO'),
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.post(`/employee/${employeeID}/delete`)
@@ -171,7 +174,7 @@ export default function Employee({ employees, stores, }) {
                         const updatedData = dataEmployees.data.filter((item) => item.id !== employeeID);
                         setDataEmployees({ ...dataEmployees, data: updatedData });
                         Swal.fire({
-                            title: "Success!",
+                            title: t('Success!'),
                             text: response.data.message,
                             icon: "success",
                             showConfirmButton: false,
@@ -222,7 +225,7 @@ export default function Employee({ employees, stores, }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Employees" />
+            <Head title={t('Employees')} />
             <Grid
                 container
                 spacing={2}
@@ -232,9 +235,9 @@ export default function Employee({ employees, stores, }) {
 
                 <Grid size={{ xs: 12, sm: 3 }}>
                     <TextField
-                        label="Search..."
+                        label={t('Search...')}
                         name="search_query"
-                        placeholder="Start typing..."
+                        placeholder={t('Start typing...')}
                         value={searchTerms.search_query}
                         onChange={handleSearchChange}
                         fullWidth
@@ -242,9 +245,9 @@ export default function Employee({ employees, stores, }) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
-                        placeholder="Start Date"
+                        placeholder={t('Start Date')}
                         fullWidth
                         type="date"
                         slotProps={{
@@ -259,9 +262,9 @@ export default function Employee({ employees, stores, }) {
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
-                        placeholder="End Date"
+                        placeholder={t('End Date')}
                         fullWidth
                         type="date"
                         slotProps={{
@@ -284,7 +287,7 @@ export default function Employee({ employees, stores, }) {
                         fullWidth
                         color="success"
                     >
-                        ADD EMPLOYEE
+                        {t('ADD EMPLOYEE')}
                     </Button>
                 </Grid>
             </Grid>

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import TuneIcon from '@mui/icons-material/Tune';
 import Select2 from 'react-select';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Global FilterModal Component
@@ -29,6 +30,7 @@ import Select2 from 'react-select';
  * @param {String} props.buttonTitle - Tooltip for filter button (default: "Advanced Filters")
  */
 export default function FilterModal({ fields = [], filters = {}, handleFilterChange, title = "Advanced Filters", buttonTitle = "Advanced Filters" }) {
+    const { t } = useTranslation();
     const [modalOpen, setModalOpen] = useState(false);
 
     const handleOpenModal = () => {
@@ -59,6 +61,7 @@ export default function FilterModal({ fields = [], filters = {}, handleFilterCha
     }).length;
 
     const renderField = (field) => {
+    const { t } = useTranslation();
         const { name, label, type, options = [], size, getOptionLabel, getOptionValue } = field;
         const value = filters[name];
 
@@ -92,7 +95,7 @@ export default function FilterModal({ fields = [], filters = {}, handleFilterCha
                 <Grid key={name} size={size}>
                     <div style={{ marginTop: '7px' }}>
                         <Select2
-                            placeholder={`Select ${label.toLowerCase()}...`}
+                            placeholder={t('Select {{0}}...', { 0: label.toLowerCase() })}
                             value={selectedOption}
                             styles={{
                                 control: (baseStyles, state) => ({
@@ -203,10 +206,10 @@ export default function FilterModal({ fields = [], filters = {}, handleFilterCha
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClearFilters} color="error" variant="outlined">
-                        Clear All
+                        {t('Clear All')}
                     </Button>
                     <Button onClick={handleCloseModal} color="inherit">
-                        Close
+                        {t('Close')}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, Link } from "@inertiajs/react";
 import { useState, useEffect } from "react";
@@ -21,25 +22,26 @@ import numeral from "numeral";
 import AddPaymentDialog from "@/Components/AddPaymentDialog";
 import ViewDetailsDialog from "@/Components/ViewDetailsDialog";
 import CustomPagination from "@/Components/CustomPagination";
+import i18next from 'i18next';
 
 const columns = (handleRowClick) => [
-    { field: "id", headerName: "ID", width: 80 },
-    { field: "name", headerName: "Vendor Name", width: 200 },
+    { field: "id", get headerName() { return i18next.t('ID'); }, width: 80 },
+    { field: "name", get headerName() { return i18next.t('Vendor Name'); }, width: 200 },
     {
-        field: "discount", headerName: "Discount", width: 100, align: 'right', headerAlign: 'right',
+        field: "discount", get headerName() { return i18next.t('Discount'); }, width: 100, align: 'right', headerAlign: 'right',
         renderCell: (params) => {
             return numeral(params.value).format('0,0.00');
         },
     },
     {
-        field: "total_amount", headerName: "Total Amount", width: 120, align: 'right', headerAlign: 'right',
+        field: "total_amount", get headerName() { return i18next.t('Total Amount'); }, width: 120, align: 'right', headerAlign: 'right',
         renderCell: (params) => {
             return numeral(params.value).format('0,0.00');
         },
     },
     {
         field: "amount_paid",
-        headerName: "Amount Paid",
+        get headerName() { return i18next.t('Amount Paid'); },
         width: 120, align: 'right', headerAlign: 'right',
         renderCell: (params) => (
             <Button
@@ -58,7 +60,7 @@ const columns = (handleRowClick) => [
     },
     {
         field: "purchase_date",
-        headerName: "Date",
+        get headerName() { return i18next.t('Date'); },
         width: 120,
         renderCell: (params) => {
             // Format the date to 'YYYY-MM-DD'
@@ -67,12 +69,12 @@ const columns = (handleRowClick) => [
     },
     {
         field: "status",
-        headerName: "Status",
+        get headerName() { return i18next.t('Status'); },
         width: 100,
     },
     {
         field: "action",
-        headerName: "Actions",
+        get headerName() { return i18next.t('Actions'); },
         width: 150,
         renderCell: (params) => (
             <>
@@ -89,6 +91,7 @@ const columns = (handleRowClick) => [
 ];
 
 export default function Purchases({ purchases, contacts }) {
+    const { t } = useTranslation();
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [paymentModalOpen, setPaymentModalOpen] = useState(false);
     const [viewPaymentsModalOpen, setViewPaymentsModalOpen] = useState(false);
@@ -156,7 +159,7 @@ export default function Purchases({ purchases, contacts }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Purchases" />
+            <Head title={t('Purchases')} />
 
             <Grid
                 container
@@ -166,7 +169,7 @@ export default function Purchases({ purchases, contacts }) {
                 <FormControl sx={{ minWidth: "240px" }}>
                     <Select2
                         className="w-full"
-                        placeholder="Select a contact..."
+                        placeholder={t('Select a contact...')}
                         styles={{
                             control: (baseStyles, state) => ({
                                 ...baseStyles,
@@ -184,24 +187,24 @@ export default function Purchases({ purchases, contacts }) {
                 <Grid size={{ xs: 12, sm: 2 }}>
                     <TextField
                         value={searchTerms.status}
-                        label="Status"
+                        label={t('Status')}
                         onChange={handleSearchChange}
                         name="status"
                         select
                         fullWidth
                         size="small"
                     >
-                        <MenuItem value={"all"}>All</MenuItem>
-                        <MenuItem value={"completed"}>Completed</MenuItem>
-                        <MenuItem value={"pending"}>Pending</MenuItem>
+                        <MenuItem value={"all"}>{t('All')}</MenuItem>
+                        <MenuItem value={"completed"}>{t('Completed')}</MenuItem>
+                        <MenuItem value={"pending"}>{t('Pending')}</MenuItem>
                     </TextField>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
-                        placeholder="Start Date"
+                        placeholder={t('Start Date')}
                         fullWidth
                         size="small"
                         type="date"
@@ -217,9 +220,9 @@ export default function Purchases({ purchases, contacts }) {
 
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
-                        placeholder="End Date"
+                        placeholder={t('End Date')}
                         fullWidth
                         size="small"
                         type="date"
@@ -240,7 +243,7 @@ export default function Purchases({ purchases, contacts }) {
                         size="large"
                         startIcon={<AddIcon />}
                     >
-                        Add Purchase
+                        {t('Add Purchase')}
                     </Button>
                 </Link>
 

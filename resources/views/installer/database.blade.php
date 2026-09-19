@@ -17,7 +17,7 @@
         this.testResult = null;
 
         fetch('{{ route('installer.database.test') }}', {
-            method: 'POST',
+            method: '{{ __('POST') }}',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 host: this.host,
@@ -33,7 +33,7 @@
             this.testing = false;
         })
         .catch(() => {
-            this.testResult = { success: false, message: 'Connection test failed. Please try again.' };
+            this.testResult = { success: false, message: '{{ __('Connection test failed. Please try again.') }}' };
             this.testing = false;
         });
     },
@@ -53,8 +53,8 @@
     password = sessionStorage.getItem('db_password') || '';
 " class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
 
-    <h2 class="text-2xl font-bold text-gray-900 mb-2">Database Configuration</h2>
-    <p class="text-gray-500 text-sm mb-6">MySQL 8.0+ required. The database must already exist.</p>
+    <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ __('Database Configuration') }}</h2>
+    <p class="text-gray-500 text-sm mb-6">{{ __('MySQL 8.0+ required. The database must already exist.') }}</p>
 
     @if(session('db_error'))
         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
@@ -76,14 +76,14 @@
 
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Host</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Host') }}</label>
                 <input type="text" x-model="host" required
                     @input="testResult = null"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="localhost">
+                    placeholder="{{ __('localhost') }}">
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Port</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Port') }}</label>
                 <input type="text" x-model="port" required
                     @input="testResult = null"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -92,24 +92,24 @@
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Database Name</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Database Name') }}</label>
             <input type="text" x-model="database" required
                 @input="testResult = null"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="infoshop">
-            <p class="mt-1 text-sm text-gray-500">The database must already exist on your MySQL server.</p>
+                placeholder="{{ __('infoshop') }}">
+            <p class="mt-1 text-sm text-gray-500">{{ __('The database must already exist on your MySQL server.') }}</p>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Username') }}</label>
             <input type="text" x-model="username" required
                 @input="testResult = null"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="root">
+                placeholder="{{ __('root') }}">
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Password') }}</label>
             <input type="password" x-model="password"
                 @input="testResult = null"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -119,14 +119,14 @@
         <div>
             <button type="submit" :disabled="testing"
                 class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                <template x-if="!testing"><span>Test Database Connection</span></template>
+                <template x-if="!testing"><span>{{ __('Test Database Connection') }}</span></template>
                 <template x-if="testing">
                     <span class="flex items-center">
                         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Testing...
+                        {{ __('Testing...') }}
                     </span>
                 </template>
             </button>
@@ -145,7 +145,7 @@
                     </div>
                     <div class="ml-3">
                         <h3 :class="testResult?.success ? 'text-green-800' : 'text-red-800'" class="text-sm font-medium"
-                            x-text="testResult?.success ? 'Connection Successful' : 'Connection Failed'"></h3>
+                            x-text="testResult?.success ? '{{ __('Connection Successful') }}' : '{{ __('Connection Failed') }}'"></h3>
                         <p :class="testResult?.success ? 'text-green-700' : 'text-red-700'"
                             class="mt-1 text-sm" x-text="testResult?.message"></p>
                     </div>
@@ -160,7 +160,7 @@
             <svg class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
             </svg>
-            Back
+            {{ __('Back') }}
         </a>
 
         <button @click="submitSave()" x-show="testResult?.success" x-cloak

@@ -23,7 +23,7 @@ class InstallerController extends Controller
     public function welcome()
     {
         if ($this->installer->isInstalled()) {
-            return redirect('/login')->with('error', 'Application is already installed.');
+            return redirect('/login')->with('error', __('Application is already installed.'));
         }
 
         return view('installer.welcome');
@@ -38,7 +38,7 @@ class InstallerController extends Controller
             $requirements = $this->installer->checkRequirements();
             return view('installer.requirements', compact('requirements'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to check requirements: ' . $e->getMessage());
+            return back()->with('error', __('Failed to check requirements: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -80,7 +80,7 @@ class InstallerController extends Controller
                 'db_password' => $request->password ?? '',
             ]);
         } catch (\Exception $e) {
-            return back()->with('db_error', 'Failed to save database config: ' . $e->getMessage())->withInput();
+            return back()->with('db_error', __('Failed to save database config: :message', ['message' => $e->getMessage()]))->withInput();
         }
 
         return redirect()->route('installer.settings');
@@ -126,7 +126,7 @@ class InstallerController extends Controller
             $timezones = DateTimeZone::listIdentifiers();
             return view('installer.settings', compact('timezones'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to load settings: ' . $e->getMessage());
+            return back()->with('error', __('Failed to load settings: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -152,7 +152,7 @@ class InstallerController extends Controller
                 'app_timezone' => $request->app_timezone,
             ]);
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to save app settings: ' . $e->getMessage())->withInput();
+            return back()->with('error', __('Failed to save app settings: :message', ['message' => $e->getMessage()]))->withInput();
         }
 
         return redirect()->route('installer.store');
@@ -167,7 +167,7 @@ class InstallerController extends Controller
             $defaultCurrency = config('installer.default_currency');
             return view('installer.store', compact('defaultCurrency'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to load store settings: ' . $e->getMessage());
+            return back()->with('error', __('Failed to load store settings: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -193,7 +193,7 @@ class InstallerController extends Controller
     public function processInstallation(Request $request)
     {
         if ($this->installer->isInstalled()) {
-            return redirect('/login')->with('error', 'Application is already installed.');
+            return redirect('/login')->with('error', __('Application is already installed.'));
         }
 
         // Validate request — DB and app settings are already in .env from earlier steps
@@ -260,14 +260,14 @@ class InstallerController extends Controller
 
             return redirect()
                 ->route('installer.complete')
-                ->with('success', 'Installation completed successfully!');
+                ->with('success', __('Installation completed successfully!'));
         } catch (\Exception $e) {
             logger()->error('Installation: Failed during installation process', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
             return back()
-                ->with('error', 'Installation failed: ' . $e->getMessage())
+                ->with('error', __('Installation failed: :message', ['message' => $e->getMessage()]))
                 ->withInput();
         }
     }
@@ -284,7 +284,7 @@ class InstallerController extends Controller
 
             return view('installer.complete');
         } catch (\Exception $e) {
-            return back()->with('error', 'Installation verification failed: ' . $e->getMessage());
+            return back()->with('error', __('Installation verification failed: :message', ['message' => $e->getMessage()]));
         }
     }
 }

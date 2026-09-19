@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import Grid from "@mui/material/Grid";
@@ -41,6 +42,7 @@ export default function ContactReport({
     type,
     contact,
 }) {
+    const { t } = useTranslation();
     const [dataReport, setDataReport] = useState(report);
 
     const [searchTerms, setSearchTerms] = useState({
@@ -70,9 +72,9 @@ export default function ContactReport({
 
     const headers = [
         { label: "#", align: "left", sx: {} },
-        { label: "DATE", align: "left", sx: { width: "120px" } },
-        { label: "DESCRIPTION", align: "left", sx: {} },
-        { label: "DEBIT (OWED)", align: "right", sx: {} },
+        { label: t('DATE'), align: "left", sx: { width: "120px" } },
+        { label: t('DESCRIPTION'), align: "left", sx: {} },
+        { label: t('DEBIT (OWED)'), align: "right", sx: {} },
         { label: "CREDIT(PAID)", align: "right", sx: {} },
     ];
 
@@ -98,7 +100,7 @@ export default function ContactReport({
 
     return (
         <AuthenticatedLayout>
-            <Head title="Contact Report" />
+            <Head title={t('Contact Report')} />
             <Grid
                 container
                 spacing={2}
@@ -107,7 +109,7 @@ export default function ContactReport({
             >
                 <Grid size={{ xs: 12, sm: 4, md: 2 }}>
                     <TextField
-                        label="Store"
+                        label={t('Store')}
                         name="store"
                         fullWidth
                         select
@@ -120,7 +122,7 @@ export default function ContactReport({
                         onChange={handleFieldChange}
                         required
                     >
-                        <MenuItem value={0}>All</MenuItem>
+                        <MenuItem value={0}>{t('All')}</MenuItem>
                         {stores.map((store) => (
                             <MenuItem key={store.id} value={store.id}>
                                 {store.name}
@@ -131,9 +133,9 @@ export default function ContactReport({
 
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="Start Date"
+                        label={t('Start Date')}
                         name="start_date"
-                        placeholder="Start Date"
+                        placeholder={t('Start Date')}
                         fullWidth
                         type="date"
                         slotProps={{
@@ -148,9 +150,9 @@ export default function ContactReport({
                 </Grid>
                 <Grid size={{ xs: 6, sm: 2 }}>
                     <TextField
-                        label="End Date"
+                        label={t('End Date')}
                         name="end_date"
-                        placeholder="End Date"
+                        placeholder={t('End Date')}
                         fullWidth
                         type="date"
                         slotProps={{
@@ -192,9 +194,9 @@ export default function ContactReport({
                 >
                     <Alert sx={{ width: "100%" }} severity="info" icon={false}>
                         <strong>
-                            Name: {contact.name}
+                            {t('Name: {{0}}', { 0: contact.name })}
                             <br />
-                            Balance {numeral(contact.balance).format("0,00.00")}
+                            {t('Balance {{0}}', { 0: numeral(contact.balance).format("0,00.00") })}
                         </strong>
                     </Alert>
                 </Box>
@@ -215,7 +217,7 @@ export default function ContactReport({
                         overflow: "auto",
                     }}
                 >
-                    <Table aria-label="customized table">
+                    <Table aria-label={t('customized table')}>
                         <TableHead>
                             <TableRow>
                                 {headers.map((header, index) => (
@@ -273,14 +275,14 @@ export default function ContactReport({
                             ) : (
                                 <StyledTableRow>
                                     <StyledTableCell colSpan={6} align="center">
-                                        No data available
+                                        {t('No data available')}
                                     </StyledTableCell>
                                 </StyledTableRow>
                             )}
 
                             <StyledTableRow sx={{ backgroundColor: "black" }}>
                                 <StyledTableCell colSpan={3} align="right">
-                                    <strong>Total:</strong>
+                                    <strong>{t('Total:')}</strong>
                                 </StyledTableCell>
 
                                 {/* Total Debit */}
@@ -325,8 +327,8 @@ export default function ContactReport({
                             <StyledTableRow>
                                 <StyledTableCell colSpan={4} align="right">
                                     {type === "vendor"
-                                        ? "Balance/To be paid:"
-                                        : "Balance/Receivable:"}
+                                        ? t('Balance/To be paid:')
+                                        : t('Balance/Receivable:')}
                                 </StyledTableCell>
                                 <StyledTableCell
                                     align="right"

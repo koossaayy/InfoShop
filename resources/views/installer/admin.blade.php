@@ -16,7 +16,7 @@
     admin_username = sessionStorage.getItem('admin_username') || '';
     admin_email = sessionStorage.getItem('admin_email') || '';
 " class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">Create Admin Account</h2>
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ __('Create Admin Account') }}</h2>
 
     <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
         <div class="flex">
@@ -26,9 +26,9 @@
                 </svg>
             </div>
             <div class="ml-3">
-                <h3 class="text-sm font-medium text-blue-800">Administrator Credentials</h3>
+                <h3 class="text-sm font-medium text-blue-800">{{ __('Administrator Credentials') }}</h3>
                 <p class="mt-1 text-sm text-blue-700">
-                    This account will have full access to all features. Keep these credentials secure.
+                    {{ __('This account will have full access to all features. Keep these credentials secure.') }}
                 </p>
             </div>
         </div>
@@ -36,7 +36,7 @@
 
     <form @submit.prevent="
         if (admin_password !== admin_password_confirmation) {
-            alert('Passwords do not match!');
+            alert('{{ __('Passwords do not match!') }}');
             return;
         }
         sessionStorage.setItem('admin_name', admin_name);
@@ -46,23 +46,23 @@
         window.location.href = '{{ route('installer.install') }}';
     " class="space-y-6">
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-            <input type="text" x-model="admin_name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="John Doe">
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Full Name') }}</label>
+            <input type="text" x-model="admin_name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="{{ __('John Doe') }}">
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
-            <input type="text" x-model="admin_username" required pattern="[a-zA-Z0-9_-]+" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="admin">
-            <p class="mt-1 text-sm text-gray-500">Use only letters, numbers, hyphens, and underscores</p>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Username') }}</label>
+            <input type="text" x-model="admin_username" required pattern="[a-zA-Z0-9_-]+" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="{{ __('admin') }}">
+            <p class="mt-1 text-sm text-gray-500">{{ __('Use only letters, numbers, hyphens, and underscores') }}</p>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Email Address') }}</label>
             <input type="email" x-model="admin_email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="admin@example.com">
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Password') }}</label>
             <div class="relative">
                 <input :type="showPassword ? 'text' : 'password'" x-model="admin_password" required minlength="8" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-12" placeholder="••••••••">
                 <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
@@ -75,16 +75,16 @@
                     </svg>
                 </button>
             </div>
-            <p class="mt-1 text-sm text-gray-500">Minimum 8 characters</p>
+            <p class="mt-1 text-sm text-gray-500">{{ __('Minimum 8 characters') }}</p>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Confirm Password') }}</label>
             <input :type="showPassword ? 'text' : 'password'" x-model="admin_password_confirmation" required minlength="8" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
         </div>
 
         <div x-show="admin_password && admin_password_confirmation && admin_password !== admin_password_confirmation" class="bg-red-50 border border-red-200 rounded-lg p-3">
-            <p class="text-sm text-red-700">Passwords do not match</p>
+            <p class="text-sm text-red-700">{{ __('Passwords do not match') }}</p>
         </div>
 
         <div class="flex justify-between mt-8">
@@ -92,7 +92,7 @@
                 <svg class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
                 </svg>
-                Back
+                {{ __('Back') }}
             </a>
             
             <button type="submit" :disabled="!admin_password || !admin_password_confirmation || admin_password !== admin_password_confirmation" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition disabled:opacity-50 disabled:cursor-not-allowed">

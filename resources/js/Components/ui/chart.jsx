@@ -2,6 +2,7 @@ import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/lib/utils"
+import i18next from 'i18next';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = {
@@ -15,7 +16,7 @@ function useChart() {
   const context = React.useContext(ChartContext)
 
   if (!context) {
-    throw new Error("useChart must be used within a <ChartContainer />")
+    throw new Error(i18next.t('useChart must be used within a <ChartContainer />'))
   }
 
   return context
@@ -200,7 +201,7 @@ const ChartTooltipContent = React.forwardRef((
                       </div>
                       {item.value && (
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                          {item.value.toLocaleString(globalThis.document?.documentElement?.lang || undefined)}
                         </span>
                       )}
                     </div>

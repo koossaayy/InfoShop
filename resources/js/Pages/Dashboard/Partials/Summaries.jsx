@@ -16,8 +16,10 @@ import Paper from '@mui/material/Paper';
 
 import axios from "axios";
 import numeral from "numeral";
+import { useTranslation } from 'react-i18next';
 
 export default function Summaries() {
+    const { t } = useTranslation();
     const [topSoldItems, setTopSoldItems] = useState([]);
     const [topProfitItems, setTopProfitItems] = useState([]);
     const [topGrossItems, setTopGrossItems] = useState([]);
@@ -51,7 +53,7 @@ export default function Summaries() {
     }, [startDate, endDate]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>{t('Loading...')}</div>;
     }
 
     return (
@@ -60,9 +62,9 @@ export default function Summaries() {
                 <Grid container spacing={2} size={12}>
                     <Grid size={{ xs: 6, sm: 3, md: 2 }}>
                         <TextField
-                            label="Start Date"
+                            label={t('Start Date')}
                             name="start_date"
-                            placeholder="Start Date"
+                            placeholder={t('Start Date')}
                             type="date"
                             fullWidth
                             slotProps={{
@@ -78,9 +80,9 @@ export default function Summaries() {
                     </Grid>
                     <Grid size={{ xs: 6, sm: 3, md: 2 }}>
                         <TextField
-                            label="End Date"
+                            label={t('End Date')}
                             name="end_date"
-                            placeholder="End Date"
+                            placeholder={t('End Date')}
                             type="date"
                             fullWidth
                             slotProps={{
@@ -103,8 +105,8 @@ export default function Summaries() {
                             <Table sx={{ minWidth: 300 }}>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell><strong>Top Sold Items</strong></TableCell>
-                                        <TableCell align="right">Quantity</TableCell>
+                                        <TableCell><strong>{t('Top Sold Items')}</strong></TableCell>
+                                        <TableCell align="right">{t('Quantity')}</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -123,8 +125,8 @@ export default function Summaries() {
                             <Table sx={{ minWidth: 300 }}>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell><strong>Top Profit Items</strong></TableCell>
-                                        <TableCell align="right">Profit</TableCell>
+                                        <TableCell><strong>{t('Top Profit Items')}</strong></TableCell>
+                                        <TableCell align="right">{t('Profit')}</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -143,8 +145,8 @@ export default function Summaries() {
                             <Table sx={{ minWidth: 300 }}>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell><strong>Top Gross Items</strong></TableCell>
-                                        <TableCell align="right">Gross</TableCell>
+                                        <TableCell><strong>{t('Top Gross Items')}</strong></TableCell>
+                                        <TableCell align="right">{t('Gross')}</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

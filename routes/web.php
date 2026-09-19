@@ -281,3 +281,10 @@ Route::get('/update', [UpgradeController::class, 'showUploadForm'])->name('uploa
 });
 
 require __DIR__ . '/auth.php';
+
+Route::get('/locale/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, config('app.available_locales', ['en', 'fr', 'ru', 'de', 'ja', 'ar'])), 404);
+    session(['locale' => $locale]);
+
+    return back();
+})->name('locale.switch');

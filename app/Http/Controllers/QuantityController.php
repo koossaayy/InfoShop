@@ -120,7 +120,7 @@ class QuantityController extends Controller
 
         return Inertia::render('Product/QuantityAdjustmentsLog', [
             'adjustments' => $allAdjustments,
-            'pageLabel' => 'Quantity Adjustments Log',
+            'pageLabel' => __('Quantity Adjustments Log'),
         ]);
     }
 }

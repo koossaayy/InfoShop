@@ -11,10 +11,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import _ from "lodash";
 
+import { useTranslation } from 'react-i18next';
 import { useSales as useCart } from "@/Context/SalesContext";
 import { SharedContext } from "@/Context/SharedContext";
 
 export default function SearchBox() {
+    const { t } = useTranslation();
     const return_sale = usePage().props.return_sale;
     const { setCartItemModalOpen, setSelectedCartItem } = useContext(SharedContext);
 
@@ -168,7 +170,7 @@ export default function SearchBox() {
                             {...params}
                             inputRef={searchRef}
                             fullWidth
-                            placeholder="Search product... Use Arrow up key to focus ⬆️"
+                            placeholder={t('Search product... Use Arrow up key to focus ⬆️')}
                             id="searchBox"
                             onChange={
                                 onSearchInputChange
@@ -197,7 +199,7 @@ export default function SearchBox() {
                 <IconButton
                     type="button"
                     sx={{ p: "10px" }}
-                    aria-label="search"
+                    aria-label={t('search')}
                 >
                     <SearchIcon />
                 </IconButton>
