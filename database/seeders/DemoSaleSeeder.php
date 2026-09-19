@@ -112,7 +112,7 @@ class DemoSaleSeeder extends Seeder
             foreach ($productIndexes as $pIdx) {
                 $product = $productsArr[$pIdx] ?? null;
                 if (!$product) continue;
-                $batch = $product->productBatches->first();
+                $batch = $product->batches->first();
                 if (!$batch) continue;
                 $qty       = rand(1, 3);
                 $cartItems[] = compact('product', 'batch', 'qty');
